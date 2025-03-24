@@ -1,3 +1,4 @@
+using CVGenerator.Pages;
 using System.Diagnostics;
 
 namespace CVGenerator.LaTeX;
@@ -52,10 +53,26 @@ public static class PdfGenerator
         return await File.ReadAllBytesAsync(pdfUrl);
     }
 
+    public static string FormatEducation(this Info info) =>
+        "\\" + "cveventleft" +
+        "{" + info.Start.Month + "/" + info.Start.Year + "}" +
+        "{" + info.End.Month + "/" + info.End.Year + "}" +
+        "{" + info.Details + "}" +
+        "{}{}";
+
+    public static string FormatWorkExperience(this Info info) =>
+        "\\" + "cveventright" +
+        "{" + info.Start.Month + "/" + info.Start.Year + "}" +
+        "{" + info.End.Month + "/" + info.End.Year + "}" +
+        "{" + info.Details + "}" +
+        "{}{}";
+
+    //$"\\cveventleft{{{info.Start.Month}//{info.Start.Year}}}{{{info.End.Month}//{info.End.Year}}}{{{info.Details}}}{{}}{{}}";
+
     private static string FillTemplate(this string content, Dictionary<string, object> input)
     {
         foreach (var (name, value) in input)
-            content = content.Replace(PREFIX + name, value?.ToString()?.Sanitize());
+            content = content.Replace(PREFIX + name, value?.ToString());
 
         return content;
     }

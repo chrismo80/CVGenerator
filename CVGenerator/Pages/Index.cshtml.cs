@@ -10,125 +10,132 @@ namespace CVGenerator.Pages;
 
 public class Info
 {
-	public DateOnly Start { get; set; }
-	public DateOnly End { get; set; }
-	public string Details { get; set; }
+    public DateOnly Start { get; set; }
 
-	public override string ToString() => $"{Start}-{End}-{Details}";
+    public DateOnly End { get; set; }
+
+    public string Details { get; set; }
 }
 
 public class Skill
 {
-	public string Text { get; set; }
-	public int Percent { get; set; }
+    public string Text { get; set; }
 
-	public override string ToString() => $"{Text}-{Percent}";
+    public int Percent { get; set; }
+
+    public override string ToString() => $"{Text}-{Percent}";
 }
 
 public class IndexModel : PageModel
 {
-	private readonly ILogger<IndexModel> _logger;
+    private readonly ILogger<IndexModel> _logger;
 
-	[BindProperty] public IFormFile? ProfilePicture { get; set; }
+    [BindProperty] public IFormFile? ProfilePicture { get; set; }
 
-	[BindProperty] public string Name { get; set; }
-	[BindProperty] public string Email { get; set; }
-	[BindProperty] public string Phone { get; set; }
+    [BindProperty] public string Name { get; set; }
 
-	[BindProperty] public List<Info> Educations { get; set; } = [];
-	[BindProperty] public List<Info> WorkExperiences { get; set; } = [];
+    [BindProperty] public string Email { get; set; }
 
-	[BindProperty] public List<Skill> Skills { get; set; } = [];
+    [BindProperty] public string Phone { get; set; }
 
-	public string? Foto => ProfilePicture?.FileName;
-	public string? Education => string.Join("\n\\newline\n", Educations.Select(e => e.ToString()));
-	public string? WorkExperience => string.Join("\n\\newline\n", WorkExperiences.Select(e => e.ToString()));
-	public string? Skill => string.Join("\n\\newline\n", Skills.Select(e => e.ToString()));
+    [BindProperty] public List<Info> Educations { get; set; } = [];
 
-	public IndexModel(ILogger<IndexModel> logger)
-	{
-		_logger = logger;
-	}
+    [BindProperty] public List<Info> WorkExperiences { get; set; } = [];
 
-	public async Task<IActionResult> OnPostGenerateAsync()
-	{
-		OnSet();
+    [BindProperty] public List<Skill> Skills { get; set; } = [];
 
-		Directory.CreateDirectory("temp");
+    public string? Foto => ProfilePicture?.FileName;
 
-		await SaveProfilePicture();
+    public string? Education => string.Join("\n", Educations.Select(e => e.FormatEducation()));
 
-		var pdfBytes = await GetFields()!.GeneratePdf();
+    public string? WorkExperience => string.Join("\n", WorkExperiences.Select(e => e.FormatWorkExperience()));
 
-		return File(pdfBytes, "application/pdf", Name + ".pdf");
-	}
+    public string? Skill => string.Join("\n\\newline\n", Skills.Select(e => e.ToString()));
 
-	public void OnSet()
-	{
-		// Save data to session before generating the PDF
-		HttpContext.Session.SetString("Name", Name);
-		HttpContext.Session.SetString("Email", Email);
-		HttpContext.Session.SetString("Phone", Phone);
+    public IndexModel(ILogger<IndexModel> logger)
+    {
+        _logger = logger;
+    }
 
-		// You can also store complex objects like lists using JSON serialization
-		HttpContext.Session.SetString("Educations", JsonSerializer.Serialize(Educations));
-		HttpContext.Session.SetString("WorkExperiences", JsonSerializer.Serialize(WorkExperiences));
-		HttpContext.Session.SetString("Skills", JsonSerializer.Serialize(Skills));
-	}
+    public async Task<IActionResult> OnPostGenerateAsync()
+    {
+        OnSet();
 
-	public void OnGet()
-	{
-		// Load session data on page visit
-		Name = HttpContext.Session.GetString("Name") ?? "John Doe";
-		Email = HttpContext.Session.GetString("Email") ?? "test@gmail.com";
-		Phone = HttpContext.Session.GetString("Phone") ?? "000023";
+        Directory.CreateDirectory("temp");
 
-		// Load complex objects
-		var educationJson = HttpContext.Session.GetString("Educations");
+        await SaveProfilePicture();
 
-		if (educationJson != null)
-			Educations = JsonSerializer.Deserialize<List<Info>>(educationJson);
-		else
-			Educations =
-				[
-					new Info { Start = new(2021, 1, 1), End = new(2022, 3, 2), Details = "Schule" },
-					new Info { Start = new(2022, 1, 1), End = new(2023, 3, 2), Details = "Uni" }
-				];
+        var pdfBytes = await GetFields()!.GeneratePdf();
 
-		var workExperienceJson = HttpContext.Session.GetString("WorkExperiences");
+        return File(pdfBytes, "application/pdf", Name + ".pdf");
+    }
 
-		if (workExperienceJson != null)
-			WorkExperiences = JsonSerializer.Deserialize<List<Info>>(workExperienceJson);
-		else
-			WorkExperiences =
-				[
-					new Info { Start = new(2018, 1, 1), End = new(2019, 3, 2), Details = "Job 1" },
-					new Info { Start = new(2020, 4, 12), End = new(2021, 3, 2), Details = "Job 2" }
-				];
+    public void OnSet()
+    {
+        // Save data to session before generating the PDF
+        HttpContext.Session.SetString("Name", Name);
+        HttpContext.Session.SetString("Email", Email);
+        HttpContext.Session.SetString("Phone", Phone);
 
-		var skillsJson = HttpContext.Session.GetString("Skills");
+        // You can also store complex objects like lists using JSON serialization
+        HttpContext.Session.SetString("Educations", JsonSerializer.Serialize(Educations));
+        HttpContext.Session.SetString("WorkExperiences", JsonSerializer.Serialize(WorkExperiences));
+        HttpContext.Session.SetString("Skills", JsonSerializer.Serialize(Skills));
+    }
 
-		if (skillsJson != null)
-			Skills = JsonSerializer.Deserialize<List<Skill>>(skillsJson);
-		else
-			Skills =
-			[
-				new Skill() { Text = "German", Percent = 60},
-				new Skill() { Text = "English", Percent = 40},
-			];
-	}
+    public void OnGet()
+    {
+        // Load session data on page visit
+        Name = HttpContext.Session.GetString("Name") ?? "John Doe";
+        Email = HttpContext.Session.GetString("Email") ?? "test@gmail.com";
+        Phone = HttpContext.Session.GetString("Phone") ?? "000023";
 
-	private async Task SaveProfilePicture()
-	{
-		if (ProfilePicture == null)
-			return;
+        // Load complex objects
+        var educationJson = HttpContext.Session.GetString("Educations");
 
-		await using var fileStream = new FileStream(Path.Combine("temp", ProfilePicture.FileName), FileMode.Create);
-		await ProfilePicture.CopyToAsync(fileStream);
-	}
+        if (educationJson != null)
+            Educations = JsonSerializer.Deserialize<List<Info>>(educationJson);
+        else
+            Educations =
+                [
+                    new Info { Start = new(2000, 4, 1), End = new(2001, 6, 1), Details = "Abitur" },
+                    new Info { Start = new(2002, 8, 1), End = new(2008, 1, 1), Details = "Diplomingenieur (FH)" }
+                ];
 
-	private Dictionary<string, object?> GetFields() => GetType()
-		.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-		.Where(prop => prop.PropertyType == typeof(string))
-		.ToDictionary(prop => prop.Name, prop => prop.GetValue(this));
+        var workExperienceJson = HttpContext.Session.GetString("WorkExperiences");
+
+        if (workExperienceJson != null)
+            WorkExperiences = JsonSerializer.Deserialize<List<Info>>(workExperienceJson);
+        else
+            WorkExperiences =
+                [
+                    new Info { Start = new(2001, 7, 1), End = new(2002, 5, 1), Details = "Zivildienst" },
+                    new Info { Start = new(2005, 1, 1), End = new(2006, 8, 1), Details = "IBM, Mainz" }
+                ];
+
+        var skillsJson = HttpContext.Session.GetString("Skills");
+
+        if (skillsJson != null)
+            Skills = JsonSerializer.Deserialize<List<Skill>>(skillsJson);
+        else
+            Skills =
+            [
+                new Skill() { Text = "German", Percent = 60},
+                new Skill() { Text = "English", Percent = 40},
+            ];
+    }
+
+    private async Task SaveProfilePicture()
+    {
+        if (ProfilePicture == null)
+            return;
+
+        await using var fileStream = new FileStream(Path.Combine("temp", ProfilePicture.FileName), FileMode.Create);
+        await ProfilePicture.CopyToAsync(fileStream);
+    }
+
+    private Dictionary<string, object?> GetFields() => GetType()
+        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+        .Where(prop => prop.PropertyType == typeof(string))
+        .ToDictionary(prop => prop.Name, prop => prop.GetValue(this));
 }
