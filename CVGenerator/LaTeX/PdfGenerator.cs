@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Diagnostics;
 
 namespace CVGenerator.LaTeX;
@@ -10,29 +9,41 @@ public static class PdfGenerator
     static readonly string folder = Directory.GetCurrentDirectory();
     private static readonly string tempFolder = Path.Combine(folder, "temp");
     static readonly string template = Path.Combine(folder, "Data", "template.tex");
-    static readonly string tempTex = Path.Combine(tempFolder, FILE + ".tex");
+    static readonly string srcTex = Path.Combine(folder, "Data", FILE + ".tex");
+    static readonly string mainTex = Path.Combine(tempFolder, FILE + ".tex");
+    static readonly string tempTex = Path.Combine(tempFolder, "template.tex");
     static readonly string tempPdf = Path.Combine(tempFolder, FILE + ".pdf");
     static readonly string pdfUrl = Path.Combine("wwwroot", FILE + ".pdf");
 
     static readonly ProcessStartInfo startInfo = new()
     {
         FileName = "pdflatex",
-        Arguments = $"-output-directory={tempFolder} {tempTex}",
+        Arguments = $"-output-directory={tempFolder} {mainTex}",
         RedirectStandardOutput = true,
         RedirectStandardError = true,
         UseShellExecute = false,
-        CreateNoWindow = true
+        CreateNoWindow = false
     };
 
     public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input)
     {
         Directory.CreateDirectory(tempFolder);
 
-        var cv = await File.ReadAllTextAsync(template);
+        File.Copy(srcTex, mainTex, true);
 
-        await File.WriteAllTextAsync(tempTex, cv.FillTemplate(input));
+        var info = await File.ReadAllTextAsync(template);
 
-        await Process.Start(startInfo)!.WaitForExitAsync();
+        await File.WriteAllTextAsync(tempTex, info.FillTemplate(input));
+
+        var process = Process.Start(startInfo);
+
+        process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
+        process.ErrorDataReceived += (sender, e) => Console.WriteLine(e.Data);
+
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+
+        await process.WaitForExitAsync();
 
         File.Copy(tempPdf, pdfUrl, true);
 
@@ -44,7 +55,7 @@ public static class PdfGenerator
     private static string FillTemplate(this string content, Dictionary<string, object> input)
     {
         foreach (var (name, value) in input)
-            content = content.Replace(PREFIX + name, value.ToString());
+            content = content.Replace(PREFIX + name, value?.ToString()?.Sanitize());
 
         return content;
     }
@@ -55,7 +66,8 @@ public static class PdfGenerator
             input = input.Replace(c.ToString(), @$"\{c}");
 
         return input
-            .Replace(@"\", @"\textbackslash{}")
+
+            //.Replace(@"\", @"\textbackslash{}")
             .Replace("~", @"\textasciitilde{}")
             .Replace("^", @"\textasciicircum{}");
     }

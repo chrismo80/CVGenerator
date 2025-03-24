@@ -1,0 +1,622 @@
+\documentclass[10pt,A4]{article}
+
+\usepackage[utf8]{inputenc}		
+\usepackage{xifthen}
+\usepackage{calc}
+
+\usepackage{tcolorbox}
+\usepackage[colorlinks=true,urlcolor=textcolor]{hyperref}     
+\usepackage{soul} % For underlining
+
+% set font default
+\renewcommand*\familydefault{\sfdefault} 	
+\usepackage[T1]{fontenc}
+
+% more font size definitions
+\usepackage{moresize}		
+
+% awesome font
+\usepackage{fontawesome5}
+
+\usepackage[ddmmyyyy]{datetime}
+\renewcommand{\dateseparator}{.}
+
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT  DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+%debug page outer frames
+%\usepackage{showframe}			
+
+%define page styles using geometry
+\usepackage[a4paper]{geometry}		
+
+% for example, change the margins to 2 inches all round
+\geometry{top=1.5cm, bottom=0cm, left=1.5cm, right=1.5cm} 	
+
+%indentation is zero
+\setlength{\parindent}{0mm}
+
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+%extended aligning of tabular cells
+\usepackage{array}
+
+% custom column width
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+
+%----------------------------------------------------------------------------------------
+%	GRAPHICS DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{graphicx}
+\usepackage{wrapfig}
+
+% for drawing graphics and charts
+\usepackage{tikz}
+\usetikzlibrary{shapes, backgrounds}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{\includegraphics{#1}}%
+\parbox{\wd0}{\box0}\endgroup}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand*{\vcenteredhbox}[1]{\begingroup
+\setbox0=\hbox{#1}\parbox{\wd0}{\box0}\endgroup}
+
+%----------------------------------------------------------------------------------------
+%	ICON-SET EMBEDDING
+%---------------------------------------------------------------------------------------- 
+
+% at this point we simplify our icon-embedding by simply referring to a set of png images.
+% if you find a good way of including svg without conflicting with other packages you can
+% replace this part
+\newcommand{\icon}[2]{
+	\makebox(#2, #2){\textcolor{textcolor}{\csname fa#1\endcsname}}}	%icon shortcut
+\newcommand{\iconbox}[2]{
+	\colorbox{color1}{\makebox(#2, #2){\textcolor{textcolor}{\csname fa#1\endcsname}}}}	%iconbox shortcut
+\newcommand{\icontext}[3]{ 						%icon with text shortcut
+	\vcenteredhbox{\icon{#1}{#2}} \vcenteredhbox{\textcolor{textcolor}{#3}}
+}
+
+
+\newcommand*{\contactpage}[1]{
+	\begin{minipage}{0.25\textwidth}
+		\icontext{MapMarker}{#1}{\Location}\\
+		\icontext{Envelope}{#1}{\Mail}\\
+		\icontext{Mobile}{#1}{\Phone}\\
+		\icontext{Github}{#1}{\Link}
+	\end{minipage}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newcounter{barcount}
+
+
+% draw a bar chart
+% param 1: width
+% param 2: height
+% param 3: border color
+% param 4: label text color
+% param 5: label bg color
+% param 6: cat 1 color
+\newenvironment{barchart}[8]{
+
+	\newcommand{\barwidth}{0.35}
+	\newcommand{\barsep}{0.2}
+
+	% param 1: overall percent
+	% param 2: label
+	% param 3: cat 1 percent
+	% param 4: cat 2 percent
+	% param 5: cat 3 percent
+	\newcommand{\baritem}[5]{
+
+		\pgfmathparse{##3+##4+##5}
+		 \let\perc\pgfmathresult
+
+		\pgfmathparse{#2}
+		 \let\barsize\pgfmathresult
+	
+		\pgfmathparse{\barsize*##3/100}
+		 \let\barone\pgfmathresult
+	
+		\pgfmathparse{\barsize*##4/100}
+		 \let\bartwo\pgfmathresult
+	
+		\pgfmathparse{\barsize*##5/100}
+		 \let\barthree\pgfmathresult
+
+		\pgfmathparse{(\barwidth*\thebarcount)+(\barsep*\thebarcount)}
+		 \let\barx\pgfmathresult
+
+		\filldraw[fill=#6, draw=none] (0,-\barx) rectangle (\barone,-\barx-\barwidth);
+		\filldraw[fill=#7, draw=none] (\barone, -\barx) rectangle (\barone+\bartwo,-\barx-\barwidth);
+		\filldraw[fill=#8, draw=none] (\barone+\bartwo,-\barx ) rectangle (\barone+\bartwo+\barthree,-\barx-\barwidth);
+
+		\node [label=180:\colorbox{#5}{\textcolor{#4}{\textbf{##2}}}] at (0,-\barx-0.175) {};
+		\addtocounter{barcount}{1}
+	}
+	\begin{tikzpicture}
+	\setcounter{barcount}{0}
+	
+}
+{\end{tikzpicture}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newcounter{a}
+\newcounter{b}
+\newcounter{c}
+
+% draw a slice for a chart
+% param 1: Circle form - 90 = quarter, 180 = half, 360 = full
+% param 2: scale default=1 (scales only chart, not label text)
+% param 3: border color
+% param 4: label text color
+% param 5: label bg color
+% param 6:
+\newenvironment{piechart}[6] {
+
+	% draw a slice for a chart
+	% param 1: value x of 100
+	% param 2: label text
+	% param 3: fill color
+	% param 4:
+	% param 5:
+	% param 6:
+	\newcommand{\slice}[3] {
+
+		\setcounter{a}{\value{b}}
+		\addtocounter{b}{##1}
+
+		%set from angle point
+		\pgfmathparse{\thea/100*#1}
+	  	\let\pointa\pgfmathresult
+
+		%set toanglepoint
+		\pgfmathparse{\theb/100*#1}
+	  	\let\pointb\pgfmathresult
+
+		%set midangle
+	 	\pgfmathparse{0.5*\pointa+0.5*\pointb}
+	  	\let\midangle\pgfmathresult
+		
+		% draw the slice
+	  	\filldraw[fill=##3!100,draw=#3!100, line width=2pt ] (0,0) -- (\pointa:#2) arc (\pointa:\pointb:#2) -- cycle;
+
+	  	% draw label
+	  	\node[label=\midangle:\colorbox{#5}{\large{\textcolor{##3}{\textbf{##2}}}}] at (\midangle:#2) {};
+
+		\filldraw[fill=#3,draw=none] (0,0) circle (#2/1.75);
+		\node[label=\textcolor{color1}{#6}] at (0,-0.65) {};
+	}
+
+
+	% execute commands
+	\setcounter{a}{0}
+	\setcounter{b}{0}
+	\begin{tikzpicture}
+}
+{\end{tikzpicture}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+% Define layers
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{main}
+\pgfsetlayers{background,main}
+
+
+% define global counters
+\newcounter{yearcount}
+
+\newcounter{leftcount}
+
+% env cvtimeline
+%
+% creates a vertical cv timeline
+%
+% param 1: start year
+% param 2: end year
+% param 3: overall width
+% param 4: overall height
+\newenvironment{cvtimeline}[6]{
+	
+	\newcommand{\cvcategory}[2]{
+		\node[label=\mbox{\colorbox{##1}{\strut\hspace{2pt}}\colorbox{backcolor}{\textcolor{textcolor}{##2}}}] at (0,-5) {}; %start year
+	}
+
+	\newcommand{\bxwidth}{4.5}
+	\newcommand{\bxheight}{2}
+
+
+	% creates a stretched box as cv entry headline followed by two paragraphs about 
+	% the work you did
+	% param 1:	event start month/year
+	% param 2:	event end month/year
+	% param 3:  event name
+	% param 4:	institution (where did you work / study)
+	% param 5:	what was your position
+	% param 6:	color
+	% param 7: level (position, use minus for left placement)
+	\newcommand{\cveventright}[5] {
+		
+	\begin{pgfonlayer}{background}
+		\foreach \monthf/\yearf in {##1} {
+			\foreach \montht/\yeart in {##2} {
+
+				\pgfmathparse{#3/\fullrange*((\yearf-#1)+(\monthf/12))}
+  				\let\startexp\pgfmathresult
+
+				\pgfmathparse{#3/\fullrange*((\yeart-#1)+(\montht/12))}
+  				\let\endexp\pgfmathresult
+				
+				\pgfmathparse{1/(\endexp-\startexp+1)}
+  				\let\lenexp\pgfmathresult
+				
+				\pgfmathparse{0.5*\endexp+0.5*\startexp}
+  				\let\midexp\pgfmathresult
+
+				\node[label={[label distance=0]0:\colorbox{backcolor}{\textcolor{textcolor}{##1}}}] at (0.75, \startexp) {};
+				\normalsize
+				\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{5.5cm}{\textcolor{textcolor}{\textbf{##3}  ##4}}}}] at (1.9, \startexp) {};
+				%\node[label={[label distance=0]0:\colorbox{##6}{\strut}\colorbox{backcolor}{\textcolor{textcolor}{##3}}}] at (0.5, \startexp-0.25) {};
+
+				\filldraw[fill=color1,draw=none, opacity=1] (0,\startexp) rectangle (0.6,\endexp);
+				\draw[draw=color1, line width=1.5pt] (0, \startexp) -- (1,\startexp);
+				}
+			\addtocounter{leftcount}{1}
+		}
+	\end{pgfonlayer}
+
+	}
+
+	\newcommand{\cveventleft}[5] {
+		
+	\begin{pgfonlayer}{background}
+		\foreach \monthf/\yearf in {##1} {
+			\foreach \montht/\yeart in {##2} {
+
+				\pgfmathparse{#3/\fullrange*((\yearf-#1)+(\monthf/12))}
+  				\let\startexp\pgfmathresult
+
+				\pgfmathparse{#3/\fullrange*((\yeart-#1)+(\montht/12))}
+  				\let\endexp\pgfmathresult
+				
+				\pgfmathparse{1/(\endexp-\startexp+1)}
+  				\let\lenexp\pgfmathresult
+				
+				\pgfmathparse{0.5*\endexp+0.5*\startexp}
+  				\let\midexp\pgfmathresult
+
+				\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{3.25cm}{\textcolor{textcolor}{##5}}}}] at (-4.25, \midexp) {};
+				\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{3.25cm}{\textcolor{textcolor}{##4}}}}] at (-4.25, \startexp-0.2) {};
+				\node[label={[label distance=0]0:\colorbox{backcolor}{\textcolor{textcolor}{##2}}}] at (-2.4, \endexp) {};
+				\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{5.5cm}{\textcolor{textcolor}{\textbf{##3}}}}}] at (-4.25, \endexp-0.5) {};
+
+				\filldraw[fill=color2,draw=none, opacity=1] (-0.6,\startexp) rectangle (0,\endexp);
+				\draw[draw=color2, line width=1.5pt] (-1, \endexp) -- (0,\endexp);
+				
+				}
+			\addtocounter{leftcount}{1}
+		}
+	\end{pgfonlayer}
+	}
+
+	\newcommand{\cveventproject}[5] {
+	
+	\begin{pgfonlayer}{background}
+		\foreach \monthf/\yearf in {##1} {
+			\foreach \montht/\yeart in {##2} {
+
+				\pgfmathparse{#3/\fullrange*((\yearf-#1)+(\monthf/12))}
+  				\let\startexp\pgfmathresult
+
+				\pgfmathparse{#3/\fullrange*((\yeart-#1)+(\montht/12))}
+  				\let\endexp\pgfmathresult
+				
+				\pgfmathparse{1/(\endexp-\startexp+1)}
+  				\let\lenexp\pgfmathresult
+				
+				\pgfmathparse{0.5*\endexp+0.5*\startexp}
+  				\let\midexp\pgfmathresult
+
+				%\filldraw[fill=##6,draw=none, opacity=0.5] (0.4,\startexp) rectangle (0.6,\endexp);				
+				
+				\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{6.5cm}{
+					\begin{flushleft}
+						\textcolor{textcolor}{\textit{##3}}
+					\end{flushleft}
+					}}}] at (0.4, \midexp) {};
+			}
+			\addtocounter{leftcount}{1}
+		}
+	\end{pgfonlayer}
+	}
+
+	%--------------------------------------------------------------------------------------
+	%	BEGIN
+	%--------------------------------------------------------------------------------------
+
+	\begin{tikzpicture}
+
+	\setcounter{leftcount}{1}
+
+	%calc fullrange= number of years
+ 	\pgfmathparse{(#2-#1)}
+  	\let\fullrange\pgfmathresult
+	\draw[draw=textcolor,line width=5pt] (0,0) -- (0,#3) ;	%the timeline
+
+	%for each year put a horizontal line in place
+	\setcounter{yearcount}{1}
+	\whiledo{\value{yearcount} < \fullrange}{
+		\pgfmathparse{int(#1+\theyearcount)}
+  		\let\currentyear\pgfmathresult
+		\draw[fill=backcolor,draw=textcolor, line width=1.5pt]  (0,#3/\fullrange*\value{yearcount}) circle (0.3);
+		\node[label=\textcolor{textcolor}{\tiny{\currentyear}}] at (0,#3/\fullrange*\value{yearcount}-0.3) {}; 
+		\stepcounter{yearcount}
+	}
+
+	%start year
+	\filldraw[fill=backcolor!100,draw=textcolor,line width=3pt] (0,-0.5) circle (0.55);
+	\node[label=\textcolor{textcolor}{\textbf{\small#1}}] at (0,-0.85) {}; 
+
+	%end year
+	\filldraw[fill=backcolor!100,draw=textcolor,line width=5pt] (0,#3+0.75) circle (0.75);
+	\node[label=\textcolor{textcolor}{\textbf{\large#2}}] at (0,#3+0.42) {}; 
+
+
+	\begin{pgfonlayer}{background}
+
+	\draw[draw=color1, line width=5pt] (0, #3+1.5) -- (4,#3+1.5);
+	\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{2cm}{\textcolor{textcolor}{#6}}}}] at (0.8, #3+1) {};
+	
+	\draw[draw=color2, line width=5pt] (-4, #3+1.5) -- (0,#3+1.5);
+	\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{2cm}{\textcolor{textcolor}{#5}}}}] at (-3.2, #3+1) {};
+
+	\end{pgfonlayer}
+	
+}%end begin part of newenv
+{\end{tikzpicture}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\usepackage{xcolor}
+
+
+\definecolor{backcolor}{HTML}{EEEEEE} % #EEEEEE
+\definecolor{textcolor}{HTML}{223344} % #443322
+\definecolor{color1}{HTML}{667788} % #887766
+\definecolor{color2}{HTML}{8899AA} % #BBAA99
+\definecolor{color3}{HTML}{AABBCC} % #EEDDCC
+
+
+\input{template.tex}
+
+
+
+\pagecolor{backcolor}
+
+\begin{document}
+
+
+
+
+
+\begin{minipage}[c][2.25cm][c]{0.55\textwidth}
+	\vspace{0pt}
+	\Huge
+	\textcolor{textcolor}{\textbf{\Name}}
+
+	\Large
+	\textcolor{color1}{~\Role}
+	\vspace{\fill}
+	
+	\footnotesize
+	\textcolor{color2}{~~~}
+\end{minipage}
+\hfill
+\contactpage{14}
+\hspace*{-0.5cm}
+\vfill
+\begin{minipage}[b]{1\textwidth}
+
+\large
+	\textcolor{textcolor}{\textbf{\CompanyName}}
+
+	\textcolor{textcolor}{\Address}
+
+	\textcolor{textcolor}{\City}
+	\newline
+	\newline
+	\newline
+	\newline
+
+	\textcolor{textcolor}{\Large{\textbf{Bewerbung als \NewRole}}}
+	\hspace*{\fill}
+	\textcolor{textcolor}{\Location, den \today}
+	
+\end{minipage}
+\vfill
+\begin{minipage}[t][19cm][t]{0.95\textwidth}
+\begin{flushleft}
+\textcolor{textcolor}{\Recruiter,}
+\newline
+\newline
+
+\textcolor{textcolor}{\Letter
+\newline
+\newline
+\newline
+\newline
+Mit besten Grüßen nach \City
+\newline
+\newline
+% \includegraphics[width=0.3\linewidth]{\Sign}
+\newline
+\Name
+\newline
+\newline
+\newline
+\newline
+\textcolor{textcolor}{\Postskriptum}
+}
+\end{flushleft}
+\end{minipage}
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+\newcommand*{\legendbox}[3]{
+	\tcbox[colback=#2, colframe=#2,	valign=center, sharp corners, size=fbox, on line]
+	{\strut \textcolor{#3}{#1}}
+}
+
+\begin{minipage}[c][2.25cm][c]{0.55\textwidth}
+	\vspace{0pt}
+	\Huge
+	\textcolor{textcolor}{\textbf{\Name}}
+
+	\Large
+	\textcolor{color1}{~\Role}
+	\vspace{\fill}
+	
+	\footnotesize
+	\textcolor{color2}{~~~\Degree}
+\end{minipage}
+\hfill
+\begin{minipage}{0.12\textwidth}
+	\includegraphics[height=1.1\linewidth]{\Picture}
+\end{minipage}
+{\color{color2}\vrule width 1pt}
+\contactpage{14}
+\hspace*{-0.5cm}
+{\color{color2}\hrule height 1pt}
+
+\small
+
+\vspace{10pt}
+
+
+
+
+
+
+
+\begin{minipage}{0.7\textwidth}
+\begin{flushleft}
+\Timeline
+\end{flushleft}
+\end{minipage}
+\hfill
+\begin{minipage}{0.3\textwidth}
+	\vspace{10pt}
+	\begin{flushleft}
+		\normalsize{\textcolor{textcolor}{\Summary}}
+		\newline
+	\end{flushleft}
+	\vfill
+	\Skills
+	\newline
+	\vfill
+	\DiagramOne
+    \newline
+	\vfill
+	\DiagramTwo
+    \newline
+\end{minipage}
+\begin{flushright}
+	\scriptsize
+	\legendbox{Grundkenntnisse}{color3}{white}
+	\legendbox{Fortgeschritten}{color2}{white}
+	\legendbox{Professionell}{color1}{white}
+	\hspace*{-1cm}
+\end{flushright}
+
+
+
+
+
+
+
+
+\end{document}
