@@ -1,0 +1,240 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CVGenerator.Pages.IndexModel
+@{
+    ViewData["Title"] = "Generate CV";
+}
+
+<h1>Generate CV</h1>
+
+<form method="post" asp-page-handler="Generate" enctype="multipart/form-data">
+    <div class="row">
+        <!-- Left Column: Basic Details and Profile Picture (30% width) -->
+        <div class="col-md-4">
+            <!-- Basic Details Section -->
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label">Phone</label>
+                <input asp-for="Phone" class="form-control" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Generate PDF</button>
+
+            <!-- Profile Picture Section -->
+            <div class="mt-3">
+                <label for="profilePicture">Profile Picture</label>
+                <input type="file" class="form-control" id="profilePicture" name="ProfilePicture" accept="image/*" />
+                <img id="profilePreview" src="/uploads/default.jpg" class="img-fluid mt-2" style="max-width: 200px; max-height: 200px;" />
+            </div>
+        </div>
+
+        <!-- Right Column: Education and Work Experience (70% width) -->
+        <div class="col-md-8">
+            <!-- Education Section -->
+            <h3>Education</h3>
+            <div id="education-container">
+                @for (int i = 0; i < Model.Educations.Count; i++)
+                {
+                    <div class="education-entry row mb-2 d-flex align-items-center">
+                        <div class="col-md-2">
+                            <input asp-for="Educations[i].Start" type="date" class="form-control" required />
+                        </div>
+                        <div class="col-md-2">
+                            <input asp-for="Educations[i].End" type="date" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="Educations[i].Details" class="form-control" placeholder="Degree and University" required />
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="button" class="btn btn-danger btn-sm remove-education">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" id="add-education" class="btn btn-secondary btn-sm">Add Education</button>
+
+            <hr />
+
+            <!-- Work Experience Section -->
+            <h3>Work Experience</h3>
+            <div id="work-container">
+                @for (int i = 0; i < Model.WorkExperiences.Count; i++)
+                {
+                    <div class="work-entry row mb-2 d-flex align-items-center">
+                        <div class="col-md-2">
+                            <input asp-for="WorkExperiences[i].Start" type="date" class="form-control" required />
+                        </div>
+                        <div class="col-md-2">
+                            <input asp-for="WorkExperiences[i].End" type="date" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="WorkExperiences[i].Details" class="form-control" placeholder="Job Title and Company" required />
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="button" class="btn btn-danger btn-sm remove-work">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" id="add-work" class="btn btn-secondary btn-sm">Add Work Experience</button>
+
+            <hr />
+
+            <!-- Skills Section -->
+            <h3>Skills</h3>
+            <div id="skills-container">
+                @for (int i = 0; i < Model.Skills.Count; i++)
+                {
+                    <div class="skill-entry row mb-2 d-flex align-items-center">
+                        <div class="col-md-6">
+                            <input asp-for="Skills[i].Text" class="form-control" placeholder="Skill Name" required />
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="Skills[i].Percent" type="range" class="form-range" min="0" max="100" />
+                            <span id="skill-percent-@i" class="skill-percent">0%</span>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="button" class="btn btn-danger btn-sm remove-skill">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" id="add-skill" class="btn btn-secondary btn-sm">Add Skill</button>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Profile Picture Preview
+        document.getElementById("profilePicture").addEventListener("change", function (event) {
+            let reader = new FileReader();
+            reader.onload = function () {
+                document.getElementById("profilePreview").src = reader.result;
+                document.getElementById("profilePreview").style.display = "block";
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+
+        // Add Education Entry
+        document.getElementById("add-education").addEventListener("click", function () {
+            let container = document.getElementById("education-container");
+            let index = container.getElementsByClassName("education-entry").length;
+            let newEntry = `
+            <div class="education-entry row mb-2 d-flex align-items-center">
+                <div class="col-md-2">
+                    <input name="Educations[${index}].Start" type="date" class="form-control" required />
+                </div>
+                <div class="col-md-2">
+                    <input name="Educations[${index}].End" type="date" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                    <input name="Educations[${index}].Details" class="form-control" placeholder="Degree and University" required />
+                </div>
+                <div class="col-md-2 text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-education">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>`;
+            container.insertAdjacentHTML("beforeend", newEntry);
+        });
+
+        // Add Work Experience Entry
+        document.getElementById("add-work").addEventListener("click", function () {
+            let container = document.getElementById("work-container");
+            let index = container.getElementsByClassName("work-entry").length;
+            let newEntry = `
+            <div class="work-entry row mb-2 d-flex align-items-center">
+                <div class="col-md-2">
+                    <input name="WorkExperiences[${index}].Start" type="date" class="form-control" required />
+                </div>
+                <div class="col-md-2">
+                    <input name="WorkExperiences[${index}].End" type="date" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                    <input name="WorkExperiences[${index}].Details" class="form-control" placeholder="Job Title and Company" required />
+                </div>
+                <div class="col-md-2 text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-work">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>`;
+            container.insertAdjacentHTML("beforeend", newEntry);
+        });
+
+        // Add Skill Entry
+        document.getElementById("add-skill").addEventListener("click", function () {
+            let container = document.getElementById("skills-container");
+            let index = container.getElementsByClassName("skill-entry").length;
+            let newEntry = `
+            <div class="skill-entry row mb-2 d-flex align-items-center">
+                <div class="col-md-6">
+                    <input name="Skills[${index}].Text" class="form-control" placeholder="Skill Name" required />
+                </div>
+                <div class="col-md-4">
+                    <input name="Skills[${index}].Percent" type="range" class="form-range" min="0" max="100" step="5" value="0" />
+                    <span id="skill-percent-${index}" class="skill-percent">0%</span>
+                </div>
+                <div class="col-md-2 text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-skill">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>`;
+            container.insertAdjacentHTML("beforeend", newEntry);
+
+            // Update percent display for the new skill range input
+            let rangeInput = document.querySelector(`input[name="Skills[${index}].Percent"]`);
+            let percentDisplay = document.getElementById(`skill-percent-${index}`);
+
+            rangeInput.addEventListener('input', function (e) {
+                percentDisplay.textContent = `${e.target.value}%`;
+                updateSkillTotal(); // Update the total percentage whenever the slider changes
+            });
+        });
+
+        // Remove Entry Handlers
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-education")) event.target.closest(".education-entry").remove();
+            if (event.target.classList.contains("remove-work")) event.target.closest(".work-entry").remove();
+            if (event.target.classList.contains("remove-skill")) {
+                event.target.closest(".skill-entry").remove();
+                updateSkillTotal(); // Update the total percentage after removal
+            }
+        });
+
+        // Function to ensure the total sum of all skill percentages does not exceed 100
+        function updateSkillTotal() {
+            let total = 0;
+            let skills = document.querySelectorAll('input[name^="Skills"][type="range"]');
+            skills.forEach(skill => {
+                total += parseInt(skill.value, 10);
+            });
+
+            // Check if the total exceeds 100
+            if (total > 100) {
+                // If the total exceeds 100, adjust the last skill's percentage
+                let lastSkill = skills[skills.length - 1];
+                let excess = total - 100;
+                lastSkill.value = parseInt(lastSkill.value, 10) - excess;
+                document.getElementById(`skill-percent-${skills.length - 1}`).textContent = `${lastSkill.value}%`;
+            }
+        }
+    });
+</script>
