@@ -36,15 +36,7 @@ public static class PdfGenerator
 
         await File.WriteAllTextAsync(tempTex, info.FillTemplate(input));
 
-        var process = Process.Start(startInfo);
-
-        process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
-        process.ErrorDataReceived += (sender, e) => Console.WriteLine(e.Data);
-
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
-
-        await process.WaitForExitAsync();
+        await Process.Start(startInfo)!.RenderPdf();
 
         File.Copy(tempPdf, pdfUrl, true);
 
@@ -53,21 +45,24 @@ public static class PdfGenerator
         return await File.ReadAllBytesAsync(pdfUrl);
     }
 
-    public static string FormatEducation(this Info info) =>
-        "\\" + "cveventleft" +
+    public static string FormatInfo(this Info info, string type) =>
+        "\\" + type +
         "{" + info.Start.Month + "/" + info.Start.Year + "}" +
         "{" + info.End.Month + "/" + info.End.Year + "}" +
+        "{" + info.Text + "}" +
         "{" + info.Details + "}" +
-        "{}{}";
+        "{}";
 
-    public static string FormatWorkExperience(this Info info) =>
-        "\\" + "cveventright" +
-        "{" + info.Start.Month + "/" + info.Start.Year + "}" +
-        "{" + info.End.Month + "/" + info.End.Year + "}" +
-        "{" + info.Details + "}" +
-        "{}{}";
+    private static async Task RenderPdf(this Process process)
+    {
+        process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
+        process.ErrorDataReceived += (sender, e) => Console.WriteLine(e.Data);
 
-    //$"\\cveventleft{{{info.Start.Month}//{info.Start.Year}}}{{{info.End.Month}//{info.End.Year}}}{{{info.Details}}}{{}}{{}}";
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+
+        await process.WaitForExitAsync();
+    }
 
     private static string FillTemplate(this string content, Dictionary<string, object> input)
     {

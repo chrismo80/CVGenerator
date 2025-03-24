@@ -1,19 +1,19 @@
 \documentclass[10pt,A4]{article}
 
-\usepackage[utf8]{inputenc}		
+\usepackage[utf8]{inputenc}
 \usepackage{xifthen}
 \usepackage{calc}
 
 \usepackage{tcolorbox}
-\usepackage[colorlinks=true,urlcolor=textcolor]{hyperref}     
+\usepackage[colorlinks=true,urlcolor=textcolor]{hyperref}
 \usepackage{soul} % For underlining
 
 % set font default
-\renewcommand*\familydefault{\sfdefault} 	
+\renewcommand*\familydefault{\sfdefault}
 \usepackage[T1]{fontenc}
 
 % more font size definitions
-\usepackage{moresize}		
+\usepackage{moresize}
 
 % awesome font
 \usepackage{fontawesome5}
@@ -26,20 +26,20 @@
 %----------------------------------------------------------------------------------------
 
 %debug page outer frames
-%\usepackage{showframe}			
+%\usepackage{showframe}
 
 %define page styles using geometry
-\usepackage[a4paper]{geometry}		
+\usepackage[a4paper]{geometry}
 
 % for example, change the margins to 2 inches all round
-\geometry{top=1.5cm, bottom=0cm, left=1.5cm, right=1.5cm} 	
+\geometry{top=1.5cm, bottom=0cm, left=1.5cm, right=1.5cm}
 
 %indentation is zero
 \setlength{\parindent}{0mm}
 
 %----------------------------------------------------------------------------------------
 %	TABLE /ARRAY DEFINITIONS
-%---------------------------------------------------------------------------------------- 
+%----------------------------------------------------------------------------------------
 
 %extended aligning of tabular cells
 \usepackage{array}
@@ -51,7 +51,7 @@
 
 %----------------------------------------------------------------------------------------
 %	GRAPHICS DEFINITIONS
-%---------------------------------------------------------------------------------------- 
+%----------------------------------------------------------------------------------------
 \usepackage{graphicx}
 \usepackage{wrapfig}
 
@@ -72,7 +72,7 @@
 
 %----------------------------------------------------------------------------------------
 %	ICON-SET EMBEDDING
-%---------------------------------------------------------------------------------------- 
+%----------------------------------------------------------------------------------------
 
 % at this point we simplify our icon-embedding by simply referring to a set of png images.
 % if you find a good way of including svg without conflicting with other packages you can
@@ -134,13 +134,13 @@
 
 		\pgfmathparse{#2}
 		 \let\barsize\pgfmathresult
-	
+
 		\pgfmathparse{\barsize*##3/100}
 		 \let\barone\pgfmathresult
-	
+
 		\pgfmathparse{\barsize*##4/100}
 		 \let\bartwo\pgfmathresult
-	
+
 		\pgfmathparse{\barsize*##5/100}
 		 \let\barthree\pgfmathresult
 
@@ -156,7 +156,7 @@
 	}
 	\begin{tikzpicture}
 	\setcounter{barcount}{0}
-	
+
 }
 {\end{tikzpicture}}
 
@@ -208,7 +208,7 @@
 		%set midangle
 	 	\pgfmathparse{0.5*\pointa+0.5*\pointb}
 	  	\let\midangle\pgfmathresult
-		
+
 		% draw the slice
 	  	\filldraw[fill=##3!100,draw=#3!100, line width=2pt ] (0,0) -- (\pointa:#2) arc (\pointa:\pointb:#2) -- cycle;
 
@@ -259,7 +259,7 @@
 % param 3: overall width
 % param 4: overall height
 \newenvironment{cvtimeline}[6]{
-	
+
 	\newcommand{\cvcategory}[2]{
 		\node[label=\mbox{\colorbox{##1}{\strut\hspace{2pt}}\colorbox{backcolor}{\textcolor{textcolor}{##2}}}] at (0,-5) {}; %start year
 	}
@@ -268,7 +268,7 @@
 	\newcommand{\bxheight}{2}
 
 
-	% creates a stretched box as cv entry headline followed by two paragraphs about 
+	% creates a stretched box as cv entry headline followed by two paragraphs about
 	% the work you did
 	% param 1:	event start month/year
 	% param 2:	event end month/year
@@ -278,7 +278,7 @@
 	% param 6:	color
 	% param 7: level (position, use minus for left placement)
 	\newcommand{\cveventright}[5] {
-		
+
 	\begin{pgfonlayer}{background}
 		\foreach \monthf/\yearf in {##1} {
 			\foreach \montht/\yeart in {##2} {
@@ -288,10 +288,10 @@
 
 				\pgfmathparse{#3/\fullrange*((\yeart-#1)+(\montht/12))}
   				\let\endexp\pgfmathresult
-				
+
 				\pgfmathparse{1/(\endexp-\startexp+1)}
   				\let\lenexp\pgfmathresult
-				
+
 				\pgfmathparse{0.5*\endexp+0.5*\startexp}
   				\let\midexp\pgfmathresult
 
@@ -310,7 +310,7 @@
 	}
 
 	\newcommand{\cveventleft}[5] {
-		
+
 	\begin{pgfonlayer}{background}
 		\foreach \monthf/\yearf in {##1} {
 			\foreach \montht/\yeart in {##2} {
@@ -320,10 +320,10 @@
 
 				\pgfmathparse{#3/\fullrange*((\yeart-#1)+(\montht/12))}
   				\let\endexp\pgfmathresult
-				
+
 				\pgfmathparse{1/(\endexp-\startexp+1)}
   				\let\lenexp\pgfmathresult
-				
+
 				\pgfmathparse{0.5*\endexp+0.5*\startexp}
   				\let\midexp\pgfmathresult
 
@@ -334,7 +334,7 @@
 
 				\filldraw[fill=color2,draw=none, opacity=1] (-0.6,\startexp) rectangle (0,\endexp);
 				\draw[draw=color2, line width=1.5pt] (-1, \endexp) -- (0,\endexp);
-				
+
 				}
 			\addtocounter{leftcount}{1}
 		}
@@ -342,7 +342,7 @@
 	}
 
 	\newcommand{\cveventproject}[5] {
-	
+
 	\begin{pgfonlayer}{background}
 		\foreach \monthf/\yearf in {##1} {
 			\foreach \montht/\yeart in {##2} {
@@ -352,15 +352,15 @@
 
 				\pgfmathparse{#3/\fullrange*((\yeart-#1)+(\montht/12))}
   				\let\endexp\pgfmathresult
-				
+
 				\pgfmathparse{1/(\endexp-\startexp+1)}
   				\let\lenexp\pgfmathresult
-				
+
 				\pgfmathparse{0.5*\endexp+0.5*\startexp}
   				\let\midexp\pgfmathresult
 
-				%\filldraw[fill=##6,draw=none, opacity=0.5] (0.4,\startexp) rectangle (0.6,\endexp);				
-				
+				%\filldraw[fill=##6,draw=none, opacity=0.5] (0.4,\startexp) rectangle (0.6,\endexp);
+
 				\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{6.5cm}{
 					\begin{flushleft}
 						\textcolor{textcolor}{\textit{##3}}
@@ -391,29 +391,29 @@
 		\pgfmathparse{int(#1+\theyearcount)}
   		\let\currentyear\pgfmathresult
 		\draw[fill=backcolor,draw=textcolor, line width=1.5pt]  (0,#3/\fullrange*\value{yearcount}) circle (0.3);
-		\node[label=\textcolor{textcolor}{\tiny{\currentyear}}] at (0,#3/\fullrange*\value{yearcount}-0.3) {}; 
+		\node[label=\textcolor{textcolor}{\tiny{\currentyear}}] at (0,#3/\fullrange*\value{yearcount}-0.3) {};
 		\stepcounter{yearcount}
 	}
 
 	%start year
 	\filldraw[fill=backcolor!100,draw=textcolor,line width=3pt] (0,-0.5) circle (0.55);
-	\node[label=\textcolor{textcolor}{\textbf{\small#1}}] at (0,-0.85) {}; 
+	\node[label=\textcolor{textcolor}{\textbf{\small#1}}] at (0,-0.85) {};
 
 	%end year
 	\filldraw[fill=backcolor!100,draw=textcolor,line width=5pt] (0,#3+0.75) circle (0.75);
-	\node[label=\textcolor{textcolor}{\textbf{\large#2}}] at (0,#3+0.42) {}; 
+	\node[label=\textcolor{textcolor}{\textbf{\large#2}}] at (0,#3+0.42) {};
 
 
 	\begin{pgfonlayer}{background}
 
 	\draw[draw=color1, line width=5pt] (0, #3+1.5) -- (4,#3+1.5);
 	\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{2cm}{\textcolor{textcolor}{#6}}}}] at (0.8, #3+1) {};
-	
+
 	\draw[draw=color2, line width=5pt] (-4, #3+1.5) -- (0,#3+1.5);
 	\node[label={[label distance=0]0:\colorbox{backcolor}{\parbox{2cm}{\textcolor{textcolor}{#5}}}}] at (-3.2, #3+1) {};
 
 	\end{pgfonlayer}
-	
+
 }%end begin part of newenv
 {\end{tikzpicture}}
 
@@ -479,7 +479,7 @@
 	\Large
 	\textcolor{color1}{~\Role}
 	\vspace{\fill}
-	
+
 	\footnotesize
 	\textcolor{color2}{~~~}
 \end{minipage}
@@ -503,7 +503,7 @@
 	\textcolor{textcolor}{\Large{\textbf{Bewerbung als \NewRole}}}
 	\hspace*{\fill}
 	\textcolor{textcolor}{\Location, den \today}
-	
+
 \end{minipage}
 \vfill
 \begin{minipage}[t][19cm][t]{0.95\textwidth}
@@ -559,8 +559,8 @@ Mit besten Grüßen nach \City
 	\Large
 	\textcolor{color1}{~\Role}
 	\vspace{\fill}
-	
-	\footnotesize
+
+	\scriptsize
 	\textcolor{color2}{~~~\Degree}
 \end{minipage}
 \hfill

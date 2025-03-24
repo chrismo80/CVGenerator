@@ -30,8 +30,8 @@
             <!-- Profile Picture Section -->
             <div class="mt-3">
                 <label for="profilePicture">Profile Picture</label>
-                <input type="file" class="form-control" id="profilePicture" name="ProfilePicture" accept="image/*" />
-                <img id="profilePreview" src="/uploads/default.jpg" class="img-fluid mt-2" style="max-width: 200px; max-height: 200px;" />
+                <input type="file" class="form-control" id="profilePicture" name="ProfilePicture" accept="image/*" required />
+                <img id="profilePreview" class="img-fluid mt-2" style="max-width: 200px; max-height: 200px;" />
             </div>
         </div>
 
@@ -50,7 +50,10 @@
                             <input asp-for="Educations[i].End" type="date" class="form-control" required />
                         </div>
                         <div class="col-md-6">
-                            <input asp-for="Educations[i].Details" class="form-control" placeholder="Degree and University" required />
+                            <input asp-for="Educations[i].Text" class="form-control" placeholder="Degree and University" required />
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="Educations[i].Details" class="form-control" placeholder="City" />
                         </div>
                         <div class="col-md-2 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-education">
@@ -77,7 +80,10 @@
                             <input asp-for="WorkExperiences[i].End" type="date" class="form-control" required />
                         </div>
                         <div class="col-md-6">
-                            <input asp-for="WorkExperiences[i].Details" class="form-control" placeholder="Job Title and Company" required />
+                            <input asp-for="WorkExperiences[i].Text" class="form-control" placeholder="Company, City" required />
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="WorkExperiences[i].Details" class="form-control" placeholder="Position" />
                         </div>
                         <div class="col-md-2 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-work">
@@ -88,6 +94,36 @@
                 }
             </div>
             <button type="button" id="add-work" class="btn btn-secondary btn-sm">Add Work Experience</button>
+
+            <hr />
+
+            <!-- Projects Section -->
+            <h3>Projects</h3>
+            <div id="project-container">
+                @for (int i = 0; i < Model.Projects.Count; i++)
+                {
+                    <div class="project-entry row mb-2 d-flex align-items-center">
+                        <div class="col-md-2">
+                            <input asp-for="Projects[i].Start" type="date" class="form-control" required />
+                        </div>
+                        <div class="col-md-2">
+                            <input asp-for="Projects[i].End" type="date" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="Projects[i].Text" class="form-control" placeholder="Description" required />
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="Projects[i].Details" class="form-control" placeholder="" />
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="button" class="btn btn-danger btn-sm remove-project">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" id="add-project" class="btn btn-secondary btn-sm">Add Project</button>
 
             <hr />
 
@@ -143,7 +179,10 @@
                     <input name="Educations[${index}].End" type="date" class="form-control" required />
                 </div>
                 <div class="col-md-6">
-                    <input name="Educations[${index}].Details" class="form-control" placeholder="Degree and University" required />
+                    <input name="Educations[${index}].Text" class="form-control" placeholder="Degree and University" required />
+                </div>
+                <div class="col-md-6">
+                    <input name="Educations[${index}].Details" class="form-control" placeholder="City" required />
                 </div>
                 <div class="col-md-2 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-education">
@@ -167,7 +206,37 @@
                     <input name="WorkExperiences[${index}].End" type="date" class="form-control" required />
                 </div>
                 <div class="col-md-6">
-                    <input name="WorkExperiences[${index}].Details" class="form-control" placeholder="Job Title and Company" required />
+                    <input name="WorkExperiences[${index}].Text" class="form-control" placeholder="Company, City" required />
+                </div>
+                <div class="col-md-6">
+                    <input name="WorkExperiences[${index}].Details" class="form-control" placeholder="Position" />
+                </div>
+                <div class="col-md-2 text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-work">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>`;
+            container.insertAdjacentHTML("beforeend", newEntry);
+        });
+
+        // Add Project Entry
+        document.getElementById("add-project").addEventListener("click", function () {
+            let container = document.getElementById("project-container");
+            let index = container.getElementsByClassName("project-entry").length;
+            let newEntry = `
+            <div class="work-entry row mb-2 d-flex align-items-center">
+                <div class="col-md-2">
+                    <input name="Project[${index}].Start" type="date" class="form-control" required />
+                </div>
+                <div class="col-md-2">
+                    <input name="Project[${index}].End" type="date" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                    <input name="Project[${index}].Text" class="form-control" placeholder="Description" required />
+                </div>
+                <div class="col-md-6">
+                    <input name="Project[${index}].Details" class="form-control" placeholder="" />
                 </div>
                 <div class="col-md-2 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-work">
@@ -213,6 +282,7 @@
         document.addEventListener("click", function (event) {
             if (event.target.classList.contains("remove-education")) event.target.closest(".education-entry").remove();
             if (event.target.classList.contains("remove-work")) event.target.closest(".work-entry").remove();
+            if (event.target.classList.contains("remove-project")) event.target.closest(".project-entry").remove();
             if (event.target.classList.contains("remove-skill")) {
                 event.target.closest(".skill-entry").remove();
                 updateSkillTotal(); // Update the total percentage after removal
