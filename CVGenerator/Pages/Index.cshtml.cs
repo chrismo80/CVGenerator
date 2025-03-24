@@ -12,8 +12,8 @@ public class Info
 {
     public DateOnly Start { get; set; }
     public DateOnly End { get; set; }
-    public string Text { get; set; }
-    public string Details { get; set; }
+    public string Text { get; set; } = "";
+    public string Details { get; set; } = "";
 
     public Info(){}
 
@@ -58,6 +58,10 @@ public class IndexModel : PageModel
     public string? Project => string.Join("\n", Projects.Select(e => e.FormatInfo("cveventproject")));
 
     public string? Skill => string.Join("\n\\newline\n", Skills.Select(e => e.ToString()));
+
+    public string? MinYear => (Educations.Concat(WorkExperiences).Concat(Projects).Min(e => e.Start.Year) + 1).ToString();
+
+    public string? MaxYear => (Educations.Concat(WorkExperiences).Concat(Projects).Max(e => e.End.Year) + 0).ToString();
 
     public IndexModel(ILogger<IndexModel> logger)
     {
@@ -121,6 +125,7 @@ public class IndexModel : PageModel
                     new Info(11, 2006, 4, 2007, "SCHOTT, Mainz", "(Praktikant)"),
                     new Info(8, 2007, 1, 2008, "ESCO, Mainz", "(Diplomand)"),
                     new Info(2, 2008, 6, 2025, "ESCO, Mainz"),
+                    new Info(7, 2025, 6, 2026, "Traumfirma, Frankfurt"),
                 ];
 
         var projectJson = HttpContext.Session.GetString("Projects");
@@ -133,14 +138,12 @@ public class IndexModel : PageModel
                 new Info(4, 2002, 4, 2002, "Betreuung von Menschen mit Behinderung\\\\in einer Tagesförderstätte"),
                 new Info(6, 2005, 2, 2006, "Lotus Notes Datenbankentwicklung"),
                 new Info(1, 2009, 1, 2011, "Integration von Mess- und Prüftechnik in Prozessautomation (Hardwareansteuerung, Implementierung von Mess-Algorithmen in C\\#)"),
+                new Info(1, 2012, 1, 2014, "Erstellen von projektspezifischen .NET Framework Desktop-Applikationen im Sondermaschinenbau (Front- und Back-End)"),
+                new Info(1, 2015, 1, 2017, "Pflege des hauseigenen projektunabhängigen C\\#-Frameworks zur Erstellung von Maschinensteuerungen und -visualisierungen (Mocks, Unit-Tests)"),
+                new Info(1, 2018, 1, 2019, "Anforderungsanalysen (Pflichten- und Lastenhefte)"),
+                new Info(1, 2020, 1, 2022, "Integration unterschiedlichster Technologien in Projekt-Applikationen (TwinCat, Halcon, OPC-UA, REST, gRPC, GenICam, 3rd party libraries)"),
+                new Info(1, 2023, 1, 2024, "Design von Datenrückverfolgbarkeitssystemen mittels Entity Framework inkl. Berichtswesen (SQL, SSRS)"),
             ];
-
-        // \cveventproject{1/2009}{1/2011}{Integration von Mess- und Prüftechnik in Prozessautomation (Hardwareansteuerung, Implementierung von Mess-Algorithmen in C\#)}{}{}
-        // \cveventproject{1/2012}{1/2014}{Erstellen von projektspezifischen .NET Framework Desktop-Applikationen im Sondermaschinenbau (Front- und Back-End)}{}{}
-        // \cveventproject{1/2015}{1/2017}{Pflege des hauseigenen projektunabhängigen C\#-Frameworks zur Erstellung von Maschinensteuerungen und -visualisierungen (Mocks, Unit-Tests)}{}{}
-        // \cveventproject{1/2018}{1/2019}{Anforderungsanalysen (Pflichten- und Lastenhefte)}{}{}
-        // \cveventproject{1/2020}{1/2022}{Integration unterschiedlichster Technologien in Projekt-Applikationen (TwinCat, Halcon, OPC-UA, REST, gRPC, GenICam, 3rd party libraries)}{}{}
-        // \cveventproject{1/2023}{1/2024}{Design von Datenrückverfolgbarkeitssystemen mittels Entity Framework inkl. Berichtswesen (SQL, SSRS)}{}{}
 
         var skillsJson = HttpContext.Session.GetString("Skills");
 

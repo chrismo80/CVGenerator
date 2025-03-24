@@ -10,7 +10,7 @@
 <form method="post" asp-page-handler="Generate" enctype="multipart/form-data">
     <div class="row">
         <!-- Left Column: Basic Details and Profile Picture (30% width) -->
-        <div class="col-md-4">
+        <div class="col-md-3">
             <!-- Basic Details Section -->
             <div class="mb-3">
                 <label asp-for="Name" class="form-label">Name</label>
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Right Column: Education and Work Experience (70% width) -->
-        <div class="col-md-8">
+        <div class="col-md-12">
             <!-- Education Section -->
             <h3>Education</h3>
             <div id="education-container">
@@ -49,13 +49,13 @@
                         <div class="col-md-2">
                             <input asp-for="Educations[i].End" type="date" class="form-control" required />
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <input asp-for="Educations[i].Text" class="form-control" placeholder="Degree and University" required />
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <input asp-for="Educations[i].Details" class="form-control" placeholder="City" />
                         </div>
-                        <div class="col-md-2 text-end">
+                        <div class="col-md-1 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-education">
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -79,13 +79,13 @@
                         <div class="col-md-2">
                             <input asp-for="WorkExperiences[i].End" type="date" class="form-control" required />
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <input asp-for="WorkExperiences[i].Text" class="form-control" placeholder="Company, City" required />
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <input asp-for="WorkExperiences[i].Details" class="form-control" placeholder="Position" />
                         </div>
-                        <div class="col-md-2 text-end">
+                        <div class="col-md-1 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-work">
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -109,13 +109,10 @@
                         <div class="col-md-2">
                             <input asp-for="Projects[i].End" type="date" class="form-control" required />
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <input asp-for="Projects[i].Text" class="form-control" placeholder="Description" required />
                         </div>
-                        <div class="col-md-6">
-                            <input asp-for="Projects[i].Details" class="form-control" placeholder="" />
-                        </div>
-                        <div class="col-md-2 text-end">
+                        <div class="col-md-1 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-project">
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -178,13 +175,13 @@
                 <div class="col-md-2">
                     <input name="Educations[${index}].End" type="date" class="form-control" required />
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <input name="Educations[${index}].Text" class="form-control" placeholder="Degree and University" required />
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <input name="Educations[${index}].Details" class="form-control" placeholder="City" required />
                 </div>
-                <div class="col-md-2 text-end">
+                <div class="col-md-1 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-education">
                         <i class="bi bi-trash"></i>
                     </button>
@@ -205,13 +202,13 @@
                 <div class="col-md-2">
                     <input name="WorkExperiences[${index}].End" type="date" class="form-control" required />
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <input name="WorkExperiences[${index}].Text" class="form-control" placeholder="Company, City" required />
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <input name="WorkExperiences[${index}].Details" class="form-control" placeholder="Position" />
                 </div>
-                <div class="col-md-2 text-end">
+                <div class="col-md-1 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-work">
                         <i class="bi bi-trash"></i>
                     </button>
@@ -227,18 +224,15 @@
             let newEntry = `
             <div class="work-entry row mb-2 d-flex align-items-center">
                 <div class="col-md-2">
-                    <input name="Project[${index}].Start" type="date" class="form-control" required />
+                    <input name="Projects[${index}].Start" type="date" class="form-control" required />
                 </div>
                 <div class="col-md-2">
-                    <input name="Project[${index}].End" type="date" class="form-control" required />
+                    <input name="Projects[${index}].End" type="date" class="form-control" required />
                 </div>
-                <div class="col-md-6">
-                    <input name="Project[${index}].Text" class="form-control" placeholder="Description" required />
+                <div class="col-md-7">
+                    <input name="Projects[${index}].Text" class="form-control" placeholder="Description" required />
                 </div>
-                <div class="col-md-6">
-                    <input name="Project[${index}].Details" class="form-control" placeholder="" />
-                </div>
-                <div class="col-md-2 text-end">
+                <div class="col-md-1 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-work">
                         <i class="bi bi-trash"></i>
                     </button>
