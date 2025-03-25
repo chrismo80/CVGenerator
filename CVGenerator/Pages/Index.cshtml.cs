@@ -62,9 +62,9 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
         [
             new Info(4, 2002, 4, 2002, "Betreuung von Menschen mit Behinderung\\\\in einer Tagesförderstätte"),
             new Info(6, 2005, 2, 2006, "Lotus Notes Datenbankentwicklung"),
-            new Info(1, 2009, 1, 2011, "Integration von Mess- und Prüftechnik in Prozessautomation (Hardwareansteuerung, Implementierung von Mess-Algorithmen in C\\#)"),
+            new Info(1, 2009, 1, 2011, "Integration von Mess- und Prüftechnik in Prozessautomation (Hardwareansteuerung, Implementierung von Mess-Algorithmen in C#)"),
             new Info(1, 2012, 1, 2014, "Erstellen von projektspezifischen .NET Framework Desktop-Applikationen im Sondermaschinenbau (Front- und Back-End)"),
-            new Info(1, 2015, 1, 2017, "Pflege des hauseigenen projektunabhängigen C\\#-Frameworks zur Erstellung von Maschinensteuerungen und -visualisierungen (Mocks, Unit-Tests)"),
+            new Info(1, 2015, 1, 2017, "Pflege des hauseigenen projektunabhängigen C#-Frameworks zur Erstellung von Maschinensteuerungen und -visualisierungen (Mocks, Unit-Tests)"),
             new Info(1, 2018, 1, 2019, "Anforderungsanalysen (Pflichten- und Lastenhefte)"),
             new Info(1, 2020, 1, 2022, "Integration unterschiedlichster Technologien in Projekt-Applikationen (TwinCat, Halcon, OPC-UA, REST, gRPC, GenICam, 3rd party libraries)"),
             new Info(1, 2023, 1, 2024, "Design von Datenrückverfolgbarkeitssystemen mittels Entity Framework inkl. Berichtswesen (SQL, SSRS)"),
@@ -85,7 +85,7 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
     [BindProperty]
     public List<Skill> Languages { get; set; } =
         [
-            new Skill("C\\#", 70, 1),
+            new Skill("C#", 70, 1),
             new Skill("SQL", 25, 2),
             new Skill("Rust", 5, 3),
         ];

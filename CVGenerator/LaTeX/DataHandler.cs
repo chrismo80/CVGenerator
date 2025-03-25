@@ -54,14 +54,15 @@ public static class DataHandler
     public static string FormatDiagram(this List<Skill> skills) =>
         string.Join("\n", skills.Select(skill => skill.FormatDiagram()));
 
-    private static string Sanitize(this string input)
+    public static string Sanitize(this string input)
     {
-        foreach (var c in "#$%&_{}")
+        foreach (var c in "#") // "#$%&_{}"
             input = input.Replace(c.ToString(), @$"\{c}");
 
-        return input
+        return input;
 
-            //.Replace(@"\", @"\textbackslash{}")
+        return input
+            .Replace(@"\", @"\textbackslash{}")
             .Replace("~", @"\textasciitilde{}")
             .Replace("^", @"\textasciicircum{}");
     }

@@ -56,7 +56,7 @@ public static class PdfGenerator
     private static string FillTemplate(this string content, Dictionary<string, object> input)
     {
         foreach (var (name, value) in input)
-            content = content.Replace(PREFIX + name, value?.ToString());
+            content = content.Replace(PREFIX + name, value?.ToString()?.Sanitize());
 
         return content;
     }
