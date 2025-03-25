@@ -32,7 +32,7 @@ public static class DataHandler
     public static string Format(this Info info, string type) => "\\" + type +
         "{" + info.Start.Month + "/" + info.Start.Year + "}" +
         "{" + info.End.Month + "/" + info.End.Year + "}" +
-        "{" + info.Text + "}{" + info.Details + "}{}";
+        "{" + info.Text + "}{" + info.Details + "}{" + info.Content + "}";
 
     public static string Format(this List<Info> infos, string prefix) =>
         string.Join("\n", infos.Select(info => info.Format(prefix)));

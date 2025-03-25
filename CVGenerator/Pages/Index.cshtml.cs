@@ -13,11 +13,31 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
 
     [BindProperty] public IFormFile? ProfilePicture { get; set; }
 
+    [BindProperty] public string Company { get; set; } = "Traumfirma";
+
+    [BindProperty] public string Address { get; set; } = "Strasse 123";
+
+    [BindProperty] public string City { get; set; } = "Frankfurt";
+
+    [BindProperty] public string Recruiter { get; set; } = "Sehr geehrte Frau Recruiterin";
+
+    [BindProperty] public string NewRole { get; set; } = "Software-Architekt";
+
+    [BindProperty] public string Product { get; set; } = "Produkt XY";
+
     [BindProperty] public string Name { get; set; } = "Max Mustermann";
+
+    [BindProperty] public string Location { get; set; } = "Mainz";
 
     [BindProperty] public string Email { get; set; } = "max@gmail.de";
 
+    [BindProperty] public string Link { get; set; } = "github.com/max";
+
     [BindProperty] public string Phone { get; set; } = "0133 / 123 456 78";
+
+    [BindProperty] public string Role { get; set; } = "Senior Softwareentwickler";
+
+    [BindProperty] public string Degree { get; set; } = "Diplomingenieur (FH) - Elektrotechnik (Nachrichten- und Kommunikationstechnik)";
 
     [BindProperty]
     public List<Info> Educations { get; set; } =
@@ -53,8 +73,8 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
     [BindProperty]
     public List<Skill> Skills { get; set; } =
         [
-            new Skill() { Text = "German", Percent = 60},
-            new Skill() { Text = "English", Percent = 40},
+            new Skill("German", 60),
+            new Skill("English", 40),
         ];
 
     public string? Foto => ProfilePicture?.FileName;
@@ -87,25 +107,25 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
     public void OnSet()
     {
         foreach (var (name, value) in this.GetBindedFields<string, BindPropertyAttribute>())
-            HttpContext.Session.SetString(name, value);
+            Save(name, value);
 
-        foreach (var (name, value) in this.GetBindedFields<List<Info>, BindPropertyAttribute>().Where(kvp => kvp!.Value!.Any()))
-            HttpContext.Session.SetString(name, JsonSerializer.Serialize(value));
+        foreach (var (name, value) in this.GetBindedFields<List<Info>, BindPropertyAttribute>().Where(kvp => kvp.Value!.Count > 0))
+            Save(name, JsonSerializer.Serialize(value));
 
-        foreach (var (name, value) in this.GetBindedFields<List<Skill>, BindPropertyAttribute>().Where(kvp => kvp!.Value!.Any()))
-            HttpContext.Session.SetString(name, JsonSerializer.Serialize(value));
+        foreach (var (name, value) in this.GetBindedFields<List<Skill>, BindPropertyAttribute>().Where(kvp => kvp.Value!.Count > 0))
+            Save(name, JsonSerializer.Serialize(value));
     }
 
     public void OnGet()
     {
         foreach (var prop in this.GetBindedProperties<string, BindPropertyAttribute>())
-            prop.SetProperty(this, HttpContext.Session.GetString(prop.Name));
+            prop.SetProperty(this, Load(prop.Name));
 
         foreach (var prop in this.GetBindedProperties<List<Info>, BindPropertyAttribute>())
-            prop.SetProperty(this, HttpContext.Session.GetString(prop.Name)?.LoadFromJson<List<Info>>());
+            prop.SetProperty(this, Load(prop.Name)?.LoadFromJson<List<Info>>());
 
         foreach (var prop in this.GetBindedProperties<List<Skill>, BindPropertyAttribute>())
-            prop.SetProperty(this, HttpContext.Session.GetString(prop.Name)?.LoadFromJson<List<Skill>>());
+            prop.SetProperty(this, Load(prop.Name)?.LoadFromJson<List<Skill>>());
     }
 
     private async Task SaveProfilePicture()
@@ -116,4 +136,8 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
         await using var fileStream = new FileStream(Path.Combine("temp", ProfilePicture.FileName), FileMode.Create);
         await ProfilePicture.CopyToAsync(fileStream);
     }
+
+    private void Save(string name, string value) => HttpContext.Session.SetString(name, value);
+
+    private string? Load(string name) => HttpContext.Session.GetString(name);
 }
