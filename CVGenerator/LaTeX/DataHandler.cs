@@ -34,13 +34,13 @@ public static class DataHandler
         "{" + info.End.Month + "/" + info.End.Year + "}" +
         "{" + info.Text + "}{" + info.Details + "}{" + info.Content + "}";
 
-    public static string FormatSkill(this Skill skill) => "\\baritem{100}" +
+    public static string FormatBarChart(this Skill skill) => "\\baritem{100}" +
         "{" + skill.Text + "}" +
         "{" + (skill.Level == 1 ? skill.Percent : "0") + "}" +
         "{" + (skill.Level == 2 ? skill.Percent : "0") + "}" +
         "{" + (skill.Level == 3 ? skill.Percent : "0") + "}";
 
-    public static string FormatDiagram(this Skill skill) => "\\slice" +
+    public static string FormatPieChart(this Skill skill) => "\\slice" +
         "{" + skill.Percent + "}" +
         "{" + skill.Text + "}" +
         "{color" + skill.Level + "}";
@@ -48,11 +48,11 @@ public static class DataHandler
     public static string Format(this List<Info> infos, string prefix) =>
         string.Join("\n", infos.Select(info => info.Format(prefix)));
 
-    public static string FormatSkills(this List<Skill> skills) =>
-        string.Join("\n", skills.Select(skill => skill.FormatSkill()));
+    public static string FormatBarChart(this List<Skill> skills) =>
+        string.Join("\n", skills.Select(skill => skill.FormatBarChart()));
 
-    public static string FormatDiagram(this List<Skill> skills) =>
-        string.Join("\n", skills.Select(skill => skill.FormatDiagram()));
+    public static string FormatPieChart(this List<Skill> skills) =>
+        string.Join("\n", skills.Select(skill => skill.FormatPieChart()));
 
     public static string Sanitize(this string input)
     {

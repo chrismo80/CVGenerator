@@ -90,6 +90,13 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
             new Skill("Rust", 5, 3),
         ];
 
+    [BindProperty]
+    public List<Skill> Versionings { get; set; } =
+       [
+            new Skill("Mercurial", 90, 1),
+            new Skill("Git", 10, 3),
+        ];
+
     public string? Foto => ProfilePicture?.FileName;
 
     public string? Education => Educations.Format("cveventleft");
@@ -98,9 +105,11 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
 
     public string? Project => Projects.Format("cveventproject");
 
-    public string? Skill => Skills.FormatSkills();
+    public string? Skill => Skills.FormatBarChart();
 
-    public string? Language => Languages.FormatDiagram();
+    public string? Language => Languages.FormatPieChart();
+
+    public string? Versioning => Versionings.FormatPieChart();
 
     public string? MinYear => (Educations.Concat(WorkExperiences).Concat(Projects).Min(e => e.Start.Year) + 1).ToString();
 
