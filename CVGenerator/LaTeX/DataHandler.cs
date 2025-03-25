@@ -34,17 +34,25 @@ public static class DataHandler
         "{" + info.End.Month + "/" + info.End.Year + "}" +
         "{" + info.Text + "}{" + info.Details + "}{" + info.Content + "}";
 
-    public static string Format(this Skill skill) => "\\baritem{100}" +
+    public static string FormatSkill(this Skill skill) => "\\baritem{100}" +
         "{" + skill.Text + "}" +
-        "{" + (skill.Range == 1 ? skill.Percent : "0") + "}" +
-        "{" + (skill.Range == 2 ? skill.Percent : "0") + "}" +
-        "{" + (skill.Range == 3 ? skill.Percent : "0") + "}";
+        "{" + (skill.Level == 1 ? skill.Percent : "0") + "}" +
+        "{" + (skill.Level == 2 ? skill.Percent : "0") + "}" +
+        "{" + (skill.Level == 3 ? skill.Percent : "0") + "}";
+
+    public static string FormatDiagram(this Skill skill) => "\\slice" +
+        "{" + skill.Percent + "}" +
+        "{" + skill.Text + "}" +
+        "{color" + skill.Level + "}";
 
     public static string Format(this List<Info> infos, string prefix) =>
         string.Join("\n", infos.Select(info => info.Format(prefix)));
 
-    public static string Format(this List<Skill> skills) =>
-        string.Join("\n", skills.Select(skill => skill.Format()));
+    public static string FormatSkills(this List<Skill> skills) =>
+        string.Join("\n", skills.Select(skill => skill.FormatSkill()));
+
+    public static string FormatDiagram(this List<Skill> skills) =>
+        string.Join("\n", skills.Select(skill => skill.FormatDiagram()));
 
     private static string Sanitize(this string input)
     {

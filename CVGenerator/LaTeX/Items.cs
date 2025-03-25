@@ -25,13 +25,11 @@ public class Skill
 
     public int Percent { get; set; }
 
-    public int Range => Percent > 80 ? 1 : Percent > 40 ? 2 : 3;
+    public int Level { get; set; }
 
     public Skill()
     { }
 
-    public Skill(string text, int percent) =>
-        (Text, Percent) = (text, percent);
-
-    public override string ToString() => $"{Text}-{Percent}";
+    public Skill(string text, int percent, int level = 1) =>
+        (Text, Percent, Level) = (text, percent, level);
 }

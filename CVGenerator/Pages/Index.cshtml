@@ -179,12 +179,16 @@
                 @for (int i = 0; i < Model.Skills.Count; i++)
                 {
                     <div class="skill-entry row mb-2 d-flex align-items-center">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <input asp-for="Skills[i].Text" class="form-control" placeholder="Skill Name" required />
                         </div>
                         <div class="col-md-4">
                             <input asp-for="Skills[i].Percent" type="range" class="form-range" min="0" max="100" />
                             <span id="skill-percent-@i" class="skill-percent">0%</span>
+                        </div>
+                        <div class="col-md-3">
+                            <input asp-for="Skills[i].Level" type="range" class="form-range" min="1" max="3" />
+                            <span id="skill-level-@i" class="skill-level">1</span>
                         </div>
                         <div class="col-md-2 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-skill">
@@ -195,6 +199,35 @@
                 }
             </div>
             <button type="button" id="add-skill" class="btn btn-secondary btn-sm">Add Skill</button>
+
+            <hr />
+
+            <!-- Languages Section -->
+            <h3>Languages</h3>
+            <div id="languages-container">
+                @for (int i = 0; i < Model.Languages.Count; i++)
+                {
+                    <div class="language-entry row mb-2 d-flex align-items-center">
+                        <div class="col-md-3">
+                            <input asp-for="Languages[i].Text" class="form-control" placeholder="Language Name" required />
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="Languages[i].Percent" type="range" class="form-range" min="0" max="100" />
+                            <span id="language-percent-@i" class="language-percent">0%</span>
+                        </div>
+                        <div class="col-md-3">
+                            <input asp-for="Languages[i].Level" type="range" class="form-range" min="1" max="3" />
+                            <span id="language-level-@i" class="language-level">1</span>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="button" class="btn btn-danger btn-sm remove-language">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" id="add-language" class="btn btn-secondary btn-sm">Add Language</button>
         </div>
     </div>
 </form>
@@ -296,12 +329,16 @@
             let index = container.getElementsByClassName("skill-entry").length;
             let newEntry = `
             <div class="skill-entry row mb-2 d-flex align-items-center">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <input name="Skills[${index}].Text" class="form-control" placeholder="Skill Name" required />
                 </div>
                 <div class="col-md-4">
-                    <input name="Skills[${index}].Percent" type="range" class="form-range" min="0" max="100" step="5" value="0" />
-                    <span id="skill-percent-${index}" class="skill-percent">0%</span>
+                    <input name="Skills[${index}].Percent" type="range" class="form-range" min="0" max="100" step="5" value="100" />
+                    <span id="skill-percent-${index}" class="skill-percent">100%</span>
+                </div>
+                <div class="col-md-3">
+                    <input name="Skills[${index}].Level" type="range" class="form-range" min="1" max="3" step="1" value="1" />
+                    <span id="skill-level-${index}" class="skill-level">1</span>
                 </div>
                 <div class="col-md-2 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-skill">
@@ -321,6 +358,41 @@
             });
         });
 
+        // Add Language Entry
+        document.getElementById("add-language").addEventListener("click", function () {
+            let container = document.getElementById("languages-container");
+            let index = container.getElementsByClassName("language-entry").length;
+            let newEntry = `
+            <div class="language-entry row mb-2 d-flex align-items-center">
+                <div class="col-md-3">
+                    <input name="Languages[${index}].Text" class="form-control" placeholder="Language Name" required />
+                </div>
+                <div class="col-md-4">
+                    <input name="Languages[${index}].Percent" type="range" class="form-range" min="0" max="100" step="5" value="100" />
+                    <span id="language-percent-${index}" class="language-percent">100%</span>
+                </div>
+                <div class="col-md-3">
+                    <input name="Languages[${index}].Level" type="range" class="form-range" min="1" max="3" step="1" value="1" />
+                    <span id="language-level-${index}" class="language-level">1</span>
+                </div>
+                <div class="col-md-2 text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-language">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>`;
+            container.insertAdjacentHTML("beforeend", newEntry);
+
+            // Update percent display for the new skill range input
+            let rangeInput = document.querySelector(`input[name="Languages[${index}].Percent"]`);
+            let percentDisplay = document.getElementById(`language-percent-${index}`);
+
+            rangeInput.addEventListener('input', function (e) {
+                percentDisplay.textContent = `${e.target.value}%`;
+                updateLanguagesTotal(); // Update the total percentage whenever the slider changes
+            });
+        });
+
         // Remove Entry Handlers
         document.addEventListener("click", function (event) {
             if (event.target.classList.contains("remove-education")) event.target.closest(".education-entry").remove();
@@ -329,6 +401,9 @@
             if (event.target.classList.contains("remove-skill")) {
                 event.target.closest(".skill-entry").remove();
                 updateSkillTotal(); // Update the total percentage after removal
+            }if (event.target.classList.contains("remove-language")) {
+                event.target.closest(".language-entry").remove();
+                updateLanguagesTotal(); // Update the total percentage after removal
             }
         });
 
@@ -347,6 +422,24 @@
                 let excess = total - 100;
                 lastSkill.value = parseInt(lastSkill.value, 10) - excess;
                 document.getElementById(`skill-percent-${skills.length - 1}`).textContent = `${lastSkill.value}%`;
+            }
+        }
+
+        // Function to ensure the total sum of all skill percentages does not exceed 100
+        function updateLanguagesTotal() {
+            let total = 0;
+            let languages = document.querySelectorAll('input[name^="Languages"][type="range"]');
+            languages.forEach(language => {
+                total += parseInt(language.value, 10);
+            });
+
+            // Check if the total exceeds 100
+            if (total > 100) {
+                // If the total exceeds 100, adjust the last percentage
+                let lastSkill = languages[languages.length - 1];
+                let excess = total - 100;
+                lastSkill.value = parseInt(lastSkill.value, 10) - excess;
+                document.getElementById(`skill-percent-${languages.length - 1}`).textContent = `${lastSkill.value}%`;
             }
         }
     });

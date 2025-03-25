@@ -73,13 +73,21 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
     [BindProperty]
     public List<Skill> Skills { get; set; } =
         [
-            new Skill("Kommunikation", 100),
-            new Skill("Teamfähigkeit", 100),
-            new Skill("Versionsverwaltung", 90),
-            new Skill("Microsoft Reporting", 80),
-            new Skill("Entity Framework", 70),
-            new Skill("REST / gRPC", 20),
-            new Skill("XAML (Avalonia)", 20),
+            new Skill("Kommunikation", 100, 1),
+            new Skill("Teamfähigkeit", 100, 1),
+            new Skill("Versionsverwaltung", 90, 1),
+            new Skill("Microsoft Reporting", 80, 2),
+            new Skill("Entity Framework", 70, 2),
+            new Skill("REST / gRPC", 20, 3),
+            new Skill("XAML (Avalonia)", 20, 3),
+        ];
+
+    [BindProperty]
+    public List<Skill> Languages { get; set; } =
+        [
+            new Skill("C\\#", 70, 1),
+            new Skill("SQL", 25, 2),
+            new Skill("Rust", 5, 3),
         ];
 
     public string? Foto => ProfilePicture?.FileName;
@@ -90,7 +98,9 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
 
     public string? Project => Projects.Format("cveventproject");
 
-    public string? Skill => Skills.Format();
+    public string? Skill => Skills.FormatSkills();
+
+    public string? Language => Languages.FormatDiagram();
 
     public string? MinYear => (Educations.Concat(WorkExperiences).Concat(Projects).Min(e => e.Start.Year) + 1).ToString();
 
@@ -98,6 +108,8 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
 
     public async Task<IActionResult> OnPostGenerateAsync()
     {
+        var temp = Language;
+
         OnSet();
 
         Directory.CreateDirectory("temp");
