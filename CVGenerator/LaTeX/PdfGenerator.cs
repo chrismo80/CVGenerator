@@ -1,6 +1,3 @@
-using CVGenerator.Pages;
-using System.Diagnostics;
-
 namespace CVGenerator.LaTeX;
 
 public static class PdfGenerator
@@ -16,7 +13,7 @@ public static class PdfGenerator
     static readonly string tempPdf = Path.Combine(tempFolder, FILE + ".pdf");
     static readonly string pdfUrl = Path.Combine("wwwroot", FILE + ".pdf");
 
-    static readonly ProcessStartInfo startInfo = new()
+    static readonly System.Diagnostics.ProcessStartInfo startInfo = new()
     {
         FileName = "pdflatex",
         Arguments = $"-output-directory={tempFolder} {mainTex}",
@@ -36,7 +33,7 @@ public static class PdfGenerator
 
         await File.WriteAllTextAsync(tempTex, info.FillTemplate(input));
 
-        await Process.Start(startInfo)!.RenderPdf();
+        await System.Diagnostics.Process.Start(startInfo)!.RenderPdf();
 
         File.Copy(tempPdf, pdfUrl, true);
 
@@ -45,15 +42,7 @@ public static class PdfGenerator
         return await File.ReadAllBytesAsync(pdfUrl);
     }
 
-    public static string FormatInfo(this Info info, string type) =>
-        "\\" + type +
-        "{" + info.Start.Month + "/" + info.Start.Year + "}" +
-        "{" + info.End.Month + "/" + info.End.Year + "}" +
-        "{" + info.Text + "}" +
-        "{" + info.Details + "}" +
-        "{}";
-
-    private static async Task RenderPdf(this Process process)
+    private static async Task RenderPdf(this System.Diagnostics.Process process)
     {
         process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
         process.ErrorDataReceived += (sender, e) => Console.WriteLine(e.Data);
@@ -70,17 +59,5 @@ public static class PdfGenerator
             content = content.Replace(PREFIX + name, value?.ToString());
 
         return content;
-    }
-
-    private static string Sanitize(this string input)
-    {
-        foreach (var c in "#$%&_{}")
-            input = input.Replace(c.ToString(), @$"\{c}");
-
-        return input
-
-            //.Replace(@"\", @"\textbackslash{}")
-            .Replace("~", @"\textasciitilde{}")
-            .Replace("^", @"\textasciicircum{}");
     }
 }
