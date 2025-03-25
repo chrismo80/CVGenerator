@@ -73,8 +73,13 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
     [BindProperty]
     public List<Skill> Skills { get; set; } =
         [
-            new Skill("German", 60),
-            new Skill("English", 40),
+            new Skill("Kommunikation", 100),
+            new Skill("Teamfähigkeit", 100),
+            new Skill("Versionsverwaltung", 90),
+            new Skill("Microsoft Reporting", 80),
+            new Skill("Entity Framework", 70),
+            new Skill("REST / gRPC", 20),
+            new Skill("XAML (Avalonia)", 20),
         ];
 
     public string? Foto => ProfilePicture?.FileName;
@@ -85,7 +90,7 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
 
     public string? Project => Projects.Format("cveventproject");
 
-    public string? Skill => string.Join("\n\\newline\n", Skills.Select(e => e.ToString()));
+    public string? Skill => Skills.Format();
 
     public string? MinYear => (Educations.Concat(WorkExperiences).Concat(Projects).Min(e => e.Start.Year) + 1).ToString();
 

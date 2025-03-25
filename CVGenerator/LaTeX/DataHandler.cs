@@ -34,8 +34,17 @@ public static class DataHandler
         "{" + info.End.Month + "/" + info.End.Year + "}" +
         "{" + info.Text + "}{" + info.Details + "}{" + info.Content + "}";
 
+    public static string Format(this Skill skill) => "\\baritem{100}" +
+        "{" + skill.Text + "}" +
+        "{" + (skill.Range == 1 ? skill.Percent : "0") + "}" +
+        "{" + (skill.Range == 2 ? skill.Percent : "0") + "}" +
+        "{" + (skill.Range == 3 ? skill.Percent : "0") + "}";
+
     public static string Format(this List<Info> infos, string prefix) =>
         string.Join("\n", infos.Select(info => info.Format(prefix)));
+
+    public static string Format(this List<Skill> skills) =>
+        string.Join("\n", skills.Select(skill => skill.Format()));
 
     private static string Sanitize(this string input)
     {

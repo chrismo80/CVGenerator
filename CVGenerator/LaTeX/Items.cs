@@ -25,6 +25,8 @@ public class Skill
 
     public int Percent { get; set; }
 
+    public int Range => Percent > 80 ? 1 : Percent > 40 ? 2 : 3;
+
     public Skill()
     { }
 
