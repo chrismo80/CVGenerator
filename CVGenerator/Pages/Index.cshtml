@@ -228,6 +228,35 @@
                 }
             </div>
             <button type="button" id="add-language" class="btn btn-secondary btn-sm">Add Language</button>
+
+            <hr />
+
+            <!-- Version Control Section -->
+            <h3>Versionings</h3>
+            <div id="versionings-container">
+                @for (int i = 0; i < Model.Versionings.Count; i++)
+                {
+                    <div class="versioning-entry row mb-2 d-flex align-items-center">
+                        <div class="col-md-3">
+                            <input asp-for="Versionings[i].Text" class="form-control" placeholder="Version Control Name" required />
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="Versionings[i].Percent" type="range" class="form-range" min="0" max="100" />
+                            <span id="versioning-percent-@i" class="versioning-percent">0%</span>
+                        </div>
+                        <div class="col-md-3">
+                            <input asp-for="Versionings[i].Level" type="range" class="form-range" min="1" max="3" />
+                            <span id="versioning-level-@i" class="versioning-level">1</span>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="button" class="btn btn-danger btn-sm remove-versioning">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" id="add-versioning" class="btn btn-secondary btn-sm">Add Version Control</button>
         </div>
     </div>
 </form>
@@ -393,6 +422,44 @@
             });
         });
 
+
+
+        // Add Versioning Entry
+        document.getElementById("add-versioning").addEventListener("click", function () {
+            let container = document.getElementById("versionings-container");
+            let index = container.getElementsByClassName("versioning-entry").length;
+            let newEntry = `
+            <div class="versioning-entry row mb-2 d-flex align-items-center">
+                <div class="col-md-3">
+                    <input name="Versionings[${index}].Text" class="form-control" placeholder="Version Control Name" required />
+                </div>
+                <div class="col-md-4">
+                    <input name="Versionings[${index}].Percent" type="range" class="form-range" min="0" max="100" step="5" value="100" />
+                    <span id="versioning-percent-${index}" class="versioning-percent">100%</span>
+                </div>
+                <div class="col-md-3">
+                    <input name="Versionings[${index}].Level" type="range" class="form-range" min="1" max="3" step="1" value="1" />
+                    <span id="versioning-level-${index}" class="versioning-level">1</span>
+                </div>
+                <div class="col-md-2 text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-versioning">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>`;
+            container.insertAdjacentHTML("beforeend", newEntry);
+
+            // Update percent display for the new skill range input
+            let rangeInput = document.querySelector(`input[name="Versionings[${index}].Percent"]`);
+            let percentDisplay = document.getElementById(`versioning-percent-${index}`);
+
+            rangeInput.addEventListener('input', function (e) {
+                percentDisplay.textContent = `${e.target.value}%`;
+                updateVersioningsTotal(); // Update the total percentage whenever the slider changes
+            });
+        });
+
+
         // Remove Entry Handlers
         document.addEventListener("click", function (event) {
             if (event.target.classList.contains("remove-education")) event.target.closest(".education-entry").remove();
@@ -401,9 +468,14 @@
             if (event.target.classList.contains("remove-skill")) {
                 event.target.closest(".skill-entry").remove();
                 updateSkillTotal(); // Update the total percentage after removal
-            }if (event.target.classList.contains("remove-language")) {
+            }
+            if (event.target.classList.contains("remove-language")) {
                 event.target.closest(".language-entry").remove();
                 updateLanguagesTotal(); // Update the total percentage after removal
+            }
+            if (event.target.classList.contains("remove-versioning")) {
+                event.target.closest(".versioning-entry").remove();
+                updateVersioningsTotal(); // Update the total percentage after removal
             }
         });
 
@@ -428,18 +500,36 @@
         // Function to ensure the total sum of all skill percentages does not exceed 100
         function updateLanguagesTotal() {
             let total = 0;
-            let languages = document.querySelectorAll('input[name^="Languages"][type="range"]');
-            languages.forEach(language => {
-                total += parseInt(language.value, 10);
+            let skills = document.querySelectorAll('input[name^="Languages"][type="range"]');
+            skills.forEach(skill => {
+                total += parseInt(skill.value, 10);
             });
 
             // Check if the total exceeds 100
             if (total > 100) {
                 // If the total exceeds 100, adjust the last percentage
-                let lastSkill = languages[languages.length - 1];
+                let lastSkill = skills[skills.length - 1];
                 let excess = total - 100;
                 lastSkill.value = parseInt(lastSkill.value, 10) - excess;
-                document.getElementById(`skill-percent-${languages.length - 1}`).textContent = `${lastSkill.value}%`;
+                document.getElementById(`language-percent-${skills.length - 1}`).textContent = `${lastSkill.value}%`;
+            }
+        }
+
+        // Function to ensure the total sum of all skill percentages does not exceed 100
+        function updateVersioningsTotal() {
+            let total = 0;
+            let skills = document.querySelectorAll('input[name^="Versionings"][type="range"]');
+            skills.forEach(skill => {
+                total += parseInt(skill.value, 10);
+            });
+
+            // Check if the total exceeds 100
+            if (total > 100) {
+                // If the total exceeds 100, adjust the last percentage
+                let lastSkill = skills[skills.length - 1];
+                let excess = total - 100;
+                lastSkill.value = parseInt(lastSkill.value, 10) - excess;
+                document.getElementById(`versioning-percent-${skills.length - 1}`).textContent = `${lastSkill.value}%`;
             }
         }
     });
