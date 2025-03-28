@@ -117,8 +117,6 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
 
     public async Task<IActionResult> OnPostGenerateAsync()
     {
-        var temp = Language;
-
         OnSet();
 
         Directory.CreateDirectory("temp");
@@ -133,7 +131,7 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
     public void OnSet()
     {
         foreach (var (name, value) in this.GetBindedFields<string, BindPropertyAttribute>())
-            Save(name, value);
+            Save(name, value ?? "");
 
         foreach (var (name, value) in this.GetBindedFields<List<Info>, BindPropertyAttribute>().Where(kvp => kvp.Value!.Count > 0))
             Save(name, JsonSerializer.Serialize(value));
