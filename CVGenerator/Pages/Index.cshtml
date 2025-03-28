@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CVGenerator.Pages.IndexModel
 @{
-    ViewData["Title"] = "Generate CV";
+    ViewData["Title"] = "CV Generator";
 }
 
 <form method="post" asp-page-handler="Generate" enctype="multipart/form-data">
@@ -41,7 +41,7 @@
 
             <!-- Profile Picture Section -->
             <div class="mt-3">
-                <label for="profilePicture">Profile Picture</label>
+                <label for="profilePicture">Foto</label>
                 <input type="file" class="form-control" id="profilePicture" name="ProfilePicture" accept="image/*" required />
                 <img id="profilePreview" class="img-fluid mt-2" style="max-width: 200px; max-height: 200px;" />
             </div>
