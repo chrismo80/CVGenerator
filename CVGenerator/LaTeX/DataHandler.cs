@@ -1,10 +1,14 @@
 using System.Reflection;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace CVGenerator.LaTeX;
 
-public static class DataHandler
+public static partial class DataHandler
 {
+    [GeneratedRegex(@"(?<PRE>.*)(?<REPLACE>.*\[(?<URL>.*)\:(?<TEXT>.*)\])(?<POST>.*)")]
+    private static partial Regex Link();
+
     public static Dictionary<string, object?> GetFields<TProperty>(this object page) => page.GetType()
         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
         .Where(prop => prop.PropertyType == typeof(TProperty))
@@ -59,11 +63,28 @@ public static class DataHandler
         foreach (var c in "#") // "#$%&_{}"
             input = input.Replace(c.ToString(), @$"\{c}");
 
-        return input.Replace("\r\n\r\n", "\r\n\\newline\r\n\r\n");
+        return input
+            .Replace("\r\n\r\n", "\r\n\\newline\r\n\r\n")
+            .ParseLinks();
 
         return input
             .Replace(@"\", @"\textbackslash{}")
             .Replace("~", @"\textasciitilde{}")
             .Replace("^", @"\textasciicircum{}");
+    }
+
+    private static string ParseLinks(this string text)
+    {
+        var match = Link().Match(text);
+
+        while (match.Success)
+        {
+            text = text.Replace(match.Groups["REPLACE"].Value,
+                $@"\href{{{match.Groups["URL"].Value}}}{{\textbf{{\ul{{{match.Groups["TEXT"].Value}}}}}}}");
+
+            match = Link().Match(text);
+        }
+
+        return text;
     }
 }

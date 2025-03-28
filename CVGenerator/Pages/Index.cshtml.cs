@@ -52,11 +52,11 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
         "\r\n\r\nIn dieser Zeit habe ich zahlreiche individuelle Desktop-Anwendungen entwickelt, von der Konzeption bis zur Umsetzung. Dabei umfassten meine Aufgaben sowohl die eigenständige Umsetzung als auch die Unterstützung von Kollegen in deren Projekten. Darüber hinaus entwarf und pflegte ich modulare Softwarekomponenten, die in unterschiedlichen Projekten wiederverwendet werden konnten und so maßgeblich zur Verkürzung der Entwicklungszeiten beitrugen." +
         "\r\n\r\nTrotz meiner Erfahrungen mit verschiedenen Plattformen und Technologien blieb C# stets der Kern meiner Arbeit. Die Bereitstellung und Anbindung externer APIs, die Integration von SQL-Datenbanken mittels Entity Framework sowie die Umsetzung von Datenvisualisierungen mit Microsoft Reporting Services gehörten stets zu den wesentlichen Aspekten der Applikationen. Ich bin zuversichtlich, dass ich mich rasch in Ihre spezifischen Werkzeuge und Technologien einarbeiten werde und somit zeitnah einen wertvollen Beitrag leisten kann." +
         "\r\n\r\nMeine langjährige Tätigkeit im Sondermaschinenbau hat meine Fähigkeit geschärft, flexibel und lösungsorientiert auf neue Anforderungen zu reagieren. Deshalb lege ich besonderen Wert auf die Lesbarkeit, Skalierbarkeit und Wiederverwendbarkeit von Code, um nachhaltige Lösungen zu schaffen." +
-        "\r\n\r\nNun suche ich ein neues berufliches Zuhause, das Softwareentwicklung als zentralen Bestandteil seiner Produkte versteht – genau das reizt mich an der Traumfirma. Lassen Sie uns doch in einem persönlichen Gespräch herausfinden, ob es in Frankfurt eine passende Position gibt, beispielsweise im Bereich Produkt XY, die ich für Ihr Unternehmen besetzen kann, um Ihr Team mit meiner Expertise zu bereichern.";
+        "\r\n\r\nNun suche ich ein neues berufliches Zuhause, das Softwareentwicklung als zentralen Bestandteil seiner Produkte versteht – genau das reizt mich an der \\CompanyName. Lassen Sie uns doch in einem persönlichen Gespräch herausfinden, ob es in Frankfurt eine passende Position gibt, beispielsweise im Bereich \\Product, die ich für Ihr Unternehmen besetzen kann, um Ihr Team mit meiner Expertise zu bereichern.";
 
     [BindProperty] public string Postskriptum { get; set; } =
         "P.S.:" +
-        "Um Ihnen einen ersten Eindruck meiner Code-Qualität zu geben, finden Sie ein Repository verlinkt," +
+        "Um Ihnen einen ersten Eindruck meiner Code-Qualität zu geben, finden Sie ein [https://github.com/max/project:Repository] verlinkt," +
         "in dem ich Avalonia als UI-Framework für Desktop-Anwendungen evaluiert habe.";
 
     [BindProperty]
@@ -145,7 +145,7 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
 
         var pdfBytes = await this.GetFields<string>()!.GeneratePdf();
 
-        return File(pdfBytes, "application/pdf", Name + ".pdf");
+        return File(pdfBytes, "application/pdf", Name + " - " + NewRole + ".pdf");
     }
 
     public void OnSet()
