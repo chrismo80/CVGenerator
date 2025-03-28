@@ -59,7 +59,7 @@ public static class DataHandler
         foreach (var c in "#") // "#$%&_{}"
             input = input.Replace(c.ToString(), @$"\{c}");
 
-        return input;
+        return input.Replace("\r\n\r\n", "\r\n\\newline\r\n\r\n");
 
         return input
             .Replace(@"\", @"\textbackslash{}")
