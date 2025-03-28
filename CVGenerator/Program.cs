@@ -11,6 +11,8 @@ builder.Services.AddSession(options =>
 	options.Cookie.IsEssential = true; // Ensure session works even if cookies are disabled
 });
 
+builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(12345));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
