@@ -1,0 +1,137 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{xifthen}
+\usepackage{calc}
+\usepackage{trimspaces}
+
+
+% set font default
+\renewcommand*\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+
+% more font size definitions
+\usepackage{moresize}
+
+% awesome font
+\usepackage{fontawesome5}
+
+\usepackage[ddmmyyyy]{datetime}
+\renewcommand{\dateseparator}{.}
+
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT  DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+%debug page outer frames
+%\usepackage{showframe}
+
+%define page styles using geometry
+\usepackage[a4paper]{geometry}
+
+% for example, change the margins to 2 inches all round
+\geometry{top=3cm, bottom=3cm, left=2cm, right=2cm}
+
+% use customized header
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+%less space between header and content
+\setlength{\headheight}{15pt}
+
+% customize header entries
+\lhead{}
+\rhead{}
+\chead{}
+
+%indentation is zero
+\setlength{\parindent}{5mm}
+
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+%extended aligning of tabular cells
+\usepackage{array}
+
+% custom column width
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+
+%----------------------------------------------------------------------------------------
+%	GRAPHICS DEFINITIONS
+%----------------------------------------------------------------------------------------
+\usepackage{graphicx}
+\usepackage{wrapfig}
+
+% for drawing graphics and charts
+\usepackage{tikz}
+\usetikzlibrary{shapes, backgrounds}
+
+
+\usepackage{xcolor}
+
+\definecolor{backcolor}{HTML}{FFFFFF} % #EEEEEE
+\definecolor{textcolor}{HTML}{333333} % #443322
+
+\usepackage[default]{gillius}
+
+\input{template.tex}
+
+\pagecolor{backcolor}
+
+\pagestyle{empty} % Suppress page numbers on all pages
+
+
+\begin{document}
+\begin{minipage}{0.65\textwidth}
+\large
+	\ToName
+
+	\ToStreet
+
+	\ToCity
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+	\begin{flushright}
+	\large
+		\Name
+
+		\Street
+
+		\City
+	\end{flushright}
+	\end{minipage}
+\vfill
+\begin{minipage}{0.95\textwidth}
+	\begin{flushright}
+		\textcolor{textcolor}{\CityOnly, den \today}
+	\end{flushright}
+\end{minipage}
+\vfill
+\begin{minipage}{0.95\textwidth}
+	\textcolor{textcolor}{\large{\textbf{\Summary}}}
+\end{minipage}
+\vfill
+\begin{minipage}[b]{0.9\textwidth}
+\begin{flushleft}
+\textcolor{textcolor}{\Dear,}
+\newline
+\newline
+
+\textcolor{textcolor}{\Text}
+\end{flushleft}
+\end{minipage}
+\vfill
+\begin{minipage}[t]{0.9\textwidth}
+	\textcolor{textcolor}{
+	Mit freundlichen Grüßen
+	\newline
+	\newline
+	\Signature
+	\newline
+	\Name}
+\end{minipage}
+\vfill
+\end{document}

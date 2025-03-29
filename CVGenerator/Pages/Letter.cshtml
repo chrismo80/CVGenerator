@@ -6,3 +6,59 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>Hier kannst du einen Brief generieren lassen.</p>
+
+
+<form method="post" asp-page-handler="Generate" enctype="multipart/form-data">
+    <div class="row">
+
+        <div class="col-md-6">
+            <h3>Empfänger</h3>
+            <div class="mb-3">
+                <input asp-for="ToName" class="form-control" placeholder="Name" required />
+            </div>
+            <div class="mb-3">
+                <input asp-for="ToStreet" class="form-control" placeholder="Strasse" required />
+            </div>
+            <div class="mb-3">
+                <input asp-for="ToCity" class="form-control" placeholder="PLZ Stadt" required />
+            </div>
+            <div class="mb-3">
+                <input asp-for="Summary" class="form-control" placeholder="Betreff" required />
+            </div>
+            <div class="mb-3">
+                <input asp-for="Dear" class="form-control" placeholder="Anrede" required />
+            </div>
+
+            <div class="mb-3">
+                <textarea asp-for="Text" rows="30" class="form-control" placeholder="Anschreiben" required></textarea>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <h3>Absender</h3>
+
+            <div class="mb-3">
+                <input asp-for="Name" class="form-control" placeholder="Name" required/>
+            </div>
+            <div class="mb-3">
+                <input asp-for="Street" class="form-control" placeholder="Strasse" required/>
+            </div>
+            <div class="mb-3">
+                <input asp-for="City" class="form-control" placeholder="PLZ Stadt" required/>
+            </div>
+
+            <!-- Image Section -->
+            <div class="mt-3">
+                <label for="image">Unterschrift</label>
+                <input type="file" class="form-control" id="image" name="Signature" accept="image/*" />
+                <img id="preview" class="img-fluid mt-2" style="max-width: 200px; max-height: 200px;"/>
+            </div>
+
+            <button style="float: right;" type="submit" class="btn btn-primary">Download PDF</button>
+
+        </div>
+
+    </div>
+
+</form>

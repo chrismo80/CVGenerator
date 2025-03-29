@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using System.Text.Json;
 
 using CVGenerator.LaTeX;
+using CVGenerator.Extensions;
 
 namespace CVGenerator.Pages;
 
-public class CVModel(ILogger<CVModel> logger) : PageModel
+public class CVModel(ILogger<CVModel> logger) : CustomPageModel
 {
     private readonly ILogger<CVModel> _logger = logger;
 
@@ -141,47 +139,10 @@ public class CVModel(ILogger<CVModel> logger) : PageModel
 
         Directory.CreateDirectory("temp");
 
-        await SaveProfilePicture();
+        await ProfilePicture.SaveAsyncTo(Path.Combine("temp", ProfilePicture?.FileName ?? ""));
 
         var pdfBytes = await this.GetFields<string>()!.GeneratePdf("CV");
 
         return File(pdfBytes, "application/pdf", Name + " - " + NewRole + ".pdf");
     }
-
-    public void OnSet()
-    {
-        foreach (var (name, value) in this.GetBindedFields<string, BindPropertyAttribute>())
-            Save(name, value ?? "");
-
-        foreach (var (name, value) in this.GetBindedFields<List<Info>, BindPropertyAttribute>().Where(kvp => kvp.Value!.Count > 0))
-            Save(name, JsonSerializer.Serialize(value));
-
-        foreach (var (name, value) in this.GetBindedFields<List<Skill>, BindPropertyAttribute>().Where(kvp => kvp.Value!.Count > 0))
-            Save(name, JsonSerializer.Serialize(value));
-    }
-
-    public void OnGet()
-    {
-        foreach (var prop in this.GetBindedProperties<string, BindPropertyAttribute>())
-            prop.SetProperty(this, Load(prop.Name));
-
-        foreach (var prop in this.GetBindedProperties<List<Info>, BindPropertyAttribute>())
-            prop.SetProperty(this, Load(prop.Name)?.LoadFromJson<List<Info>>());
-
-        foreach (var prop in this.GetBindedProperties<List<Skill>, BindPropertyAttribute>())
-            prop.SetProperty(this, Load(prop.Name)?.LoadFromJson<List<Skill>>());
-    }
-
-    private async Task SaveProfilePicture()
-    {
-        if (ProfilePicture == null)
-            return;
-
-        await using var fileStream = new FileStream(Path.Combine("temp", ProfilePicture.FileName), FileMode.Create);
-        await ProfilePicture.CopyToAsync(fileStream);
-    }
-
-    private void Save(string name, string value) => HttpContext.Session.SetString(name, value);
-
-    private string? Load(string name) => HttpContext.Session.GetString(name);
 }
