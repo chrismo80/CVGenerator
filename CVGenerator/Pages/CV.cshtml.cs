@@ -143,7 +143,7 @@ public class CVModel(ILogger<CVModel> logger) : PageModel
 
         await SaveProfilePicture();
 
-        var pdfBytes = await this.GetFields<string>()!.GeneratePdf();
+        var pdfBytes = await this.GetFields<string>()!.GeneratePdf("CV");
 
         return File(pdfBytes, "application/pdf", Name + " - " + NewRole + ".pdf");
     }

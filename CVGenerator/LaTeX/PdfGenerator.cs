@@ -1,46 +1,41 @@
+using System.Diagnostics;
+
 namespace CVGenerator.LaTeX;
 
 public static class PdfGenerator
 {
-    const string DATA = "CV";
     const string PREFIX = "@";
 
-    const string FILE = "main";
-    const string TEMPLATE = "template";
+    static readonly string cd = Directory.GetCurrentDirectory();
 
-    static readonly string folder = Directory.GetCurrentDirectory();
-    private static readonly string tempFolder = Path.Combine(folder, "temp");
+    private static readonly string tempFolder = Path.Combine(cd, "temp");
 
-    static readonly string template = Path.Combine(folder, DATA, TEMPLATE + ".tex");
-    static readonly string srcTex = Path.Combine(folder, DATA, FILE + ".tex");
-
-    static readonly string mainTex = Path.Combine(tempFolder, FILE + ".tex");
-    static readonly string tempTex = Path.Combine(tempFolder, TEMPLATE + ".tex");
-    static readonly string tempPdf = Path.Combine(tempFolder, FILE + ".pdf");
-
-    static readonly System.Diagnostics.ProcessStartInfo startInfo = new()
+    public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input,
+        string dataFolder, string main = "main", string template = "template")
     {
-        FileName = "pdflatex",
-        Arguments = $"-output-directory={tempFolder} {mainTex}",
-        RedirectStandardOutput = true,
-        RedirectStandardError = true,
-        UseShellExecute = false,
-        CreateNoWindow = false
-    };
+        CopyDirectory(Path.Combine(cd, dataFolder), tempFolder);
 
-    public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input)
-    {
-        Directory.CreateDirectory(tempFolder);
+        var templateFile = Path.Combine(tempFolder, template + ".tex");
 
-        File.Copy(srcTex, mainTex, true);
+        var info = await File.ReadAllTextAsync(templateFile);
 
-        var info = await File.ReadAllTextAsync(template);
+        await File.WriteAllTextAsync(templateFile, info.FillTemplate(input));
 
-        await File.WriteAllTextAsync(tempTex, info.FillTemplate(input));
+        var mainFile = Path.Combine(tempFolder, main);
 
-        await System.Diagnostics.Process.Start(startInfo)!.RenderPdf();
+        var startInfo = new ProcessStartInfo()
+        {
+            FileName = "pdflatex",
+            Arguments = $"-output-directory={tempFolder} {mainFile}.tex",
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = false
+        };
 
-        var data = await File.ReadAllBytesAsync(tempPdf);
+        await Process.Start(startInfo)!.RenderPdf();
+
+        var data = await File.ReadAllBytesAsync($"{mainFile}.pdf");
 
         Directory.Delete(tempFolder, true);
 
@@ -64,5 +59,14 @@ public static class PdfGenerator
             content = content.Replace(PREFIX + name, value?.ToString()?.Sanitize());
 
         return content;
+    }
+
+    private static void CopyDirectory(string source, string target)
+    {
+        foreach (string dir in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+            Directory.CreateDirectory(dir.Replace(source, target));
+
+        foreach (string file in Directory.GetFiles(source, "*.*",SearchOption.AllDirectories))
+            File.Copy(file, file.Replace(source, target), true);
     }
 }
