@@ -13,7 +13,6 @@ public class LetterModel(ILogger<LetterModel> logger) : CustomPageModel
 
     [BindProperty] public IFormFile? Signature { get; set; }
 
-    [JsonInclude]
     [BindProperty] public string Name { get; set; } = "Max Mustermann";
     [BindProperty] public string Street { get; set; } = "Sömmerringplatz 1A";
     [BindProperty] public string City { get; set; } = "55118 Mainz";
@@ -41,8 +40,6 @@ public class LetterModel(ILogger<LetterModel> logger) : CustomPageModel
         await Signature.SaveAsyncTo(Path.Combine("temp", "signature.png"));
 
         var pdfBytes = await this.GetFields<string>()!.GeneratePdf("Letter");
-
-        //return await OnPostExportAsync();
 
         return File(pdfBytes, "application/pdf", ToName + ".pdf");
     }

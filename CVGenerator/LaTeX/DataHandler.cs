@@ -14,25 +14,6 @@ public static partial class DataHandler
         .Where(prop => prop.PropertyType == typeof(TProperty))
         .ToDictionary(prop => prop.Name, prop => prop.GetValue(page));
 
-    public static Dictionary<string, TProperty?> GetBindedFields<TProperty, TAttribute>(this object page) => page.GetType()
-        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        .Where(prop => prop.PropertyType == typeof(TProperty))
-        .Where(prop => Attribute.IsDefined(prop, typeof(TAttribute)))
-        .ToDictionary(prop => prop.Name, prop => (TProperty?)prop.GetValue(page));
-
-    public static IEnumerable<PropertyInfo> GetBindedProperties<TProperty, TAttribute>(this object page) => page.GetType()
-        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        .Where(prop => prop.PropertyType == typeof(TProperty))
-        .Where(prop => Attribute.IsDefined(prop, typeof(TAttribute)));
-
-    public static void SetProperty(this PropertyInfo prop, object page, object? value)
-    {
-        if (value != null)
-            prop.SetValue(page, value);
-    }
-
-    public static T? LoadFromJson<T>(this string text) => JsonSerializer.Deserialize<T>(text);
-
     public static string Format(this Info info, string type) => "\\" + type +
         "{" + info.Start.Month + "/" + info.Start.Year + "}" +
         "{" + info.End.Month + "/" + info.End.Year + "}" +

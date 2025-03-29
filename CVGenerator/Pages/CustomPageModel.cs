@@ -4,112 +4,46 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
-
-using CVGenerator.LaTeX;
 
 namespace CVGenerator.Pages;
 
 public class CustomPageModel : PageModel
 {
-	private string _typeName;
+	private IEnumerable<PropertyInfo> _props;
 
-	JsonSerializerOptions _options = new()
+	public CustomPageModel() => _props = GetProperties();
+
+	public async Task<IActionResult> OnPostExportAsync() =>
+		File(Encoding.UTF8.GetBytes(Serialize()), "application/json", GetType().Name + ".json");
+
+	public void OnSet() =>
+		Save(GetType().Name, Serialize());
+
+	public void OnGet() =>
+		Deserialize();
+
+	public void Deserialize()
 	{
-		WriteIndented = true,
-
-		TypeInfoResolver = new DefaultJsonTypeInfoResolver
-		{
-			Modifiers = { MyContract }
-		}
-	};
-
-	public CustomPageModel()
-	{
-		_typeName = GetType().Name;
-	}
-
-	public async Task<IActionResult> OnPostExportAsync()
-	{
-		var text = JsonSerializer.Serialize(this, _options);
-
-		var bytes = Encoding.UTF8.GetBytes(text);
-
-		return File(bytes, "application/json", _typeName + ".json");
-	}
-
-	public void OnSet()
-	{
-		foreach (var (name, value) in this.GetBindedFields<string, BindPropertyAttribute>())
-			Save(_typeName + name, value ?? "");
-
-		foreach (var (name, value) in this.GetBindedFields<List<Info>, BindPropertyAttribute>().Where(kvp => kvp.Value!.Count > 0))
-			Save(_typeName + name, JsonSerializer.Serialize(value));
-
-		foreach (var (name, value) in this.GetBindedFields<List<Skill>, BindPropertyAttribute>().Where(kvp => kvp.Value!.Count > 0))
-			Save(_typeName + name, JsonSerializer.Serialize(value));
-
-		return;
-
-		var json = JsonSerializer.Serialize(this, _options);
-
-		Save(GetType().Name, JsonSerializer.Serialize(this, _options));
-
-	}
-
-	public void OnGet()
-	{
-		foreach (var prop in this.GetBindedProperties<string, BindPropertyAttribute>())
-			prop.SetProperty(this, Load(_typeName + prop.Name));
-
-		foreach (var prop in this.GetBindedProperties<List<Info>, BindPropertyAttribute>())
-			prop.SetProperty(this, Load(_typeName + prop.Name)?.LoadFromJson<List<Info>>());
-
-		foreach (var prop in this.GetBindedProperties<List<Skill>, BindPropertyAttribute>())
-			prop.SetProperty(this, Load(_typeName + prop.Name)?.LoadFromJson<List<Skill>>());
-
-		return;
-
-		var json = Load(GetType().Name);
-
-		if (json == null)
+		if (Load(GetType().Name) is not string json)
 			return;
 
-		var me = JsonSerializer.Deserialize(Load(GetType().Name), GetType(), _options);
+		var dict = JsonSerializer.Deserialize<Dictionary<string,JsonElement>>(json);
 
-		CopyProperties(me, this);
-
+		foreach (var prop in _props)
+			prop.SetValue(this, dict[prop.Name].Deserialize(prop.PropertyType));
 	}
 
-	private static void MyContract(JsonTypeInfo typeInfo)
+	public string Serialize()
 	{
-		var t = typeInfo.Type;
+		var dict = _props.ToDictionary(p => p.Name, p => p.GetValue(this));
 
-		for (int i = 0; i < typeInfo.Properties.Count; i++)
-		{
-			if (typeInfo.Properties[i].AttributeProvider is not MemberInfo memberInfo)
-				continue;
-
-			if (memberInfo.GetCustomAttribute<BindPropertyAttribute>() != null)
-				typeInfo.Properties.RemoveAt(i);
-		}
+		return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
 	}
 
-	private static void CopyProperties(object source, object destination)
-	{
-		var sourceType = source.GetType();
-		var destinationType = destination.GetType();
-
-		foreach (var sourceProperty in sourceType.GetProperties())
-		{
-			var destinationProperty = destinationType.GetProperty(sourceProperty.Name);
-
-			if (destinationProperty == null || !destinationProperty.CanWrite)
-				continue;
-
-			destinationProperty.SetValue(destination, sourceProperty.GetValue(source));
-		}
-	}
+	private IEnumerable<PropertyInfo> GetProperties() => GetType()
+		.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+		.Where(prop => !prop.PropertyType.IsInterface)
+		.Where(prop => Attribute.IsDefined(prop, typeof(BindPropertyAttribute)));
 
 	private void Save(string name, string value) =>
 		HttpContext.Session.SetString(name, value);

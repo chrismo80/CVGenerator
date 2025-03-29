@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using Microsoft.AspNetCore.Mvc;
 
 using CVGenerator.LaTeX;
@@ -9,6 +11,7 @@ public class CVModel(ILogger<CVModel> logger) : CustomPageModel
 {
     private readonly ILogger<CVModel> _logger = logger;
 
+    [JsonIgnore]
     [BindProperty] public IFormFile? ProfilePicture { get; set; }
 
     [BindProperty] public string Company { get; set; } = "Traumfirma";
