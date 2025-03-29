@@ -13,7 +13,7 @@ public static class PdfGenerator
     public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input,
         string dataFolder, string main = "main", string template = "template")
     {
-        CopyDirectory(Path.Combine(cd, dataFolder), tempFolder);
+        CopyDirectory(Path.Combine(cd, "Data", dataFolder), tempFolder);
 
         var templateFile = Path.Combine(tempFolder, template + ".tex");
 
@@ -42,7 +42,7 @@ public static class PdfGenerator
         return data;
     }
 
-    private static async Task RenderPdf(this System.Diagnostics.Process process)
+    private static async Task RenderPdf(this Process process)
     {
         process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
         process.ErrorDataReceived += (sender, e) => Console.WriteLine(e.Data);
