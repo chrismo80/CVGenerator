@@ -2,16 +2,21 @@ namespace CVGenerator.LaTeX;
 
 public static class PdfGenerator
 {
+    const string DATA = "CV";
     const string PREFIX = "@";
-    const string FILE = "cv";
+
+    const string FILE = "main";
+    const string TEMPLATE = "template";
+
     static readonly string folder = Directory.GetCurrentDirectory();
     private static readonly string tempFolder = Path.Combine(folder, "temp");
-    static readonly string template = Path.Combine(folder, "Data", "template.tex");
-    static readonly string srcTex = Path.Combine(folder, "Data", FILE + ".tex");
+
+    static readonly string template = Path.Combine(folder, DATA, TEMPLATE + ".tex");
+    static readonly string srcTex = Path.Combine(folder, DATA, FILE + ".tex");
+
     static readonly string mainTex = Path.Combine(tempFolder, FILE + ".tex");
-    static readonly string tempTex = Path.Combine(tempFolder, "template.tex");
+    static readonly string tempTex = Path.Combine(tempFolder, TEMPLATE + ".tex");
     static readonly string tempPdf = Path.Combine(tempFolder, FILE + ".pdf");
-    static readonly string pdfUrl = Path.Combine("wwwroot", FILE + ".pdf");
 
     static readonly System.Diagnostics.ProcessStartInfo startInfo = new()
     {
@@ -35,11 +40,11 @@ public static class PdfGenerator
 
         await System.Diagnostics.Process.Start(startInfo)!.RenderPdf();
 
-        File.Copy(tempPdf, pdfUrl, true);
+        var data = await File.ReadAllBytesAsync(tempPdf);
 
         Directory.Delete(tempFolder, true);
 
-        return await File.ReadAllBytesAsync(pdfUrl);
+        return data;
     }
 
     private static async Task RenderPdf(this System.Diagnostics.Process process)
