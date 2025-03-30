@@ -60,16 +60,11 @@ public abstract class DocumentPageModel : PageModel
 		}
 
 		using var reader = new StreamReader(UploadedFile.OpenReadStream());
+
 		var fileContent = await reader.ReadToEndAsync();
 
-		try
-		{
-			Save(GetType().Name, fileContent);
-		}
-		catch (Exception ex)
-		{
-			ModelState.AddModelError("", "Invalid file format.");
-		}
+		try { Save(GetType().Name, fileContent); }
+		catch (Exception ex) { ModelState.AddModelError("", "Invalid file format."); }
 
 		return RedirectToPage();
 	}
@@ -77,11 +72,8 @@ public abstract class DocumentPageModel : PageModel
 	public void OnSet() =>
 		Save(GetType().Name, Serialize());
 
-	public void OnGet()
-	{
-		ModelState.Clear();
+	public void OnGet() =>
 		Deserialize(Load(GetType().Name));
-	}
 
 	public string Serialize()
 	{
