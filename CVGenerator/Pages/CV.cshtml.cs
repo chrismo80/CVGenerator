@@ -28,6 +28,7 @@ public class CVModel(ILogger<CVModel> logger) : DocumentPageModel
     [BindProperty] public string Degree { get; set; } = "";
 
     [BindProperty] public IFormFile? ProfilePicture { get; set; }
+    [BindProperty] public IFormFile? Signature { get; set; }
 
     [BindProperty] public string Summary { get; set; } = "";
     [BindProperty] public string Letter { get; set; } = "";
@@ -58,6 +59,7 @@ public class CVModel(ILogger<CVModel> logger) : DocumentPageModel
 
     protected override async Task OnGenerate()
     {
-        await ProfilePicture.SaveAsyncTo(Path.Combine("temp", ProfilePicture?.FileName ?? ""));
+        await ProfilePicture.SaveAsyncTo(Path.Combine("temp", "foto.png"));
+        await Signature.SaveAsyncTo(Path.Combine("temp", "signature.png"));
     }
 }
