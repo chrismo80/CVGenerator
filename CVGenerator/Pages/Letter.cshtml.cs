@@ -7,7 +7,7 @@ using CVGenerator.Extensions;
 
 namespace CVGenerator.Pages;
 
-public class LetterModel(ILogger<LetterModel> logger) : CustomPageModel
+public class LetterModel(ILogger<LetterModel> logger) : FormPageModel
 {
     private readonly ILogger<LetterModel> _logger = logger;
 

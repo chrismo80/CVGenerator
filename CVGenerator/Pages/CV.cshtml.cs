@@ -7,7 +7,7 @@ using CVGenerator.Extensions;
 
 namespace CVGenerator.Pages;
 
-public class CVModel(ILogger<CVModel> logger) : CustomPageModel
+public class CVModel(ILogger<CVModel> logger) : FormPageModel
 {
     private readonly ILogger<CVModel> _logger = logger;
 

@@ -83,7 +83,11 @@
                 <textarea asp-for="Postskriptum" rows="5" class="form-control" placeholder="P.S.:"></textarea>
             </div>
 
-            <button style="float: right;" type="submit" class="btn btn-primary">Download PDF</button>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" asp-page-handler="Import" class="btn btn-secondary">Import</button>
+                <button type="submit" asp-page-handler="Export" class="btn btn-secondary">Export</button>
+                <button type="submit" asp-page-handler="Generate" class="btn btn-primary">Download PDF</button>
+            </div>
 
         </div>
     </div>

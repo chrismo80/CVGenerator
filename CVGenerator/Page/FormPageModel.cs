@@ -7,11 +7,11 @@ using System.Text.Json;
 
 namespace CVGenerator.Pages;
 
-public class CustomPageModel : PageModel
+public class FormPageModel : PageModel
 {
 	private IEnumerable<PropertyInfo> _props;
 
-	public CustomPageModel() => _props = GetProperties();
+	public FormPageModel() => _props = GetProperties();
 
 	public async Task<IActionResult> OnPostExportAsync() =>
 		File(Encoding.UTF8.GetBytes(Serialize()), "application/json", GetType().Name + ".json");

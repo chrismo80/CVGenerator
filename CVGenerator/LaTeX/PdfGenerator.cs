@@ -37,7 +37,7 @@ public static class PdfGenerator
 
         var data = await File.ReadAllBytesAsync($"{mainFile}.pdf");
 
-        //Directory.Delete(tempFolder, true);
+        Directory.Delete(tempFolder, true);
 
         return data;
     }
