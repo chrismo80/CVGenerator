@@ -13,7 +13,7 @@ public class LetterModel(ILogger<LetterModel> logger) : FormPageModel
 
     [BindProperty] public IFormFile? Signature { get; set; }
 
-    [BindProperty] public string Name { get; set; } = "Max Mustermann";
+    [BindProperty] public string Name { get; set; } = "";
     [BindProperty] public string Street { get; set; } = "Sömmerringplatz 1A";
     [BindProperty] public string City { get; set; } = "55118 Mainz";
 
