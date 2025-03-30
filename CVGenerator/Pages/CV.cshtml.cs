@@ -11,34 +11,22 @@ public class CVModel(ILogger<CVModel> logger) : FormPageModel
 {
     private readonly ILogger<CVModel> _logger = logger;
 
-    [JsonIgnore]
-    [BindProperty] public IFormFile? ProfilePicture { get; set; }
-
     [BindProperty] public string Company { get; set; } = "Traumfirma";
-
     [BindProperty] public string Address { get; set; } = "Strasse 123";
-
     [BindProperty] public string City { get; set; } = "Frankfurt";
-
     [BindProperty] public string Recruiter { get; set; } = "Sehr geehrte Frau Recruiterin";
-
     [BindProperty] public string NewRole { get; set; } = "Software-Architekt";
-
     [BindProperty] public string Product { get; set; } = "Produkt XY";
 
     [BindProperty] public string Name { get; set; } = "Max Mustermann";
-
     [BindProperty] public string Location { get; set; } = "Mainz";
-
     [BindProperty] public string Email { get; set; } = "max@gmail.de";
-
     [BindProperty] public string Link { get; set; } = "github.com/max";
-
     [BindProperty] public string Phone { get; set; } = "0133 / 123 456 78";
-
     [BindProperty] public string Role { get; set; } = "Senior Softwareentwickler";
-
     [BindProperty] public string Degree { get; set; } = "Diplomingenieur (FH) - Elektrotechnik (Nachrichten- und Kommunikationstechnik)";
+
+    [BindProperty] public IFormFile? ProfilePicture { get; set; }
 
     [BindProperty]
     public string Summary { get; set; } =
@@ -63,59 +51,59 @@ public class CVModel(ILogger<CVModel> logger) : FormPageModel
     [BindProperty]
     public List<Info> Educations { get; set; } =
         [
-            new Info(4, 2000, 6, 2001, "Abitur", "Bad Sobernheim"),
-            new Info(8, 2002, 1, 2008, "Diplomingenieur (FH)", "Elektrotechnik\\\\FH Bingen"),
+            new(4, 2000, 6, 2001, "Abitur", "Bad Sobernheim"),
+            new(8, 2002, 1, 2008, "Diplomingenieur (FH)", "Elektrotechnik\\\\FH Bingen"),
         ];
 
     [BindProperty]
     public List<Info> WorkExperiences { get; set; } =
         [
-            new Info(7, 2001, 5, 2002, "Zivildienst", "(Tagesförderstätte)"),
-            new Info(1, 2005, 8, 2006, "IBM, Mainz", "(Werkstudent)"),
-            new Info(11, 2006, 4, 2007, "SCHOTT, Mainz", "(Praktikant)"),
-            new Info(8, 2007, 1, 2008, "ESCO, Mainz", "(Diplomand)"),
-            new Info(2, 2008, 6, 2025, "ESCO, Mainz"),
-            new Info(7, 2025, 6, 2026, "Traumfirma, Frankfurt"),
+            new(7, 2001, 5, 2002, "Zivildienst", "(Tagesförderstätte)"),
+            new(1, 2005, 8, 2006, "IBM, Mainz", "(Werkstudent)"),
+            new(11, 2006, 4, 2007, "SCHOTT, Mainz", "(Praktikant)"),
+            new(8, 2007, 1, 2008, "ESCO, Mainz", "(Diplomand)"),
+            new(2, 2008, 6, 2025, "ESCO, Mainz"),
+            new(7, 2025, 6, 2026, "Traumfirma, Frankfurt"),
         ];
 
     [BindProperty]
     public List<Info> Projects { get; set; } =
         [
-            new Info(4, 2002, 4, 2002, "Betreuung von Menschen mit Behinderung\\\\in einer Tagesförderstätte"),
-            new Info(6, 2005, 2, 2006, "Lotus Notes Datenbankentwicklung"),
-            new Info(1, 2009, 1, 2011, "Integration von Mess- und Prüftechnik in Prozessautomation (Hardwareansteuerung, Implementierung von Mess-Algorithmen in C#)"),
-            new Info(1, 2012, 1, 2014, "Erstellen von projektspezifischen .NET Framework Desktop-Applikationen im Sondermaschinenbau (Front- und Back-End)"),
-            new Info(1, 2015, 1, 2017, "Pflege des hauseigenen projektunabhängigen C#-Frameworks zur Erstellung von Maschinensteuerungen und -visualisierungen (Mocks, Unit-Tests)"),
-            new Info(1, 2018, 1, 2019, "Anforderungsanalysen (Pflichten- und Lastenhefte)"),
-            new Info(1, 2020, 1, 2022, "Integration unterschiedlichster Technologien in Projekt-Applikationen (TwinCat, Halcon, OPC-UA, REST, gRPC, GenICam, 3rd party libraries)"),
-            new Info(1, 2023, 1, 2024, "Design von Datenrückverfolgbarkeitssystemen mittels Entity Framework inkl. Berichtswesen (SQL, SSRS)"),
+            new(4, 2002, 4, 2002, "Betreuung von Menschen mit Behinderung\\\\in einer Tagesförderstätte"),
+            new(6, 2005, 2, 2006, "Lotus Notes Datenbankentwicklung"),
+            new(1, 2009, 1, 2011, "Integration von Mess- und Prüftechnik in Prozessautomation (Hardwareansteuerung, Implementierung von Mess-Algorithmen in C#)"),
+            new(1, 2012, 1, 2014, "Erstellen von projektspezifischen .NET Framework Desktop-Applikationen im Sondermaschinenbau (Front- und Back-End)"),
+            new(1, 2015, 1, 2017, "Pflege des hauseigenen projektunabhängigen C#-Frameworks zur Erstellung von Maschinensteuerungen und -visualisierungen (Mocks, Unit-Tests)"),
+            new(1, 2018, 1, 2019, "Anforderungsanalysen (Pflichten- und Lastenhefte)"),
+            new(1, 2020, 1, 2022, "Integration unterschiedlichster Technologien in Projekt-Applikationen (TwinCat, Halcon, OPC-UA, REST, gRPC, GenICam, 3rd party libraries)"),
+            new(1, 2023, 1, 2024, "Design von Datenrückverfolgbarkeitssystemen mittels Entity Framework inkl. Berichtswesen (SQL, SSRS)"),
         ];
 
     [BindProperty]
     public List<Skill> Skills { get; set; } =
         [
-            new Skill("Kommunikation", 100, 1),
-            new Skill("Teamfähigkeit", 100, 1),
-            new Skill("Versionsverwaltung", 90, 1),
-            new Skill("Microsoft Reporting", 80, 2),
-            new Skill("Entity Framework", 70, 2),
-            new Skill("REST / gRPC", 20, 3),
-            new Skill("XAML (Avalonia)", 20, 3),
+            new("Kommunikation", 100, 1),
+            new("Teamfähigkeit", 100, 1),
+            new("Versionsverwaltung", 90, 1),
+            new("Microsoft Reporting", 80, 2),
+            new("Entity Framework", 70, 2),
+            new("REST / gRPC", 20, 3),
+            new("XAML (Avalonia)", 20, 3),
         ];
 
     [BindProperty]
     public List<Skill> Languages { get; set; } =
         [
-            new Skill("C#", 70, 1),
-            new Skill("SQL", 25, 2),
-            new Skill("Rust", 5, 3),
+            new("C#", 70, 1),
+            new("SQL", 25, 2),
+            new("Rust", 5, 3),
         ];
 
     [BindProperty]
     public List<Skill> Versionings { get; set; } =
        [
-            new Skill("Mercurial", 90, 1),
-            new Skill("Git", 10, 3),
+            new("Mercurial", 90, 1),
+            new("Git", 10, 3),
         ];
 
     public string? Foto => ProfilePicture?.FileName;

@@ -52,6 +52,13 @@ public class FormPageModel : PageModel
 	public void OnGet() =>
 		Deserialize(Load(GetType().Name));
 
+	public string Serialize()
+	{
+		var dict = _props.ToDictionary(p => p.Name, p => p.GetValue(this));
+
+		return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
+	}
+
 	public void Deserialize(string? json)
 	{
 		if (json is null)
@@ -61,13 +68,6 @@ public class FormPageModel : PageModel
 
 		foreach (var prop in _props)
 			prop.SetValue(this, dict[prop.Name].Deserialize(prop.PropertyType));
-	}
-
-	public string Serialize()
-	{
-		var dict = _props.ToDictionary(p => p.Name, p => p.GetValue(this));
-
-		return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
 	}
 
 	private IEnumerable<PropertyInfo> GetProperties() => GetType()
