@@ -21,7 +21,6 @@
         <!-- Export & Generate Buttons -->
         <button type="submit" asp-page-handler="Export" class="btn btn-secondary">Export</button>
 
-        <button type="submit" asp-page-handler="Generate" class="btn btn-primary">Download PDF</button>
     </div>
 </form>
 
@@ -96,6 +95,10 @@
                 <label for="profilePicture">Foto</label>
                 <input type="file" class="form-control" id="profilePicture" name="ProfilePicture" accept="image/*" required/>
                 <img id="profilePreview" class="img-fluid mt-2" style="max-width: 200px; max-height: 200px;"/>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" asp-page-handler="Generate" class="btn btn-primary">Download PDF</button>
             </div>
         </div>
 

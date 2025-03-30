@@ -43,4 +43,17 @@ public class LetterModel(ILogger<LetterModel> logger) : FormPageModel
 
         return File(pdfBytes, "application/pdf", ToName + ".pdf");
     }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        var handler = Request.Form["handler"].ToString();
+
+        return handler switch
+        {
+            "Import" => await OnPostImportAsync(),
+            "Export" => await OnPostExportAsync(),
+            "Generate" => await OnPostGenerateAsync(),
+            _ => Page()
+        };
+    }
 }

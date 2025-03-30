@@ -9,7 +9,6 @@ namespace CVGenerator.Pages;
 
 public class FormPageModel : PageModel
 {
-
 	[BindProperty] public IFormFile UploadedFile { get; set; }
 
 	private IEnumerable<PropertyInfo> _props;
@@ -27,30 +26,30 @@ public class FormPageModel : PageModel
 			return Page();
 		}
 
-		// Read file content
 		using var reader = new StreamReader(UploadedFile.OpenReadStream());
 		var fileContent = await reader.ReadToEndAsync();
 
-		// Assuming the file contains JSON or a structured format
-		// Deserialize and populate fields
-		// Example: Use Newtonsoft.Json to deserialize if it's JSON
 		try
 		{
-			Deserialize(fileContent);
+			Save(GetType().Name, fileContent);
 		}
 		catch (Exception ex)
 		{
 			ModelState.AddModelError("", "Invalid file format.");
 		}
 
-		return Page();
+		return RedirectToPage();
 	}
 
 	public void OnSet() =>
 		Save(GetType().Name, Serialize());
 
-	public void OnGet() =>
+	public void OnGet()
+	{
+		ModelState.Clear();
 		Deserialize(Load(GetType().Name));
+	}
+
 
 	public string Serialize()
 	{

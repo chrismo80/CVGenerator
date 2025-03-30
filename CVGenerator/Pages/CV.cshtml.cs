@@ -48,8 +48,7 @@ public class CVModel(ILogger<CVModel> logger) : FormPageModel
         "Um Ihnen einen ersten Eindruck meiner Code-Qualität zu geben, finden Sie ein [https://github.com/max/project:Repository] verlinkt, " +
         "in dem ich Avalonia als UI-Framework für Desktop-Anwendungen evaluiert habe.";
 
-    [BindProperty]
-    public List<Info> Educations { get; set; } =
+    [BindProperty] public List<Info> Educations { get; set; } = //[];
         [
             new(4, 2000, 6, 2001, "Abitur", "Bad Sobernheim"),
             new(8, 2002, 1, 2008, "Diplomingenieur (FH)", "Elektrotechnik\\\\FH Bingen"),
@@ -107,25 +106,20 @@ public class CVModel(ILogger<CVModel> logger) : FormPageModel
         ];
 
     public string? Foto => ProfilePicture?.FileName;
-
     public string? Education => Educations.Format("cveventleft");
-
     public string? WorkExperience => WorkExperiences.Format("cveventright");
-
     public string? Project => Projects.Format("cveventproject");
-
     public string? Skill => Skills.FormatBarChart();
-
     public string? Language => Languages.FormatPieChart();
-
     public string? Versioning => Versionings.FormatPieChart();
-
-    public string? MinYear => (Educations.Concat(WorkExperiences).Concat(Projects).Min(e => e.Start.Year) + 1).ToString();
-
-    public string? MaxYear => (Educations.Concat(WorkExperiences).Concat(Projects).Max(e => e.End.Year) + 0).ToString();
+    public string? MinYear => (Timeline.Any() ? Timeline.Min(e => e.Start.Year) : 2003 + 1).ToString();
+    public string? MaxYear => (Timeline.Any() ? Timeline.Max(e => e.End.Year) : 2012 + 0).ToString();
+    public List<Info> Timeline => Educations.Concat(WorkExperiences).Concat(Projects).ToList();
 
     public async Task<IActionResult> OnPostGenerateAsync()
     {
+        _logger.Log(LogLevel.Information, "Edu: " + Education);
+
         OnSet();
 
         Directory.CreateDirectory("temp");
