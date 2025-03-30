@@ -43,7 +43,7 @@ public abstract class DocumentPageModel : PageModel
 
 		await OnGenerate();
 
-		var pdfBytes = await this.GetFields<string>()!.GeneratePdf(DataFolder);
+		var pdfBytes = await this.GetFields<string>()!.GeneratePdf();
 
 		return File(pdfBytes, "application/pdf", FileName + ".pdf");
 	}
