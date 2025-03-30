@@ -9,24 +9,18 @@
 
 <p>Hier kannst du einen Lebenslauf mit Anschreiben generieren lassen.</p>
 
+<form method="post" enctype="multipart/form-data">
 
-<form method="post" asp-page-handler="Import" enctype="multipart/form-data">
-    <!-- Hidden File Input -->
-    <input type="file" id="fileInput" name="UploadedFile" class="d-none">
+    <input type="hidden" id="handler" name="handler" value="" />
+    <input type="file" id="fileInput" name="uploadedFile" style="display: none;" />
 
     <div class="d-flex justify-content-end gap-2">
-        <!-- Import Button (Triggers File Dialog) -->
-        <button type="button" class="btn btn-secondary" onclick="openFileDialog()">Import</button>
-
-        <!-- Export & Generate Buttons -->
-        <button type="submit" asp-page-handler="Export" class="btn btn-secondary">Export</button>
-
+        <button type="button" onclick="openFileDialog()" class="btn btn-secondary">Import</button>
+        <button type="submit" onclick="setHandler('Export')" class="btn btn-secondary">Export</button>
+        <button type="submit" onclick="setHandler('Generate')" class="btn btn-primary">Download PDF</button>
     </div>
-</form>
 
-<form method="post" asp-page-handler="Generate" enctype="multipart/form-data">
     <div class="row">
-
 
         <div class="col-md-6">
             <h3>Neuer Arbeitgeber</h3>
@@ -97,9 +91,6 @@
                 <img id="profilePreview" class="img-fluid mt-2" style="max-width: 200px; max-height: 200px;"/>
             </div>
 
-            <div class="d-flex justify-content-end gap-2">
-                <button type="submit" asp-page-handler="Generate" class="btn btn-primary">Download PDF</button>
-            </div>
         </div>
 
     </div>
@@ -275,12 +266,22 @@
 
 <script>
 
+    function setHandler(handlerName) {
+        document.getElementById('handler').value = handlerName;
+    }
+
     function openFileDialog() {
         let fileInput = document.getElementById('fileInput');
-        fileInput.click();
+
+        // Set the handler to "Import" before opening the file dialog
+        document.getElementById('handler').value = "Import";
+
+        fileInput.click();  // Open the file dialog
+
         fileInput.onchange = function () {
             if (fileInput.files.length > 0) {
-                fileInput.closest("form").submit();
+                let form = fileInput.closest("form");
+                form.submit();  // Automatically submit the form after file selection
             }
         };
     }

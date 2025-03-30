@@ -5,15 +5,44 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
+using CVGenerator.LaTeX;
+
 namespace CVGenerator.Pages;
 
-public class FormPageModel : PageModel
+public abstract class DocumentPageModel : PageModel
 {
-	[BindProperty] public IFormFile UploadedFile { get; set; }
+	public abstract string DataFolder { get; }
+	public abstract string FileName { get; }
+
+	protected abstract Task OnGenerate();
+
+	[BindProperty] public IFormFile? UploadedFile { get; set; }
 
 	private IEnumerable<PropertyInfo> _props;
 
-	public FormPageModel() => _props = GetProperties();
+	protected DocumentPageModel() => _props = GetProperties();
+
+	public async Task<IActionResult> OnPostAsync() =>
+		Request.Form["handler"].ToString() switch
+		{
+			"Import" => await OnPostImportAsync(),
+			"Export" => await OnPostExportAsync(),
+			"Generate" => await OnPostGenerateAsync(),
+			_ => Page()
+		};
+
+	public async Task<IActionResult> OnPostGenerateAsync()
+	{
+		OnSet();
+
+		Directory.CreateDirectory("temp");
+
+		await OnGenerate();
+
+		var pdfBytes = await this.GetFields<string>()!.GeneratePdf(DataFolder);
+
+		return File(pdfBytes, "application/pdf", FileName + ".pdf");
+	}
 
 	public async Task<IActionResult> OnPostExportAsync() =>
 		File(Encoding.UTF8.GetBytes(Serialize()), "application/json", GetType().Name + ".json");
