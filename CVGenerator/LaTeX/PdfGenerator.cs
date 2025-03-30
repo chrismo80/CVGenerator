@@ -13,8 +13,6 @@ public static class PdfGenerator
     public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input,
         string dataFolder, string main = "main", string template = "template")
     {
-        CopyDirectory(Path.Combine(cd, "Data", dataFolder), tempFolder);
-
         var templateFile = Path.Combine(tempFolder, template + ".tex");
 
         var info = await File.ReadAllTextAsync(templateFile);
@@ -37,7 +35,7 @@ public static class PdfGenerator
 
         var data = await File.ReadAllBytesAsync($"{mainFile}.pdf");
 
-        Directory.Delete(tempFolder, true);
+        //Directory.Delete(tempFolder, true);
 
         return data;
     }
@@ -59,14 +57,5 @@ public static class PdfGenerator
             content = content.Replace(PREFIX + name, value?.ToString()?.Sanitize());
 
         return content;
-    }
-
-    private static void CopyDirectory(string source, string target)
-    {
-        foreach (string dir in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
-            Directory.CreateDirectory(dir.Replace(source, target));
-
-        foreach (string file in Directory.GetFiles(source, "*.*",SearchOption.AllDirectories))
-            File.Copy(file, file.Replace(source, target), true);
     }
 }

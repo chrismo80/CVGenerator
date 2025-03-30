@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Reflection;
 
 using CVGenerator.LaTeX;
 
@@ -15,6 +15,8 @@ public abstract class DocumentPageModel : PageModel
 	public abstract string FileName { get; }
 
 	protected abstract Task OnGenerate();
+
+	static readonly string cd = Directory.GetCurrentDirectory();
 
 	[BindProperty] public IFormFile? UploadedFile { get; set; }
 
@@ -35,7 +37,9 @@ public abstract class DocumentPageModel : PageModel
 	{
 		OnSet();
 
-		Directory.CreateDirectory("temp");
+		Directory.CreateDirectory(Path.Combine(cd, "temp"));
+
+		CopyDirectory(Path.Combine(cd, "Data", DataFolder), Path.Combine(cd, "temp"));
 
 		await OnGenerate();
 
@@ -79,7 +83,6 @@ public abstract class DocumentPageModel : PageModel
 		Deserialize(Load(GetType().Name));
 	}
 
-
 	public string Serialize()
 	{
 		var dict = _props.ToDictionary(p => p.Name, p => p.GetValue(this));
@@ -108,4 +111,15 @@ public abstract class DocumentPageModel : PageModel
 
 	private string? Load(string name) =>
 		HttpContext.Session.GetString(name);
+
+	private static void CopyDirectory(string source, string target)
+	{
+		Directory.CreateDirectory(target);
+
+		foreach (string dir in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+			Directory.CreateDirectory(dir.Replace(source, target));
+
+		foreach (string file in Directory.GetFiles(source, "*.*",SearchOption.AllDirectories))
+			System.IO.File.Copy(file, file.Replace(source, target), true);
+	}
 }
