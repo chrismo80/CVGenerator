@@ -11,7 +11,7 @@ public static class PdfGenerator
     private static readonly string tempFolder = Path.Combine(cd, "temp");
 
     public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input,
-        string dataFolder, string main = "main", string template = "template")
+        string main = "main", string template = "template")
     {
         var templateFile = Path.Combine(tempFolder, template + ".tex");
 
@@ -31,11 +31,11 @@ public static class PdfGenerator
             CreateNoWindow = false
         };
 
-        await Process.Start(startInfo)!.RenderPdf();
+        await Process.Start(startInfo).RenderPdf();
 
         var data = await File.ReadAllBytesAsync($"{mainFile}.pdf");
 
-        //Directory.Delete(tempFolder, true);
+        Directory.Delete(tempFolder, true);
 
         return data;
     }
