@@ -23,7 +23,6 @@ public class LetterModel(ILogger<LetterModel> logger) : DocumentPageModel
 
     [BindProperty] public string Summary { get; set; } = "";
     [BindProperty] public string Dear { get; set; } = "";
-
     [BindProperty] public string Text { get; set; } = "";
 
     protected override async Task OnGenerate()

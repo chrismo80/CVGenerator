@@ -36,19 +36,24 @@ public class CVModel(ILogger<CVModel> logger) : DocumentPageModel
     [BindProperty] public List<Info> Educations { get; set; } = [];
     [BindProperty] public List<Info> WorkExperiences { get; set; } = [];
     [BindProperty] public List<Info> Projects { get; set; } = [];
+
     [BindProperty] public List<Skill> Skills { get; set; } = [];
     [BindProperty] public List<Skill> Languages { get; set; } = [];
     [BindProperty] public List<Skill> Versionings { get; set; } = [];
 
     public string? Foto => ProfilePicture?.FileName;
+
     public string? Education => Educations.Format("cveventleft");
     public string? WorkExperience => WorkExperiences.Format("cveventright");
     public string? Project => Projects.Format("cveventproject");
+
     public string? Skill => Skills.FormatBarChart();
     public string? Language => Languages.FormatPieChart();
     public string? Versioning => Versionings.FormatPieChart();
+
     public string? MinYear => (Timeline.Any() ? Timeline.Min(e => e.Start.Year) : 2003 + 1).ToString();
     public string? MaxYear => (Timeline.Any() ? Timeline.Max(e => e.End.Year) : 2012 + 0).ToString();
+
     public List<Info> Timeline => Educations.Concat(WorkExperiences).Concat(Projects).ToList();
 
     protected override async Task OnGenerate()
