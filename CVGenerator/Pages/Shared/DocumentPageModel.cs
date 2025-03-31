@@ -23,14 +23,13 @@ public abstract class DocumentPageModel : PageModel
 
     protected DocumentPageModel() => _props = GetProperties();
 
-    public async Task<IActionResult> OnPostAsync() =>
-        Request.Form["handler"].ToString() switch
-        {
-            "Import" => await OnPostImportAsync(),
-            "Export" => OnPostExport(),
-            "Generate" => await OnPostGenerateAsync(),
-            _ => Page()
-        };
+    public async Task<IActionResult> OnPostAsync() => Request.Form["handler"].ToString() switch
+    {
+        "Import" => await OnPostImportAsync(),
+        "Export" => OnPostExport(),
+        "Generate" => await OnPostGenerateAsync(),
+        _ => Page()
+    };
 
     public async Task<IActionResult> OnPostGenerateAsync()
     {
@@ -66,11 +65,9 @@ public abstract class DocumentPageModel : PageModel
         return RedirectToPage();
     }
 
-    public void OnSet() =>
-        Save(GetType().Name, Serialize());
+    public void OnSet() => Save(GetType().Name, Serialize());
 
-    public void OnGet() =>
-        Deserialize(Load(GetType().Name));
+    public void OnGet() => Deserialize(Load(GetType().Name));
 
     public string Serialize() =>
         JsonSerializer.Serialize(_props.ToDictionary(p => p.Name, p => p.GetValue(this)), options);
@@ -91,9 +88,7 @@ public abstract class DocumentPageModel : PageModel
         .Where(prop => !prop.PropertyType.IsInterface)
         .Where(prop => Attribute.IsDefined(prop, typeof(BindPropertyAttribute)));
 
-    private void Save(string name, string value) =>
-        HttpContext.Session.SetString(name, value);
+    private void Save(string name, string value) => HttpContext.Session.SetString(name, value);
 
-    private string? Load(string name) =>
-        HttpContext.Session.GetString(name);
+    private string? Load(string name) => HttpContext.Session.GetString(name);
 }
