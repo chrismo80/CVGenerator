@@ -20,3 +20,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.preview-image {
+  height: 500px;
+  margin: 20px; /* Adds spacing around the image */
+  object-fit: cover; /* Ensures it fills the space without distortion */
+}
