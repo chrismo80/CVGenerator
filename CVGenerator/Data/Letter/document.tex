@@ -4,6 +4,9 @@
 \usepackage{xifthen}
 \usepackage{calc}
 \usepackage{trimspaces}
+\usepackage{xstring}
+
+
 
 
 % set font default
@@ -88,16 +91,15 @@
 \newcommand{\Street}{@Street}
 \newcommand{\City}{@City}
 
-\ExplSyntaxOn
-\NewDocumentCommand{\getNth}{mmm}
-  {
-    % #1 string, #2 separator, #3 index
-    \seq_set_split:Nnx \l_tmpa_seq { #2 } { #1 }
-    \seq_item:Nn \l_tmpa_seq { #3 }
-  }
-\ExplSyntaxOff
 
-\newcommand{\CityOnly}{\getNth{\City}{ }{-1}}
+\newcommand{\getLast}[1]{
+	\IfSubStr{#1}{ }% Check if there is a space
+		{\StrBehind{#1}{ }}% If yes, extract last word
+	{#1}% If no space, return the whole string
+}
+
+
+\newcommand{\CityOnly}{\getLast{\City}}
 
 \newcommand{\Signature}
 {
