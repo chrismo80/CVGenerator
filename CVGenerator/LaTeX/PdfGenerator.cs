@@ -36,6 +36,17 @@ public static class PdfGenerator
         return data;
     }
 
+    public static void CopyToTempDirectory(this string dataDirectory)
+    {
+        Directory.CreateDirectory(TempFolder);
+
+        foreach (string dir in Directory.GetDirectories(dataDirectory, "*", SearchOption.AllDirectories))
+            Directory.CreateDirectory(dir.Replace(dataDirectory, TempFolder));
+
+        foreach (string file in Directory.GetFiles(dataDirectory, "*.*", SearchOption.AllDirectories))
+            File.Copy(file, file.Replace(dataDirectory, TempFolder), true);
+    }
+
     public static async Task SaveAsyncToTempFolder(this IFormFile? image, string filename)
     {
         if (image == null)

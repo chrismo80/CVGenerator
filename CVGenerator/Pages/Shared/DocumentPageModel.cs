@@ -11,11 +11,9 @@ namespace CVGenerator.Pages;
 
 public abstract class DocumentPageModel : PageModel
 {
-    static readonly string cd = Directory.GetCurrentDirectory();
+    static readonly JsonSerializerOptions options = new() { WriteIndented = true };
 
-    static readonly string tempFolder = Path.Combine(cd, "temp");
-
-    private IEnumerable<PropertyInfo> _props;
+    private readonly IEnumerable<PropertyInfo> _props;
 
     public abstract string DataFolder { get; }
 
@@ -29,7 +27,7 @@ public abstract class DocumentPageModel : PageModel
         Request.Form["handler"].ToString() switch
         {
             "Import" => await OnPostImportAsync(),
-            "Export" => await OnPostExportAsync(),
+            "Export" => OnPostExport(),
             "Generate" => await OnPostGenerateAsync(),
             _ => Page()
         };
@@ -38,7 +36,7 @@ public abstract class DocumentPageModel : PageModel
     {
         OnSet();
 
-        CopyDirectory(Path.Combine(cd, "Data", DataFolder), tempFolder);
+        Path.Combine(Directory.GetCurrentDirectory(), "Data", DataFolder).CopyToTempDirectory();
 
         await OnGenerate();
 
@@ -47,7 +45,7 @@ public abstract class DocumentPageModel : PageModel
         return File(pdfBytes, "application/pdf", FileName + ".pdf");
     }
 
-    public async Task<IActionResult> OnPostExportAsync() =>
+    public IActionResult OnPostExport() =>
         File(Encoding.UTF8.GetBytes(Serialize()), "application/json", GetType().Name + ".json");
 
     public async Task<IActionResult> OnPostImportAsync()
@@ -63,7 +61,7 @@ public abstract class DocumentPageModel : PageModel
         var fileContent = await reader.ReadToEndAsync();
 
         try { Save(GetType().Name, fileContent); }
-        catch (Exception ex) { ModelState.AddModelError("", "Invalid file format."); }
+        catch (Exception) { ModelState.AddModelError("", "Invalid file format."); }
 
         return RedirectToPage();
     }
@@ -74,36 +72,19 @@ public abstract class DocumentPageModel : PageModel
     public void OnGet() =>
         Deserialize(Load(GetType().Name));
 
-    public string Serialize()
-    {
-        var dict = _props.ToDictionary(p => p.Name, p => p.GetValue(this));
-
-        return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
-    }
+    public string Serialize() =>
+        JsonSerializer.Serialize(_props.ToDictionary(p => p.Name, p => p.GetValue(this)), options);
 
     public void Deserialize(string? json)
     {
-        if (json is null)
+        if (json is null || JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json) is not Dictionary<string, JsonElement> dict)
             return;
-
-        var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
 
         foreach (var prop in _props)
             prop.SetValue(this, dict[prop.Name].Deserialize(prop.PropertyType));
     }
 
     protected abstract Task OnGenerate();
-
-    private static void CopyDirectory(string source, string target)
-    {
-        Directory.CreateDirectory(target);
-
-        foreach (string dir in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
-            Directory.CreateDirectory(dir.Replace(source, target));
-
-        foreach (string file in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
-            System.IO.File.Copy(file, file.Replace(source, target), true);
-    }
 
     private IEnumerable<PropertyInfo> GetProperties() => GetType()
         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
