@@ -77,7 +77,50 @@
 
 \usepackage[default]{gillius}
 
-\input{template.tex}
+
+
+
+%----------------------------------------------------------------------------------------
+%	VARIALBE DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+\newcommand{\Name}{@Name}
+\newcommand{\Street}{@Street}
+\newcommand{\City}{@City}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\getNth}{mmm}
+  {
+    % #1 string, #2 separator, #3 index
+    \seq_set_split:Nnx \l_tmpa_seq { #2 } { #1 }
+    \seq_item:Nn \l_tmpa_seq { #3 }
+  }
+\ExplSyntaxOff
+
+\newcommand{\CityOnly}{\getNth{\City}{ }{-1}}
+
+\newcommand{\Signature}
+{
+    \includegraphics[width=0.4\linewidth]{signature}
+}
+
+
+\newcommand{\ToName}{@ToName}
+\newcommand{\ToStreet}{@ToStreet}
+\newcommand{\ToCity}{@ToCity}
+
+\newcommand{\Summary}{@Summary}
+
+\newcommand{\Dear}{@Dear}
+
+\newcommand{\Text}{@Text}
+
+%----------------------------------------------------------------------------------------
+%	VARIALBE DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+
+
 
 \pagecolor{backcolor}
 

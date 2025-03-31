@@ -6,38 +6,44 @@ public static class PdfGenerator
 {
     const string PREFIX = "@";
 
-    static readonly string cd = Directory.GetCurrentDirectory();
-
-    private static readonly string tempFolder = Path.Combine(cd, "temp");
+    public static string TempFolder => Path.Combine(Directory.GetCurrentDirectory(), "temp");
 
     public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input,
-        string main = "main", string template = "template")
+        string main = "document")
     {
-        var templateFile = Path.Combine(tempFolder, template + ".tex");
+        var mainFile = Path.Combine(TempFolder, main);
 
-        var info = await File.ReadAllTextAsync(templateFile);
+        var info = await File.ReadAllTextAsync(mainFile + ".tex");
 
-        await File.WriteAllTextAsync(templateFile, info.FillTemplate(input));
-
-        var mainFile = Path.Combine(tempFolder, main);
+        await File.WriteAllTextAsync(mainFile + ".tex", info.FillTemplate(input));
 
         var startInfo = new ProcessStartInfo()
         {
             FileName = "pdflatex",
-            Arguments = $"-output-directory={tempFolder} {mainFile}.tex",
+            Arguments = $"-output-directory={TempFolder} {mainFile}.tex",
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = false
         };
 
-        await Process.Start(startInfo).RenderPdf();
+        await Process.Start(startInfo)!.RenderPdf();
 
         var data = await File.ReadAllBytesAsync($"{mainFile}.pdf");
 
-        Directory.Delete(tempFolder, true);
+        Directory.Delete(TempFolder, true);
 
         return data;
+    }
+
+    public static async Task SaveAsyncToTempFolder(this IFormFile? image, string filename)
+    {
+        if (image == null)
+            return;
+
+        await using var fileStream = new FileStream(Path.Combine(TempFolder, filename), FileMode.Create);
+
+        await image.CopyToAsync(fileStream);
     }
 
     private static async Task RenderPdf(this Process process)

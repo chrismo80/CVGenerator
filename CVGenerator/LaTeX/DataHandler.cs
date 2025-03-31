@@ -1,14 +1,10 @@
 using System.Reflection;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace CVGenerator.LaTeX;
 
 public static partial class DataHandler
 {
-    [GeneratedRegex(@"(?<PRE>.*)(?<REPLACE>.*\[(?<URL>.*)\:(?<TEXT>.*)\])(?<POST>.*)")]
-    private static partial Regex Link();
-
     public static Dictionary<string, object?> GetFields<TProperty>(this object page) => page.GetType()
         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
         .Where(prop => prop.PropertyType == typeof(TProperty))
@@ -53,6 +49,9 @@ public static partial class DataHandler
             .Replace("~", @"\textasciitilde{}")
             .Replace("^", @"\textasciicircum{}");
     }
+
+    [GeneratedRegex(@"(?<PRE>.*)(?<REPLACE>.*\[(?<URL>.*)\:(?<TEXT>.*)\])(?<POST>.*)")]
+    private static partial Regex Link();
 
     private static string ParseLinks(this string text)
     {

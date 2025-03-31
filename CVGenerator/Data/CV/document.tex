@@ -459,7 +459,87 @@
 \definecolor{color3}{HTML}{AABBCC} % #EEDDCC
 
 
-\input{template.tex}
+
+
+%----------------------------------------------------------------------------------------
+%	VARIALBE DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+\newcommand{\CompanyName}{@Company}
+\newcommand{\Address}{@Address}
+\newcommand{\City}{@City}
+\newcommand{\Recruiter}{@Recruiter}
+\newcommand{\NewRole}{@NewRole}
+\newcommand{\Product}{@Product}
+
+\newcommand{\Name}{@Name}
+\newcommand{\Location}{@Location}
+\newcommand{\Mail}{@Email}
+\newcommand{\Phone}{@Phone}
+\newcommand{\Link}{@Link}
+\newcommand{\Role}{@Role}
+\newcommand{\Degree}{@Degree}
+\newcommand{\Sign}{signature.png}
+\newcommand{\Picture}{foto.png}
+
+
+\newcommand{\Letter}{@Letter}
+
+
+\newcommand{\Postskriptum}{@Postskriptum}
+
+
+\newcommand{\Timeline}{
+    \begin{cvtimeline}{@MinYear}{@MaxYear}{21}{\linewidth}{Bildungsweg}{Berufserfahrung}
+    @Education
+    @Project
+    @WorkExperience
+    \end{cvtimeline}
+}
+
+
+\newcommand{\Summary}{@Summary}
+
+
+\newcommand{\Skills}{
+    \Large{\textcolor{textcolor}{\textbf{Skills}}}
+    \newline
+
+    \small
+    \mbox{
+        \hspace{-10pt}
+        \begin{barchart}{10}{1.75}{backcolor}{textcolor}{backcolor}{color1}{color2}{color3}
+        @Skill
+        \end{barchart}
+        \hspace{10pt}
+    }
+}
+
+
+\newcommand{\DiagramOne}{
+    \Large{\textcolor{textcolor}{\textbf{Sprachen}}}
+    \newline
+    \begin{piechart}{360}{1.25}{backcolor}{textcolor}{backcolor}{\faKeyboard}
+    @Language
+    \end{piechart}
+}
+
+
+\newcommand{\DiagramTwo}{
+    \Large{\textcolor{textcolor}{\textbf{Versionsverwaltung}}}
+    \newline
+    \begin{piechart}{360}{1}{backcolor}{textcolor}{backcolor}{\faCodeBranch}
+    @Versioning
+    \end{piechart}
+}
+
+%----------------------------------------------------------------------------------------
+%	VARIALBE DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+
+
+
 
 
 

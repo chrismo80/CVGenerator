@@ -21,7 +21,7 @@ public class Info
 
 public class Skill
 {
-    public string Text { get; set; }
+    public string Text { get; set; } = "";
 
     public int Percent { get; set; }
 
