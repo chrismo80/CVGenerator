@@ -11,6 +11,10 @@
     <input type="hidden" id="handler" name="handler" value="" />
     <input type="file" id="fileInput" name="uploadedFile" style="display: none;" />
 
+    <div class="d-flex justify-content-start gap-2">
+        <button type="submit" formnovalidate onclick="setHandler('LoadExample')" class="btn btn-secondary">Beispiel</button>
+    </div>
+
     <div class="d-flex justify-content-end gap-2">
         <button type="button" onclick="openFileDialog()" class="btn btn-secondary">Import</button>
         <button type="submit" onclick="setHandler('Export')" class="btn btn-secondary">Export</button>

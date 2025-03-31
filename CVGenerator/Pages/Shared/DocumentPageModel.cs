@@ -25,9 +25,10 @@ public abstract class DocumentPageModel : PageModel
 
     public async Task<IActionResult> OnPostAsync() => Request.Form["handler"].ToString() switch
     {
+        "Generate" => await OnPostGenerateAsync(),
+        "LoadExample" => await OnPostLoadExampleAsync(),
         "Import" => await OnPostImportAsync(),
         "Export" => OnPostExport(),
-        "Generate" => await OnPostGenerateAsync(),
         _ => Page()
     };
 
@@ -59,10 +60,18 @@ public abstract class DocumentPageModel : PageModel
 
         var fileContent = await reader.ReadToEndAsync();
 
-        try { Save(GetType().Name, fileContent); }
-        catch (Exception) { ModelState.AddModelError("", "Invalid file format."); }
+        return await SetToPage(fileContent);
+    }
 
-        return RedirectToPage();
+    public async Task<IActionResult> OnPostLoadExampleAsync()
+    {
+        var file = Path.Combine(Directory.GetCurrentDirectory(), "Data", DataFolder, "fake.json");
+
+        using var reader = new StreamReader(file);
+
+        var fileContent = await reader.ReadToEndAsync();
+
+        return await SetToPage(fileContent);
     }
 
     public void OnSet() => Save(GetType().Name, Serialize());
@@ -82,6 +91,17 @@ public abstract class DocumentPageModel : PageModel
     }
 
     protected abstract Task OnGenerate();
+
+    private async Task<IActionResult> SetToPage(string? json)
+    {
+        if (json == null)
+            return Page();
+
+        try { Save(GetType().Name, json); }
+        catch (Exception) { ModelState.AddModelError("", "Invalid file format."); }
+
+        return RedirectToPage();
+    }
 
     private IEnumerable<PropertyInfo> GetProperties() => GetType()
         .GetProperties(BindingFlags.Public | BindingFlags.Instance)

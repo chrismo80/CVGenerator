@@ -1,0 +1,202 @@
+{
+  "Company": "Traumfirma",
+  "Address": "Strasse 123",
+  "City": "Frankfurt",
+  "Recruiter": "Sehr geehrte Frau Recruiterin",
+  "NewRole": "Software-Architekt",
+  "Product": "Produkt XY",
+  "Name": "Max Mustermann",
+  "Location": "Mainz",
+  "Email": "max@gmail.de",
+  "Link": "github.com/max",
+  "Phone": "0133 / 123 456 78",
+  "Role": "Senior Softwareentwickler",
+  "Degree": "Diplomingenieur (FH) - Elektrotechnik (Nachrichten- und Kommunikationstechnik)",
+  "Summary": "C# Softwareentwickler mit \u00FCber 15 Jahren Erfahrung im Bereich Automationssoftware im Sondermaschinenbau.\r\n\r\nKommunikationsst\u00E4rken: \u00DCbersetzen von Anforderungen f\u00FCr Entwickler als auch Abstraktion von Softwarefunktionen f\u00FCr Projektmanager und Kunden.\r\n\r\nAusgepr\u00E4gte Neugier und logisches Denkverm\u00F6gen, problemlose Einarbeitung in neue Themengebiete, sowohl bei Werkzeugen als auch Technologien.",
+  "Letter": "Sie suchen einen leidenschaftlichen C#-Entwickler? Mit \u00FCber 15 Jahren Erfahrung in der Softwareentwicklung ist diese Arbeit f\u00FCr mich weit mehr als nur ein Beruf \u2013 es ist eine Aufgabe, die ich mit Engagement und Freude angehe.\r\n\r\nIn dieser Zeit habe ich zahlreiche individuelle Desktop-Anwendungen entwickelt, von der Konzeption bis zur Umsetzung. Dabei umfassten meine Aufgaben sowohl die eigenst\u00E4ndige Umsetzung als auch die Unterst\u00FCtzung von Kollegen in deren Projekten. Dar\u00FCber hinaus entwarf und pflegte ich modulare Softwarekomponenten, die in unterschiedlichen Projekten wiederverwendet werden konnten und so ma\u00DFgeblich zur Verk\u00FCrzung der Entwicklungszeiten beitrugen.\r\n\r\nTrotz meiner Erfahrungen mit verschiedenen Plattformen und Technologien blieb C# stets der Kern meiner Arbeit. Die Bereitstellung und Anbindung externer APIs, die Integration von SQL-Datenbanken mittels Entity Framework sowie die Umsetzung von Datenvisualisierungen mit Microsoft Reporting Services geh\u00F6rten stets zu den wesentlichen Aspekten der Applikationen. Ich bin zuversichtlich, dass ich mich rasch in Ihre spezifischen Werkzeuge und Technologien einarbeiten werde und somit zeitnah einen wertvollen Beitrag leisten kann.\r\n\r\nMeine langj\u00E4hrige T\u00E4tigkeit im Sondermaschinenbau hat meine F\u00E4higkeit gesch\u00E4rft, flexibel und l\u00F6sungsorientiert auf neue Anforderungen zu reagieren. Deshalb lege ich besonderen Wert auf die Lesbarkeit, Skalierbarkeit und Wiederverwendbarkeit von Code, um nachhaltige L\u00F6sungen zu schaffen.\r\n\r\nNun suche ich ein neues berufliches Zuhause, das Softwareentwicklung als zentralen Bestandteil seiner Produkte versteht \u2013 genau das reizt mich an der \\CompanyName. Lassen Sie uns doch in einem pers\u00F6nlichen Gespr\u00E4ch herausfinden, ob es in \\City\\ eine passende Position gibt, beispielsweise im Bereich \\Product, die ich f\u00FCr Ihr Unternehmen besetzen kann, um Ihr Team mit meiner Expertise zu bereichern.",
+  "Postskriptum": "P.S.: Um Ihnen einen ersten Eindruck meiner Code-Qualit\u00E4t zu geben, finden Sie ein [https://github.com/max/project:Repository] verlinkt, in dem ich Avalonia als UI-Framework f\u00FCr Desktop-Anwendungen evaluiert habe.",
+  "Educations": [
+    {
+      "Start": "2000-04-01",
+      "End": "2001-06-01",
+      "Text": "Abitur",
+      "Details": "Bad Kreuznach",
+      "Content": ""
+    },
+    {
+      "Start": "2002-08-01",
+      "End": "2008-01-01",
+      "Text": "Diplomingenieur (FH)",
+      "Details": "Elektrotechnik\\\\FH Bingen",
+      "Content": ""
+    }
+  ],
+  "WorkExperiences": [
+    {
+      "Start": "2001-07-01",
+      "End": "2002-05-01",
+      "Text": "Zivildienst",
+      "Details": "(Tagesf\u00F6rderst\u00E4tte)",
+      "Content": ""
+    },
+    {
+      "Start": "2005-01-01",
+      "End": "2006-08-01",
+      "Text": "IBM, Mainz",
+      "Details": "(Werkstudent)",
+      "Content": ""
+    },
+    {
+      "Start": "2006-11-01",
+      "End": "2007-04-01",
+      "Text": "SCHOTT, Mainz",
+      "Details": "(Praktikant)",
+      "Content": ""
+    },
+    {
+      "Start": "2007-08-01",
+      "End": "2008-01-01",
+      "Text": "ESCO, Mainz",
+      "Details": "(Diplomand)",
+      "Content": ""
+    },
+    {
+      "Start": "2008-02-01",
+      "End": "2025-06-01",
+      "Text": "ESCO, Mainz",
+      "Details": null,
+      "Content": ""
+    },
+    {
+      "Start": "2025-07-01",
+      "End": "2026-06-01",
+      "Text": "Traumfirma, Frankfurt",
+      "Details": null,
+      "Content": ""
+    }
+  ],
+  "Projects": [
+    {
+      "Start": "2002-04-01",
+      "End": "2002-04-01",
+      "Text": "Betreuung von Menschen mit Behinderung\\\\in einer Tagesf\u00F6rderst\u00E4tte",
+      "Details": "",
+      "Content": ""
+    },
+    {
+      "Start": "2005-06-01",
+      "End": "2006-02-01",
+      "Text": "Lotus Notes Datenbankentwicklung",
+      "Details": "",
+      "Content": ""
+    },
+    {
+      "Start": "2009-01-01",
+      "End": "2011-01-01",
+      "Text": "Integration von Mess- und Pr\u00FCftechnik in Prozessautomation (Hardwareansteuerung, Implementierung von Mess-Algorithmen in C#)",
+      "Details": "",
+      "Content": ""
+    },
+    {
+      "Start": "2012-01-01",
+      "End": "2014-01-01",
+      "Text": "Erstellen von projektspezifischen .NET Framework Desktop-Applikationen im Sondermaschinenbau (Front- und Back-End)",
+      "Details": "",
+      "Content": ""
+    },
+    {
+      "Start": "2015-01-01",
+      "End": "2017-01-01",
+      "Text": "Pflege des hauseigenen projektunabh\u00E4ngigen C#-Frameworks zur Erstellung von Maschinensteuerungen und -visualisierungen (Mocks, Unit-Tests)",
+      "Details": "",
+      "Content": ""
+    },
+    {
+      "Start": "2018-01-01",
+      "End": "2019-01-01",
+      "Text": "Anforderungsanalysen (Pflichten- und Lastenhefte)",
+      "Details": "",
+      "Content": ""
+    },
+    {
+      "Start": "2020-01-01",
+      "End": "2022-01-01",
+      "Text": "Integration unterschiedlichster Technologien in Projekt-Applikationen (TwinCat, Halcon, OPC-UA, REST, gRPC, GenICam, 3rd party libraries)",
+      "Details": "",
+      "Content": ""
+    },
+    {
+      "Start": "2023-01-01",
+      "End": "2024-01-01",
+      "Text": "Design von Datenr\u00FCckverfolgbarkeitssystemen mittels Entity Framework inkl. Berichtswesen (SQL, SSRS)",
+      "Details": "",
+      "Content": ""
+    }
+  ],
+  "Skills": [
+    {
+      "Text": "Kommunikation",
+      "Percent": 100,
+      "Level": 1
+    },
+    {
+      "Text": "Teamf\u00E4higkeit",
+      "Percent": 100,
+      "Level": 1
+    },
+    {
+      "Text": "Versionsverwaltung",
+      "Percent": 90,
+      "Level": 1
+    },
+    {
+      "Text": "Microsoft Reporting",
+      "Percent": 80,
+      "Level": 2
+    },
+    {
+      "Text": "Entity Framework",
+      "Percent": 70,
+      "Level": 2
+    },
+    {
+      "Text": "REST / gRPC",
+      "Percent": 20,
+      "Level": 3
+    },
+    {
+      "Text": "XAML (Avalonia)",
+      "Percent": 20,
+      "Level": 3
+    }
+  ],
+  "Languages": [
+    {
+      "Text": "C#",
+      "Percent": 70,
+      "Level": 1
+    },
+    {
+      "Text": "SQL",
+      "Percent": 25,
+      "Level": 2
+    },
+    {
+      "Text": "Rust",
+      "Percent": 5,
+      "Level": 3
+    }
+  ],
+  "Versionings": [
+    {
+      "Text": "Mercurial",
+      "Percent": 90,
+      "Level": 1
+    },
+    {
+      "Text": "Git",
+      "Percent": 10,
+      "Level": 3
+    }
+  ]
+}
