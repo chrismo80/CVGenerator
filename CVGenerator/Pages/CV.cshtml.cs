@@ -74,14 +74,16 @@ public class CVModel(ILogger<CVModel> logger) : DocumentPageModel
 
     public string? Versioning => Versionings.FormatPieChart();
 
-    public string? MinYear => (Timeline.Any() ? Timeline.Min(e => e.Start.Year) : 2003 + 1).ToString();
+    public string? MinYear => ((Timeline.Any() ? Timeline.Min(e => e.Start.Year) : 2003) + 1).ToString();
 
-    public string? MaxYear => (Timeline.Any() ? Timeline.Max(e => e.End.Year) : 2012 + 0).ToString();
+    public string? MaxYear => ((Timeline.Any() ? Timeline.Max(e => e.End.Year) : 2012) + 0).ToString();
 
     public List<Info> Timeline => Educations.Concat(WorkExperiences).Concat(Projects).ToList();
 
     protected override async Task OnGenerate()
     {
+        _logger.LogInformation(Timeline.Min(e => e.Start.Year).ToString());
+
         await ProfilePicture.SaveAsyncToTempFolder("foto.png");
         await Signature.SaveAsyncToTempFolder("signature.png");
     }
