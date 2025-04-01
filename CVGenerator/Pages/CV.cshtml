@@ -218,7 +218,7 @@
             <hr />
 
             <!-- Languages Section -->
-            <h3>Languages</h3>
+            <h3>Sprachen</h3>
             <div id="languages-container">
                 @for (int i = 0; i < Model.Languages.Count; i++)
                 {
@@ -227,11 +227,11 @@
                             <input asp-for="Languages[i].Text" class="form-control" placeholder="Sprache" required />
                         </div>
                         <div class="col-md-4">
-                            <input asp-for="Languages[i].Percent" type="range" class="form-range" min="0" max="100" />
+                            <input asp-for="Languages[i].Percent" type="number" class="form-range" min="0" max="100" />
                             <span id="language-percent-@i" class="language-percent">0%</span>
                         </div>
                         <div class="col-md-3">
-                            <input asp-for="Languages[i].Level" type="range" class="form-range" min="1" max="3" />
+                            <input asp-for="Languages[i].Level" type="number" class="form-range" min="1" max="3" />
                             <span id="language-level-@i" class="language-level">1</span>
                         </div>
                         <div class="col-md-2 text-end">
@@ -385,16 +385,39 @@
             let index = container.getElementsByClassName("skill-entry").length;
             let newEntry = `
             <div class="skill-entry row mb-2 d-flex align-items-center">
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <input name="Skills[${index}].Text" class="form-control" placeholder="Fähigkeit" required />
                 </div>
-                <div class="col-md-4">
-                    <input name="Skills[${index}].Percent" type="range" class="form-range" min="0" max="100" step="5" value="100" />
-                    <span id="skill-percent-${index}" class="skill-percent">100%</span>
+                <div class="col-md-2">
+                    <select name="Skills[${index}].Percent" class="form-select">
+                        <option value="100">100%</option>
+                        <option value="95">95%</option>
+                        <option value="90">90%</option>
+                        <option value="85">85%</option>
+                        <option value="80">80%</option>
+                        <option value="75">75%</option>
+                        <option value="70">70%</option>
+                        <option value="65">65%</option>
+                        <option value="60">60%</option>
+                        <option value="55">55%</option>
+                        <option value="50">50%</option>
+                        <option value="45">45%</option>
+                        <option value="40">40%</option>
+                        <option value="35">35%</option>
+                        <option value="30">30%</option>
+                        <option value="25">25%</option>
+                        <option value="20">20%</option>
+                        <option value="15">15%</option>
+                        <option value="10">10%</option>
+                        <option value="5">5%</option>
+                    </select>
                 </div>
                 <div class="col-md-3">
-                    <input name="Skills[${index}].Level" type="range" class="form-range" min="1" max="3" step="1" value="1" />
-                    <span id="skill-level-${index}" class="skill-level">1</span>
+                    <select name="Skills[${index}].Level" class="form-select">
+                        <option value="1">Professionell</option>
+                        <option value="2">Fortgeschritten</option>
+                        <option value="3">Grundkenntnisse</option>
+                    </select>
                 </div>
                 <div class="col-md-2 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-skill">-</button>
@@ -417,16 +440,39 @@
             let index = container.getElementsByClassName("language-entry").length;
             let newEntry = `
             <div class="language-entry row mb-2 d-flex align-items-center">
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <input name="Languages[${index}].Text" class="form-control" placeholder="Sprache" required />
                 </div>
-                <div class="col-md-4">
-                    <input name="Languages[${index}].Percent" type="range" class="form-range" min="0" max="100" step="5" value="100" />
-                    <span id="language-percent-${index}" class="language-percent">0%</span>
+                <div class="col-md-2">
+                    <select name="Languages[${index}].Percent" class="form-select">
+                        <option value="100">100%</option>
+                        <option value="95">95%</option>
+                        <option value="90">90%</option>
+                        <option value="85">85%</option>
+                        <option value="80">80%</option>
+                        <option value="75">75%</option>
+                        <option value="70">70%</option>
+                        <option value="65">65%</option>
+                        <option value="60">60%</option>
+                        <option value="55">55%</option>
+                        <option value="50">50%</option>
+                        <option value="45">45%</option>
+                        <option value="40">40%</option>
+                        <option value="35">35%</option>
+                        <option value="30">30%</option>
+                        <option value="25">25%</option>
+                        <option value="20">20%</option>
+                        <option value="15">15%</option>
+                        <option value="10">10%</option>
+                        <option value="5">5%</option>
+                    </select>
                 </div>
                 <div class="col-md-3">
-                    <input name="Languages[${index}].Level" type="range" class="form-range" min="1" max="3" step="1" value="1" />
-                    <span id="language-level-${index}" class="language-level">1</span>
+                    <select name="Languages[${index}].Level" class="form-select">
+                        <option value="1">Professionell</option>
+                        <option value="2">Fortgeschritten</option>
+                        <option value="3">Grundkenntnisse</option>
+                    </select>
                 </div>
                 <div class="col-md-2 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-language">-</button>
@@ -451,16 +497,39 @@
             let index = container.getElementsByClassName("versioning-entry").length;
             let newEntry = `
             <div class="versioning-entry row mb-2 d-flex align-items-center">
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <input name="Versionings[${index}].Text" class="form-control" placeholder="Versionsverwaltung" required />
                 </div>
-                <div class="col-md-4">
-                    <input name="Versionings[${index}].Percent" type="range" class="form-range" min="0" max="100" step="5" value="100" />
-                    <span id="versioning-percent-${index}" class="versioning-percent">100%</span>
+                <div class="col-md-2">
+                    <select name="Versionings[${index}].Percent" class="form-select">
+                        <option value="100">100%</option>
+                        <option value="95">95%</option>
+                        <option value="90">90%</option>
+                        <option value="85">85%</option>
+                        <option value="80">80%</option>
+                        <option value="75">75%</option>
+                        <option value="70">70%</option>
+                        <option value="65">65%</option>
+                        <option value="60">60%</option>
+                        <option value="55">55%</option>
+                        <option value="50">50%</option>
+                        <option value="45">45%</option>
+                        <option value="40">40%</option>
+                        <option value="35">35%</option>
+                        <option value="30">30%</option>
+                        <option value="25">25%</option>
+                        <option value="20">20%</option>
+                        <option value="15">15%</option>
+                        <option value="10">10%</option>
+                        <option value="5">5%</option>
+                    </select>
                 </div>
                 <div class="col-md-3">
-                    <input name="Versionings[${index}].Level" type="range" class="form-range" min="1" max="3" step="1" value="1" />
-                    <span id="versioning-level-${index}" class="versioning-level">1</span>
+                    <select name="Versionings[${index}].Level" class="form-select">
+                        <option value="1">Professionell</option>
+                        <option value="2">Fortgeschritten</option>
+                        <option value="3">Grundkenntnisse</option>
+                    </select>
                 </div>
                 <div class="col-md-2 text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-versioning">-</button>
