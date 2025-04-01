@@ -8,6 +8,12 @@ public static class PdfGenerator
 
     public static string TempFolder => Path.Combine(Directory.GetCurrentDirectory(), "temp");
 
+    static PdfGenerator()
+    {
+        if (Directory.Exists(TempFolder))
+            Directory.Delete(TempFolder, true);
+    }
+
     public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input,
         string main = "document")
     {

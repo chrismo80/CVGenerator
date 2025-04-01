@@ -4,10 +4,9 @@ using CVGenerator.LaTeX;
 
 namespace CVGenerator.Pages;
 
-public class CVModel(ILogger<CVModel> logger) : DocumentPageModel
+public class CVModel(ILogger<CVModel> logger, IHttpContextAccessor httpContextAccessor)
+    : DocumentPageModel(logger, httpContextAccessor)
 {
-    private readonly ILogger<CVModel> _logger = logger;
-
     public override string DataFolder => "CV";
 
     public override string FileName => Name + " - " + NewRole;
@@ -82,8 +81,6 @@ public class CVModel(ILogger<CVModel> logger) : DocumentPageModel
 
     protected override async Task OnGenerate()
     {
-        _logger.LogInformation(Timeline.Min(e => e.Start.Year).ToString());
-
         await ProfilePicture.SaveAsyncToTempFolder("foto.png");
         await Signature.SaveAsyncToTempFolder("signature.png");
     }

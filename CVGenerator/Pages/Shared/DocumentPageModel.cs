@@ -13,6 +13,8 @@ public abstract class DocumentPageModel : PageModel
 {
     static readonly JsonSerializerOptions options = new() { WriteIndented = true };
 
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ILogger<CVModel> _logger;
     private readonly IEnumerable<PropertyInfo> _props;
 
     public abstract string DataFolder { get; }
@@ -21,7 +23,15 @@ public abstract class DocumentPageModel : PageModel
 
     [BindProperty] public IFormFile? UploadedFile { get; set; }
 
-    protected DocumentPageModel() => _props = GetProperties();
+    protected DocumentPageModel(ILogger<CVModel> logger, IHttpContextAccessor httpContextAccessor)
+    {
+        _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
+        _props = GetProperties();
+    }
+
+    public IActionResult OnPostExport() =>
+        File(Encoding.UTF8.GetBytes(Serialize()), "application/json", GetType().Name + ".json");
 
     public async Task<IActionResult> OnPostAsync() => Request.Form["handler"].ToString() switch
     {
@@ -36,6 +46,10 @@ public abstract class DocumentPageModel : PageModel
     {
         OnSet();
 
+        var sessionId = _httpContextAccessor?.HttpContext?.Session.Id ?? "Hmmmm";
+
+        _logger.LogInformation("Session: " + sessionId + " for folder: " + Path.Combine(Directory.GetCurrentDirectory(), "Data", DataFolder));
+
         Path.Combine(Directory.GetCurrentDirectory(), "Data", DataFolder).CopyToTempDirectory();
 
         await OnGenerate();
@@ -44,9 +58,6 @@ public abstract class DocumentPageModel : PageModel
 
         return File(pdfBytes, "application/pdf", FileName + ".pdf");
     }
-
-    public IActionResult OnPostExport() =>
-        File(Encoding.UTF8.GetBytes(Serialize()), "application/json", GetType().Name + ".json");
 
     public async Task<IActionResult> OnPostImportAsync()
     {
@@ -60,7 +71,7 @@ public abstract class DocumentPageModel : PageModel
 
         var fileContent = await reader.ReadToEndAsync();
 
-        return await SetToPage(fileContent);
+        return SetToPage(fileContent);
     }
 
     public async Task<IActionResult> OnPostLoadExampleAsync()
@@ -71,7 +82,7 @@ public abstract class DocumentPageModel : PageModel
 
         var fileContent = await reader.ReadToEndAsync();
 
-        return await SetToPage(fileContent);
+        return SetToPage(fileContent);
     }
 
     public void OnSet() => Save(GetType().Name, Serialize());
@@ -92,7 +103,7 @@ public abstract class DocumentPageModel : PageModel
 
     protected abstract Task OnGenerate();
 
-    private async Task<IActionResult> SetToPage(string? json)
+    private IActionResult SetToPage(string? json)
     {
         if (json == null)
             return Page();
@@ -105,8 +116,7 @@ public abstract class DocumentPageModel : PageModel
 
     private IEnumerable<PropertyInfo> GetProperties() => GetType()
         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        .Where(prop => !prop.PropertyType.IsInterface)
-        .Where(prop => Attribute.IsDefined(prop, typeof(BindPropertyAttribute)));
+        .Where(prop => Attribute.IsDefined(prop, typeof(BindPropertyAttribute)) && !prop.PropertyType.IsInterface);
 
     private void Save(string name, string value) => HttpContext.Session.SetString(name, value);
 

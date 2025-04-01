@@ -4,10 +4,9 @@ using CVGenerator.LaTeX;
 
 namespace CVGenerator.Pages;
 
-public class LetterModel(ILogger<LetterModel> logger) : DocumentPageModel
+public class LetterModel(ILogger<CVModel> logger, IHttpContextAccessor httpContextAccessor)
+    : DocumentPageModel(logger, httpContextAccessor)
 {
-    private readonly ILogger<LetterModel> _logger = logger;
-
     public override string DataFolder => "Letter";
 
     public override string FileName => ToName;
