@@ -79,9 +79,9 @@ public class CVModel(ILogger<CVModel> logger, IHttpContextAccessor httpContextAc
 
     public List<Info> Timeline => Educations.Concat(WorkExperiences).Concat(Projects).ToList();
 
-    protected override async Task OnGenerate()
+    protected override async Task OnGenerate(string subFolder)
     {
-        await ProfilePicture.SaveAsyncToTempFolder("foto.png");
-        await Signature.SaveAsyncToTempFolder("signature.png");
+        await ProfilePicture.SaveAsyncToTempFolder(subFolder, "foto.png");
+        await Signature.SaveAsyncToTempFolder(subFolder, "signature.png");
     }
 }

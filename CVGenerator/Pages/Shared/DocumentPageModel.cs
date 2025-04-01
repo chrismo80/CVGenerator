@@ -48,13 +48,11 @@ public abstract class DocumentPageModel : PageModel
 
         var sessionId = _httpContextAccessor?.HttpContext?.Session.Id ?? "Hmmmm";
 
-        _logger.LogInformation("Session: " + sessionId + " for folder: " + Path.Combine(Directory.GetCurrentDirectory(), "Data", DataFolder));
+        Path.Combine(Directory.GetCurrentDirectory(), "Data", DataFolder).CopyToTempDirectory(sessionId);
 
-        Path.Combine(Directory.GetCurrentDirectory(), "Data", DataFolder).CopyToTempDirectory();
+        await OnGenerate(sessionId);
 
-        await OnGenerate();
-
-        var pdfBytes = await this.GetFields<string>()!.GeneratePdf();
+        var pdfBytes = await this.GetFields<string>()!.GeneratePdf(sessionId);
 
         return File(pdfBytes, "application/pdf", FileName + ".pdf");
     }
@@ -101,7 +99,7 @@ public abstract class DocumentPageModel : PageModel
             prop.SetValue(this, dict[prop.Name].Deserialize(prop.PropertyType));
     }
 
-    protected abstract Task OnGenerate();
+    protected abstract Task OnGenerate(string subFolder);
 
     private IActionResult SetToPage(string? json)
     {

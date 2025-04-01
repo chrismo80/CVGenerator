@@ -8,16 +8,12 @@ public static class PdfGenerator
 
     public static string TempFolder => Path.Combine(Directory.GetCurrentDirectory(), "temp");
 
-    static PdfGenerator()
-    {
-        if (Directory.Exists(TempFolder))
-            Directory.Delete(TempFolder, true);
-    }
-
     public static async Task<byte[]> GeneratePdf(this Dictionary<string, object> input,
-        string main = "document")
+        string subFolder, string main = "document")
     {
-        var mainFile = Path.Combine(TempFolder, main);
+        var tempFolder = Path.Combine(TempFolder, subFolder);
+
+        var mainFile = Path.Combine(tempFolder, main);
 
         var info = await File.ReadAllTextAsync(mainFile + ".tex");
 
@@ -26,7 +22,7 @@ public static class PdfGenerator
         var startInfo = new ProcessStartInfo()
         {
             FileName = "pdflatex",
-            Arguments = $"-output-directory={TempFolder} {mainFile}.tex",
+            Arguments = $"-output-directory={tempFolder} {mainFile}.tex",
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
@@ -37,28 +33,30 @@ public static class PdfGenerator
 
         var data = await File.ReadAllBytesAsync($"{mainFile}.pdf");
 
-        Directory.Delete(TempFolder, true);
+        Directory.Delete(tempFolder, true);
 
         return data;
     }
 
-    public static void CopyToTempDirectory(this string dataDirectory)
+    public static void CopyToTempDirectory(this string dataDirectory, string subFolder)
     {
-        Directory.CreateDirectory(TempFolder);
+        var tempFolder = Path.Combine(TempFolder, subFolder);
+
+        Directory.CreateDirectory(tempFolder);
 
         foreach (string dir in Directory.GetDirectories(dataDirectory, "*", SearchOption.AllDirectories))
-            Directory.CreateDirectory(dir.Replace(dataDirectory, TempFolder));
+            Directory.CreateDirectory(dir.Replace(dataDirectory, tempFolder));
 
         foreach (string file in Directory.GetFiles(dataDirectory, "*.*", SearchOption.AllDirectories))
-            File.Copy(file, file.Replace(dataDirectory, TempFolder), true);
+            File.Copy(file, file.Replace(dataDirectory, tempFolder), true);
     }
 
-    public static async Task SaveAsyncToTempFolder(this IFormFile? image, string filename)
+    public static async Task SaveAsyncToTempFolder(this IFormFile? image, string subFolder, string filename)
     {
         if (image == null)
             return;
 
-        await using var fileStream = new FileStream(Path.Combine(TempFolder, filename), FileMode.Create);
+        await using var fileStream = new FileStream(Path.Combine(TempFolder, subFolder, filename), FileMode.Create);
 
         await image.CopyToAsync(fileStream);
     }

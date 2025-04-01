@@ -31,8 +31,8 @@ public class LetterModel(ILogger<CVModel> logger, IHttpContextAccessor httpConte
 
     [BindProperty] public string Text { get; set; } = "";
 
-    protected override async Task OnGenerate()
+    protected override async Task OnGenerate(string subFolder)
     {
-        await Signature.SaveAsyncToTempFolder("signature.png");
+        await Signature.SaveAsyncToTempFolder(subFolder, "signature.png");
     }
 }
