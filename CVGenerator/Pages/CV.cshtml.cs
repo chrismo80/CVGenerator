@@ -47,17 +47,17 @@ public class CVModel(ILogger<CVModel> logger, IHttpContextAccessor httpContextAc
 
     [BindProperty] public string Postskriptum { get; set; } = "";
 
-    [BindProperty] public List<Info> Educations { get; set; } = [];
+    [BindProperty] public List<Info> Educations { get; set; } = [new ()];
 
-    [BindProperty] public List<Info> WorkExperiences { get; set; } = [];
+    [BindProperty] public List<Info> WorkExperiences { get; set; } = [new()];
 
-    [BindProperty] public List<Info> Projects { get; set; } = [];
+    [BindProperty] public List<Info> Projects { get; set; } = [new()];
 
-    [BindProperty] public List<Skill> Skills { get; set; } = [];
+    [BindProperty] public List<Skill> Skills { get; set; } = [new()];
 
-    [BindProperty] public List<Skill> Languages { get; set; } = [];
+    [BindProperty] public List<Skill> Languages { get; set; } = [new()];
 
-    [BindProperty] public List<Skill> Versionings { get; set; } = [];
+    [BindProperty] public List<Skill> Versionings { get; set; } = [new()];
 
     public string? Foto => ProfilePicture?.FileName;
 
