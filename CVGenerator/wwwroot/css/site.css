@@ -19,7 +19,14 @@ html {
 
 body {
   margin-bottom: 60px;
+  color: #cacaca; /* light gray */
+  background-color: #333333; /* dark gray text */
 }
+
+a {
+  color: #4fa3f7; /* soft blue */
+}
+
 
 .preview-image {
   height: 500px;
