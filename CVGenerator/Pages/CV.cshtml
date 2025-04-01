@@ -402,14 +402,13 @@
             </div>`;
             container.insertAdjacentHTML("beforeend", newEntry);
 
-            // Update percent display for the new skill range input
-            let rangeInput = document.querySelector(`input[name="Skills[${index}].Percent"]`);
+            let percentInput = document.querySelector(`input[name="Skills[${index}].Percent"]`);
+            let levelInput = document.querySelector(`input[name="Skills[${index}].Level"]`);
             let percentDisplay = document.getElementById(`skill-percent-${index}`);
+            let levelDisplay = document.getElementById(`skill-level-${index}`);
 
-            rangeInput.addEventListener('input', function (e) {
-                percentDisplay.textContent = `${e.target.value}%`;
-                updateSkillTotal(); // Update the total percentage whenever the slider changes
-            });
+            percentInput.addEventListener('input', function (e) {percentDisplay.textContent = `${e.target.value}%`;});
+            levelInput.addEventListener('input', function (e) {levelDisplay.textContent = `${e.target.value}`;});
         });
 
         // Add Language Entry
@@ -435,14 +434,13 @@
             </div>`;
             container.insertAdjacentHTML("beforeend", newEntry);
 
-            // Update percent display for the new skill range input
-            let rangeInput = document.querySelector(`input[name="Languages[${index}].Percent"]`);
+            let percentInput = document.querySelector(`input[name="Languages[${index}].Percent"]`);
+            let levelInput = document.querySelector(`input[name="Languages[${index}].Level"]`);
             let percentDisplay = document.getElementById(`language-percent-${index}`);
+            let levelDisplay = document.getElementById(`language-level-${index}`);
 
-            rangeInput.addEventListener('input', function (e) {
-                percentDisplay.textContent = `${e.target.value}%`;
-                updateLanguagesTotal(); // Update the total percentage whenever the slider changes
-            });
+            percentInput.addEventListener('input', function (e) {percentDisplay.textContent = `${e.target.value}%`;});
+            levelInput.addEventListener('input', function (e) {levelDisplay.textContent = `${e.target.value}`;});
         });
 
 
@@ -470,14 +468,13 @@
             </div>`;
             container.insertAdjacentHTML("beforeend", newEntry);
 
-            // Update percent display for the new skill range input
-            let rangeInput = document.querySelector(`input[name="Versionings[${index}].Percent"]`);
+            let percentInput = document.querySelector(`input[name="Versionings[${index}].Percent"]`);
+            let levelInput = document.querySelector(`input[name="Versionings[${index}].Level"]`);
             let percentDisplay = document.getElementById(`versioning-percent-${index}`);
+            let levelDisplay = document.getElementById(`versioning-level-${index}`);
 
-            rangeInput.addEventListener('input', function (e) {
-                percentDisplay.textContent = `${e.target.value}%`;
-                updateVersioningsTotal(); // Update the total percentage whenever the slider changes
-            });
+            percentInput.addEventListener('input', function (e) {percentDisplay.textContent = `${e.target.value}%`;});
+            levelInput.addEventListener('input', function (e) {levelDisplay.textContent = `${e.target.value}`;});
         });
 
 
@@ -499,60 +496,6 @@
                 updateVersioningsTotal(); // Update the total percentage after removal
             }
         });
-
-        // Function to ensure the total sum of all skill percentages does not exceed 100
-        function updateSkillTotal() {
-            let total = 0;
-            let skills = document.querySelectorAll('input[name^="Skills"][type="range"]');
-            skills.forEach(skill => {
-                total += parseInt(skill.value, 10);
-            });
-
-            // Check if the total exceeds 100
-            if (total > 100) {
-                // If the total exceeds 100, adjust the last skill's percentage
-                let lastSkill = skills[skills.length - 1];
-                let excess = total - 100;
-                lastSkill.value = parseInt(lastSkill.value, 10) - excess;
-                document.getElementById(`skill-percent-${skills.length - 1}`).textContent = `${lastSkill.value}%`;
-            }
-        }
-
-        // Function to ensure the total sum of all skill percentages does not exceed 100
-        function updateLanguagesTotal() {
-            let total = 0;
-            let skills = document.querySelectorAll('input[name^="Languages"][type="range"]');
-            skills.forEach(skill => {
-                total += parseInt(skill.value, 10);
-            });
-
-            // Check if the total exceeds 100
-            if (total > 100) {
-                // If the total exceeds 100, adjust the last percentage
-                let lastSkill = skills[skills.length - 1];
-                let excess = total - 100;
-                lastSkill.value = parseInt(lastSkill.value, 10) - excess;
-                document.getElementById(`language-percent-${skills.length - 1}`).textContent = `${lastSkill.value}%`;
-            }
-        }
-
-        // Function to ensure the total sum of all skill percentages does not exceed 100
-        function updateVersioningsTotal() {
-            let total = 0;
-            let skills = document.querySelectorAll('input[name^="Versionings"][type="range"]');
-            skills.forEach(skill => {
-                total += parseInt(skill.value, 10);
-            });
-
-            // Check if the total exceeds 100
-            if (total > 100) {
-                // If the total exceeds 100, adjust the last percentage
-                let lastSkill = skills[skills.length - 1];
-                let excess = total - 100;
-                lastSkill.value = parseInt(lastSkill.value, 10) - excess;
-                document.getElementById(`versioning-percent-${skills.length - 1}`).textContent = `${lastSkill.value}%`;
-            }
-        }
     });
 
 </script>
