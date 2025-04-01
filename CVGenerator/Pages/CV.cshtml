@@ -493,14 +493,6 @@
                 </div>
             </div>`;
             container.insertAdjacentHTML("beforeend", newEntry);
-
-            let percentInput = document.querySelector(`input[name="Skills[${index}].Percent"]`);
-            let levelInput = document.querySelector(`input[name="Skills[${index}].Level"]`);
-            let percentDisplay = document.getElementById(`skill-percent-${index}`);
-            let levelDisplay = document.getElementById(`skill-level-${index}`);
-
-            percentInput.addEventListener('input', function (e) {percentDisplay.textContent = `${e.target.value}%`;});
-            levelInput.addEventListener('input', function (e) {levelDisplay.textContent = `${e.target.value}`;});
         });
 
         // Add Language Entry
@@ -548,14 +540,6 @@
                 </div>
             </div>`;
             container.insertAdjacentHTML("beforeend", newEntry);
-
-            let percentInput = document.querySelector(`input[name="Languages[${index}].Percent"]`);
-            let levelInput = document.querySelector(`input[name="Languages[${index}].Level"]`);
-            let percentDisplay = document.getElementById(`language-percent-${index}`);
-            let levelDisplay = document.getElementById(`language-level-${index}`);
-
-            percentInput.addEventListener('input', function (e) {percentDisplay.textContent = `${e.target.value}%`;});
-            levelInput.addEventListener('input', function (e) {levelDisplay.textContent = `${e.target.value}`;});
         });
 
 
@@ -605,14 +589,6 @@
                 </div>
             </div>`;
             container.insertAdjacentHTML("beforeend", newEntry);
-
-            let percentInput = document.querySelector(`input[name="Versionings[${index}].Percent"]`);
-            let levelInput = document.querySelector(`input[name="Versionings[${index}].Level"]`);
-            let percentDisplay = document.getElementById(`versioning-percent-${index}`);
-            let levelDisplay = document.getElementById(`versioning-level-${index}`);
-
-            percentInput.addEventListener('input', function (e) {percentDisplay.textContent = `${e.target.value}%`;});
-            levelInput.addEventListener('input', function (e) {levelDisplay.textContent = `${e.target.value}`;});
         });
 
 
@@ -623,15 +599,12 @@
             if (event.target.classList.contains("remove-project")) event.target.closest(".project-entry").remove();
             if (event.target.classList.contains("remove-skill")) {
                 event.target.closest(".skill-entry").remove();
-                updateSkillTotal(); // Update the total percentage after removal
             }
             if (event.target.classList.contains("remove-language")) {
                 event.target.closest(".language-entry").remove();
-                updateLanguagesTotal(); // Update the total percentage after removal
             }
             if (event.target.classList.contains("remove-versioning")) {
                 event.target.closest(".versioning-entry").remove();
-                updateVersioningsTotal(); // Update the total percentage after removal
             }
         });
     });
