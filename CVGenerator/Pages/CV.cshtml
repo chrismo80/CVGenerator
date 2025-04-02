@@ -500,31 +500,52 @@
 
         // Remove Entry Handlers
         document.addEventListener("click", function (event) {
-            if (event.target.classList.contains("remove-education")) event.target.closest(".education-entry").remove();
-            if (event.target.classList.contains("remove-work")) event.target.closest(".work-entry").remove();
-            if (event.target.classList.contains("remove-project")) event.target.closest(".project-entry").remove();
+            if (event.target.classList.contains("remove-education")) {
+                event.target.closest(".education-entry").remove();
+                reindexEntries("education-entry", "Educations", ["Start", "End", "Text", "Details"]);
+            }
+
+            if (event.target.classList.contains("remove-work")) {
+                event.target.closest(".work-entry").remove();
+                reindexEntries("work-entry", "WorkExperiences", ["Start", "End", "Text", "Details"]);
+            }
+            if (event.target.classList.contains("remove-project")) {
+                event.target.closest(".project-entry").remove();
+                reindexEntries("project-entry", "Projects", ["Start", "End", "Text"]);
+            }
+
             if (event.target.classList.contains("remove-skill")) {
                 event.target.closest(".skill-entry").remove();
-                reindexEntries("skill-entry", "Skills");
+                reindexEntries("skill-entry", "Skills", ["Text", "Percent", "Level"]);
             }
+
             if (event.target.classList.contains("remove-language")) {
                 event.target.closest(".language-entry").remove();
-                reindexEntries("language-entry", "Languages");
+                reindexEntries("language-entry", "Languages", ["Text", "Percent", "Level"]);
             }
+
             if (event.target.classList.contains("remove-versioning")) {
                 event.target.closest(".versioning-entry").remove();
-                reindexEntries("versioning-entry", "Versionings");
+                reindexEntries("versioning-entry", "Versionings", ["Text", "Percent", "Level"]);
             }
         });
     });
 
-        function reindexEntries(className, modelName) {
-            const entries = document.querySelectorAll(`.${className}`);
-            entries.forEach((entry, index) => {
-                entry.querySelector("input").name = `${modelName}[${index}].Text`;
-                entry.querySelector(`select[name^="${modelName}"][name$=".Percent"]`).name = `${modelName}[${index}].Percent`;
-                entry.querySelector(`select[name^="${modelName}"][name$=".Level"]`).name = `${modelName}[${index}].Level`;
-        });
-    }
+                function reindexEntries(className, modelName, fields) {
+                    const entries = document.querySelectorAll(`.${className}`);
+                    entries.forEach((entry, index) => {
+                        fields.forEach(field => {
+                            const input = entry.querySelector(`[name^="${modelName}"][name$=".${field}"]`);
+                            if (input) {
+                                console.log(`Updating: ${input.name} -> ${modelName}[${index}].${field}`); // Debugging log
+                                input.name = `${modelName}[${index}].${field}`;
+                            } else {
+                                console.warn(`Field not found: ${modelName}[${index}].${field} in`, entry); // Debugging warning
+                            }
+                        });
+                    });
+                }
+
+    
 
 </script>
