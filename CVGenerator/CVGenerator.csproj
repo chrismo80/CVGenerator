@@ -27,4 +27,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="temp\00d1c50c-69de-df0f-ee5f-acda16cf0507\fake.json" />
+    <_ContentIncludedByDefault Remove="temp\2413f7d3-47cf-c50d-68a9-075eb39d3890\fake.json" />
+  </ItemGroup>
 </Project>

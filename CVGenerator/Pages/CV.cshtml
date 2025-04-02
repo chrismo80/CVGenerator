@@ -108,6 +108,7 @@
             <!-- Education Section -->
             <h3>Bildungsweg</h3>
             <div id="education-container">
+                <button style="float: right;" type="button" id="add-education" class="btn btn-success btn-sm">+</button>
                 @for (int i = 0; i < Model.Educations.Count; i++)
                 {
                     <div class="education-entry row mb-2 d-flex align-items-center">
@@ -123,19 +124,19 @@
                         <div class="col-md-4">
                             <input asp-for="Educations[i].Details" class="form-control" placeholder="Schule, Stadt"/>
                         </div>
-                        <div class="col-md-1 text-end">
+                        <div class="col-md-1">
                             <button type="button" class="btn btn-danger btn-sm remove-education">-</button>
                         </div>
                     </div>
                 }
             </div>
-            <button style="float: right;" type="button" id="add-education" class="btn btn-success btn-sm">+</button>
 
             <hr/>
 
             <!-- Work Experience Section -->
             <h3>Berufserfahrung</h3>
             <div id="work-container">
+                <button style="float: right;" type="button" id="add-work" class="btn btn-success btn-sm">+</button>
                 @for (int i = 0; i < Model.WorkExperiences.Count; i++)
                 {
                     <div class="work-entry row mb-2 d-flex align-items-center">
@@ -151,19 +152,19 @@
                         <div class="col-md-4">
                             <input asp-for="WorkExperiences[i].Details" class="form-control" placeholder="Position"/>
                         </div>
-                        <div class="col-md-1 text-end">
+                        <div class="col-md-1">
                             <button type="button" class="btn btn-danger btn-sm remove-work">-</button>
                         </div>
                     </div>
                 }
             </div>
-            <button style="float: right;" type="button" id="add-work" class="btn btn-success btn-sm">+</button>
 
             <hr/>
 
             <!-- Projects Section -->
             <h3>Projekte</h3>
             <div id="project-container">
+                <button style="float: right;" type="button" id="add-project" class="btn btn-success btn-sm">+</button>
                 @for (int i = 0; i < Model.Projects.Count; i++)
                 {
                     <div class="project-entry row mb-2 d-flex align-items-center">
@@ -176,25 +177,24 @@
                         <div class="col-md-7">
                             <input asp-for="Projects[i].Text" class="form-control" placeholder="Beschreibung" required/>
                         </div>
-                        <div class="col-md-1 text-end">
+                        <div class="col-md-1">
                             <button type="button" class="btn btn-danger btn-sm remove-project">-</button>
                         </div>
                     </div>
                 }
             </div>
-            <button style="float: right;" type="button" id="add-project" class="btn btn-success btn-sm">+</button>
 
             <hr/>
 
             <!-- Skills Section -->
             <h3>Skills</h3>
             <div id="skills-container">
+                <button style="float: right;" type="button" id="add-skill" class="btn btn-success btn-sm">+</button>
                 @for (int i = 0; i < Model.Skills.Count; i++)
                 {
-                    <div class="skill-entry row mb-2 d-flex align-items-center">
-                        <div class="col-md-5">
-                            <input asp-for="Skills[i].Text" class="form-control" placeholder="Fähigkeit" required/>
-                        </div>
+                   <div class="skill-entry row mb-2 d-flex align-items-center">
+                       <div class="col-md-3">
+                            <input asp-for="Skills[i].Text" class="form-control" placeholder="Fähigkeit" required/></div>
                         <div class="col-md-2">
                             <select asp-for="Skills[i].Percent" class="form-select">
                                 @for (int percent = 100; percent > 0; percent -= 5)
@@ -203,30 +203,30 @@
                                 }
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select asp-for="Skills[i].Level" class="form-select">
                                 <option value="1">Professionell</option>
                                 <option value="2">Fortgeschritten</option>
                                 <option value="3">Grundkenntnisse</option>
                             </select>
                         </div>
-                        <div class="col-md-2 text-end">
-                            <button type="button" class="btn btn-danger btn-sm remove-skill">-</button>
-                        </div>
-                    </div>
+                       <div class="col-md-1">
+                           <button type="button" class="btn btn-danger btn-sm remove-skill">-</button>
+                       </div>
+                   </div>
                 }
             </div>
-            <button style="float: right;" type="button" id="add-skill" class="btn btn-success btn-sm">+</button>
 
             <hr/>
 
             <!-- Languages Section -->
             <h3>Sprachen</h3>
             <div id="languages-container">
+                <button style="float: right;" type="button" id="add-language" class="btn btn-success btn-sm">+</button>
                 @for (int i = 0; i < Model.Languages.Count; i++)
                 {
                     <div class="language-entry row mb-2 d-flex align-items-center">
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <input asp-for="Languages[i].Text" class="form-control" placeholder="Sprache" required/>
                         </div>
                         <div class="col-md-2">
@@ -237,30 +237,30 @@
                                 }
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select asp-for="Languages[i].Level" class="form-select">
                                 <option value="1">Professionell</option>
                                 <option value="2">Fortgeschritten</option>
                                 <option value="3">Grundkenntnisse</option>
                             </select>
                         </div>
-                        <div class="col-md-2 text-end">
+                        <div class="col-md-1">
                             <button type="button" class="btn btn-danger btn-sm remove-language">-</button>
                         </div>
                     </div>
                 }
             </div>
-            <button style="float: right;" type="button" id="add-language" class="btn btn-success btn-sm">+</button>
 
             <hr/>
 
             <!-- Version Control Section -->
             <h3>Versionsverwaltung</h3>
             <div id="versionings-container">
+                <button style="float: right;" type="button" id="add-versioning" class="btn btn-success btn-sm">+</button>
                 @for (int i = 0; i < Model.Versionings.Count; i++)
                 {
                     <div class="versioning-entry row mb-2 d-flex align-items-center">
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <input asp-for="Versionings[i].Text" class="form-control" placeholder="Versionsverwaltung" required/>
                         </div>
                         <div class="col-md-2">
@@ -271,20 +271,19 @@
                                 }
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select asp-for="Versionings[i].Level" class="form-select">
                                 <option value="1">Professionell</option>
                                 <option value="2">Fortgeschritten</option>
                                 <option value="3">Grundkenntnisse</option>
                             </select>
                         </div>
-                        <div class="col-md-2 text-end">
+                        <div class="col-md-1">
                             <button type="button" class="btn btn-danger btn-sm remove-versioning">-</button>
                         </div>
                     </div>
                 }
             </div>
-            <button style="float: right;" type="button" id="add-versioning" class="btn btn-success btn-sm">+</button>
         </div>
     </div>
 </form>
@@ -340,7 +339,7 @@
                 <div class="col-md-4">
                     <input name="Educations[${index}].Details" class="form-control" placeholder="Schule, Stadt" required />
                 </div>
-                <div class="col-md-1 text-end">
+                <div class="col-md-1">
                     <button type="button" class="btn btn-danger btn-sm remove-education">-</button>
                 </div>
             </div>`;
@@ -365,7 +364,7 @@
                 <div class="col-md-4">
                     <input name="WorkExperiences[${index}].Details" class="form-control" placeholder="Position" />
                 </div>
-                <div class="col-md-1 text-end">
+                <div class="col-md-1">
                     <button type="button" class="btn btn-danger btn-sm remove-work">-</button>
                 </div>
             </div>`;
@@ -387,7 +386,7 @@
                 <div class="col-md-7">
                     <input name="Projects[${index}].Text" class="form-control" placeholder="Beschreibung" required />
                 </div>
-                <div class="col-md-1 text-end">
+                <div class="col-md-1">
                     <button type="button" class="btn btn-danger btn-sm remove-work">-</button>
                 </div>
             </div>`;
@@ -404,7 +403,7 @@
             }
             let newEntry = `
             <div class="skill-entry row mb-2 d-flex align-items-center">
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <input name="Skills[${index}].Text" class="form-control" placeholder="Fähigkeit" required />
                 </div>
                 <div class="col-md-2">
@@ -412,14 +411,14 @@
                         ${percentOptions}
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <select name="Skills[${index}].Level" class="form-select">
                         <option value="1">Professionell</option>
                         <option value="2">Fortgeschritten</option>
                         <option value="3">Grundkenntnisse</option>
                     </select>
                 </div>
-                <div class="col-md-2 text-end">
+                <div class="col-md-1">
                     <button type="button" class="btn btn-danger btn-sm remove-skill">-</button>
                 </div>
             </div>`;
@@ -436,7 +435,7 @@
             }
             let newEntry = `
             <div class="language-entry row mb-2 d-flex align-items-center">
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <input name="Languages[${index}].Text" class="form-control" placeholder="Sprache" required />
                 </div>
                 <div class="col-md-2">
@@ -444,14 +443,14 @@
                         ${percentOptions}
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <select name="Languages[${index}].Level" class="form-select">
                         <option value="1">Professionell</option>
                         <option value="2">Fortgeschritten</option>
                         <option value="3">Grundkenntnisse</option>
                     </select>
                 </div>
-                <div class="col-md-2 text-end">
+                <div class="col-md-1">
                     <button type="button" class="btn btn-danger btn-sm remove-language">-</button>
                 </div>
             </div>`;
@@ -468,7 +467,7 @@
             }
             let newEntry = `
             <div class="versioning-entry row mb-2 d-flex align-items-center">
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <input name="Versionings[${index}].Text" class="form-control" placeholder="Versionsverwaltung" required />
                 </div>
                 <div class="col-md-2">
@@ -476,14 +475,14 @@
                         ${percentOptions}
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <select name="Versionings[${index}].Level" class="form-select">
                         <option value="1">Professionell</option>
                         <option value="2">Fortgeschritten</option>
                         <option value="3">Grundkenntnisse</option>
                     </select>
                 </div>
-                <div class="col-md-2 text-end">
+                <div class="col-md-1">
                     <button type="button" class="btn btn-danger btn-sm remove-versioning">-</button>
                 </div>
             </div>`;
