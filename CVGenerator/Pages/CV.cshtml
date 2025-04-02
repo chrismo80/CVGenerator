@@ -598,45 +598,26 @@
             if (event.target.classList.contains("remove-project")) event.target.closest(".project-entry").remove();
             if (event.target.classList.contains("remove-skill")) {
                 event.target.closest(".skill-entry").remove();
-                reindexSkills();
+                reindexEntries("skill-entry", "Skills");
             }
             if (event.target.classList.contains("remove-language")) {
                 event.target.closest(".language-entry").remove();
-                reindexLanguages();
+                reindexEntries("language-entry", "Languages");
             }
             if (event.target.classList.contains("remove-versioning")) {
                 event.target.closest(".versioning-entry").remove();
-                reindexVersionings();
+                reindexEntries("versioning-entry", "Versionings");
             }
         });
     });
 
-
-    function reindexSkills() {
-         const skillItems = document.querySelectorAll(".skill-entry");
-         skillItems.forEach((item, index) => {
-             item.querySelector("input").name = `Skills[${index}].Text`;
-             item.querySelector("select[name^='Skills'][name$='.Percent']").name = `Skills[${index}].Percent`;
-             item.querySelector("select[name^='Skills'][name$='.Level']").name = `Skills[${index}].Level`;
-         });
-     }
-
-    function reindexLanguages() {
-         const skillItems = document.querySelectorAll(".language-entry");
-         skillItems.forEach((item, index) => {
-             item.querySelector("input").name = `Languages[${index}].Text`;
-             item.querySelector("select[name^='Languages'][name$='.Percent']").name = `Languages[${index}].Percent`;
-             item.querySelector("select[name^='Languages'][name$='.Level']").name = `Languages[${index}].Level`;
-         });
-     }
-
-    function reindexVersionings() {
-         const skillItems = document.querySelectorAll(".versioning-entry");
-         skillItems.forEach((item, index) => {
-             item.querySelector("input").name = `Versionings[${index}].Text`;
-             item.querySelector("select[name^='Versionings'][name$='.Percent']").name = `Versionings[${index}].Percent`;
-             item.querySelector("select[name^='Versionings'][name$='.Level']").name = `Versionings[${index}].Level`;
-         });
-     }
+        function reindexEntries(className, modelName) {
+            const entries = document.querySelectorAll(`.${className}`);
+            entries.forEach((entry, index) => {
+                entry.querySelector("input").name = `${modelName}[${index}].Text`;
+                entry.querySelector(`select[name^="${modelName}"][name$=".Percent"]`).name = `${modelName}[${index}].Percent`;
+                entry.querySelector(`select[name^="${modelName}"][name$=".Level"]`).name = `${modelName}[${index}].Level`;
+        });
+    }
 
 </script>
