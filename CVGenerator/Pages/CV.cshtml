@@ -30,7 +30,7 @@
 
         <div class="col-md-6">
             <h3>Neuer Arbeitgeber</h3>
-            <!-- Basic Details Section -->
+            <!-- Company Section -->
             <div class="mb-3">
                 <input asp-for="Company" class="form-control" placeholder="Firma" required />
             </div>
@@ -60,8 +60,7 @@
 
         <div class="col-md-6">
             <h3>Bewerber</h3>
-
-            <!-- Basic Details Section -->
+            <!-- Applicant Section -->
             <div class="mb-3">
                 <input asp-for="Name" class="form-control" placeholder="Name" required/>
             </div>
@@ -99,16 +98,13 @@
                 <input type="file" class="form-control" id="image" name="Signature" accept="image/*" />
                 <img id="preview" class="img-fluid mt-2" style="max-width: 200px; max-height: 200px;"/>
             </div>
-
         </div>
 
     </div>
 
-
     <div class="row">
-
-            <!-- Right Column: Education and Work Experience (70% width) -->
         <div class="col-md-12">
+
             <!-- Education Section -->
             <h3>Bildungsweg</h3>
             <div id="education-container">
@@ -116,16 +112,16 @@
                 {
                     <div class="education-entry row mb-2 d-flex align-items-center">
                         <div class="col-md-2">
-                            <input asp-for="Educations[i].Start" type="date" class="form-control" required />
+                            <input asp-for="Educations[i].Start" type="date" class="form-control" required/>
                         </div>
                         <div class="col-md-2">
-                            <input asp-for="Educations[i].End" type="date" class="form-control" required />
+                            <input asp-for="Educations[i].End" type="date" class="form-control" required/>
                         </div>
                         <div class="col-md-3">
-                            <input asp-for="Educations[i].Text" class="form-control" placeholder="Abschluss" required />
+                            <input asp-for="Educations[i].Text" class="form-control" placeholder="Abschluss" required/>
                         </div>
                         <div class="col-md-4">
-                            <input asp-for="Educations[i].Details" class="form-control" placeholder="Schule, Stadt" />
+                            <input asp-for="Educations[i].Details" class="form-control" placeholder="Schule, Stadt"/>
                         </div>
                         <div class="col-md-1 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-education">-</button>
@@ -135,7 +131,7 @@
             </div>
             <button style="float: right;" type="button" id="add-education" class="btn btn-success btn-sm">+</button>
 
-            <hr />
+            <hr/>
 
             <!-- Work Experience Section -->
             <h3>Berufserfahrung</h3>
@@ -144,16 +140,16 @@
                 {
                     <div class="work-entry row mb-2 d-flex align-items-center">
                         <div class="col-md-2">
-                            <input asp-for="WorkExperiences[i].Start" type="date" class="form-control" required />
+                            <input asp-for="WorkExperiences[i].Start" type="date" class="form-control" required/>
                         </div>
                         <div class="col-md-2">
-                            <input asp-for="WorkExperiences[i].End" type="date" class="form-control" required />
+                            <input asp-for="WorkExperiences[i].End" type="date" class="form-control" required/>
                         </div>
                         <div class="col-md-3">
-                            <input asp-for="WorkExperiences[i].Text" class="form-control" placeholder="Arbeitgeber, Stadt" required />
+                            <input asp-for="WorkExperiences[i].Text" class="form-control" placeholder="Arbeitgeber, Stadt" required/>
                         </div>
                         <div class="col-md-4">
-                            <input asp-for="WorkExperiences[i].Details" class="form-control" placeholder="Position" />
+                            <input asp-for="WorkExperiences[i].Details" class="form-control" placeholder="Position"/>
                         </div>
                         <div class="col-md-1 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-work">-</button>
@@ -163,7 +159,7 @@
             </div>
             <button style="float: right;" type="button" id="add-work" class="btn btn-success btn-sm">+</button>
 
-            <hr />
+            <hr/>
 
             <!-- Projects Section -->
             <h3>Projekte</h3>
@@ -172,13 +168,13 @@
                 {
                     <div class="project-entry row mb-2 d-flex align-items-center">
                         <div class="col-md-2">
-                            <input asp-for="Projects[i].Start" type="date" class="form-control" required />
+                            <input asp-for="Projects[i].Start" type="date" class="form-control" required/>
                         </div>
                         <div class="col-md-2">
-                            <input asp-for="Projects[i].End" type="date" class="form-control" required />
+                            <input asp-for="Projects[i].End" type="date" class="form-control" required/>
                         </div>
                         <div class="col-md-7">
-                            <input asp-for="Projects[i].Text" class="form-control" placeholder="Beschreibung" required />
+                            <input asp-for="Projects[i].Text" class="form-control" placeholder="Beschreibung" required/>
                         </div>
                         <div class="col-md-1 text-end">
                             <button type="button" class="btn btn-danger btn-sm remove-project">-</button>
@@ -188,7 +184,7 @@
             </div>
             <button style="float: right;" type="button" id="add-project" class="btn btn-success btn-sm">+</button>
 
-            <hr />
+            <hr/>
 
             <!-- Skills Section -->
             <h3>Skills</h3>
@@ -197,7 +193,7 @@
                 {
                     <div class="skill-entry row mb-2 d-flex align-items-center">
                         <div class="col-md-5">
-                            <input asp-for="Skills[i].Text" class="form-control" placeholder="Fähigkeit" required />
+                            <input asp-for="Skills[i].Text" class="form-control" placeholder="Fähigkeit" required/>
                         </div>
                         <div class="col-md-2">
                             <select asp-for="Skills[i].Percent" class="form-select">
@@ -222,7 +218,7 @@
             </div>
             <button style="float: right;" type="button" id="add-skill" class="btn btn-success btn-sm">+</button>
 
-            <hr />
+            <hr/>
 
             <!-- Languages Section -->
             <h3>Sprachen</h3>
@@ -231,7 +227,7 @@
                 {
                     <div class="language-entry row mb-2 d-flex align-items-center">
                         <div class="col-md-5">
-                            <input asp-for="Languages[i].Text" class="form-control" placeholder="Sprache" required />
+                            <input asp-for="Languages[i].Text" class="form-control" placeholder="Sprache" required/>
                         </div>
                         <div class="col-md-2">
                             <select asp-for="Languages[i].Percent" class="form-select">
@@ -256,7 +252,7 @@
             </div>
             <button style="float: right;" type="button" id="add-language" class="btn btn-success btn-sm">+</button>
 
-            <hr />
+            <hr/>
 
             <!-- Version Control Section -->
             <h3>Versionsverwaltung</h3>
@@ -265,7 +261,7 @@
                 {
                     <div class="versioning-entry row mb-2 d-flex align-items-center">
                         <div class="col-md-5">
-                            <input asp-for="Versionings[i].Text" class="form-control" placeholder="Versionsverwaltung" required />
+                            <input asp-for="Versionings[i].Text" class="form-control" placeholder="Versionsverwaltung" required/>
                         </div>
                         <div class="col-md-2">
                             <select asp-for="Versionings[i].Percent" class="form-select">
@@ -292,7 +288,6 @@
         </div>
     </div>
 </form>
-
 
 <script>
 
@@ -463,8 +458,6 @@
             container.insertAdjacentHTML("beforeend", newEntry);
         });
 
-
-
         // Add Versioning Entry
         document.getElementById("add-versioning").addEventListener("click", function () {
             let container = document.getElementById("versionings-container");
@@ -496,7 +489,6 @@
             </div>`;
             container.insertAdjacentHTML("beforeend", newEntry);
         });
-
 
         // Remove Entry Handlers
         document.addEventListener("click", function (event) {
@@ -531,21 +523,13 @@
         });
     });
 
-                function reindexEntries(className, modelName, fields) {
-                    const entries = document.querySelectorAll(`.${className}`);
-                    entries.forEach((entry, index) => {
-                        fields.forEach(field => {
-                            const input = entry.querySelector(`[name^="${modelName}"][name$=".${field}"]`);
-                            if (input) {
-                                console.log(`Updating: ${input.name} -> ${modelName}[${index}].${field}`); // Debugging log
-                                input.name = `${modelName}[${index}].${field}`;
-                            } else {
-                                console.warn(`Field not found: ${modelName}[${index}].${field} in`, entry); // Debugging warning
-                            }
-                        });
-                    });
-                }
-
-    
-
+    function reindexEntries(className, modelName, fields) {
+        const entries = document.querySelectorAll(`.${className}`);
+        entries.forEach((entry, index) => {
+            fields.forEach(field => {
+                const input = entry.querySelector(`[name^="${modelName}"][name$=".${field}"]`);
+                input.name = `${modelName}[${index}].${field}`;
+            });
+        });
+    }
 </script>
