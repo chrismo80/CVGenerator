@@ -15,9 +15,9 @@ public static class PdfGenerator
 
         var mainFile = Path.Combine(tempFolder, main);
 
-        var info = await File.ReadAllTextAsync(mainFile + ".tex");
+        var document = await File.ReadAllTextAsync(mainFile + ".tex");
 
-        await File.WriteAllTextAsync(mainFile + ".tex", info.FillTemplate(input));
+        await File.WriteAllTextAsync(mainFile + ".tex", document.FillTemplate(input));
 
         var startInfo = new ProcessStartInfo()
         {
